@@ -1,0 +1,21 @@
+<package>
+  <description brief="minsu_pcl">
+
+     minsu_pcl
+
+  </description>
+  <author>Control Team Laptop</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/minsu_pcl</url>
+  <depend package="roscpp"/>
+  <depend package="rospy"/>
+  <depend package="image_transport"/>
+  <depend package="pcl"/>
+  <depend package="pcl_ros"/>
+  <depend package="sensor_msgs"/>
+  <depend package="geometry_msgs"/>
+
+</package>
+
+
