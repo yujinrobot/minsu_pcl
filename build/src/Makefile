@@ -123,6 +123,20 @@ pcl_pub/fast:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/pcl_pub.dir/build.make src/CMakeFiles/pcl_pub.dir/build
 .PHONY : pcl_pub/fast
 
+# Convenience name for target.
+src/CMakeFiles/pcl_sub.dir/rule:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/pcl_sub.dir/rule
+.PHONY : src/CMakeFiles/pcl_sub.dir/rule
+
+# Convenience name for target.
+pcl_sub: src/CMakeFiles/pcl_sub.dir/rule
+.PHONY : pcl_sub
+
+# fast build rule for target.
+pcl_sub/fast:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/build
+.PHONY : pcl_sub/fast
+
 # target to build an object file
 example.o:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/example.dir/build.make src/CMakeFiles/example.dir/example.o
@@ -153,6 +167,21 @@ pcl_pub.s:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/pcl_pub.dir/build.make src/CMakeFiles/pcl_pub.dir/pcl_pub.s
 .PHONY : pcl_pub.s
 
+# target to build an object file
+pcl_sub.o:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/pcl_sub.o
+.PHONY : pcl_sub.o
+
+# target to preprocess a source file
+pcl_sub.i:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/pcl_sub.i
+.PHONY : pcl_sub.i
+
+# target to generate assembly for a file
+pcl_sub.s:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/pcl_sub.s
+.PHONY : pcl_sub.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -162,6 +191,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... example"
 	@echo "... pcl_pub"
+	@echo "... pcl_sub"
 	@echo "... rebuild_cache"
 	@echo "... example.o"
 	@echo "... example.i"
@@ -169,6 +199,9 @@ help:
 	@echo "... pcl_pub.o"
 	@echo "... pcl_pub.i"
 	@echo "... pcl_pub.s"
+	@echo "... pcl_sub.o"
+	@echo "... pcl_sub.i"
+	@echo "... pcl_sub.s"
 .PHONY : help
 
 

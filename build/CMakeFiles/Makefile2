@@ -522,11 +522,13 @@ clean: CMakeFiles/tests.dir/clean
 # Convenience name for "all" pass in the directory.
 src/all: src/CMakeFiles/example.dir/all
 src/all: src/CMakeFiles/pcl_pub.dir/all
+src/all: src/CMakeFiles/pcl_sub.dir/all
 .PHONY : src/all
 
 # Convenience name for "clean" pass in the directory.
 src/clean: src/CMakeFiles/example.dir/clean
 src/clean: src/CMakeFiles/pcl_pub.dir/clean
+src/clean: src/CMakeFiles/pcl_sub.dir/clean
 .PHONY : src/clean
 
 # Convenience name for "preinstall" pass in the directory.
@@ -601,6 +603,41 @@ src/CMakeFiles/pcl_pub.dir/clean:
 
 # clean rule for target.
 clean: src/CMakeFiles/pcl_pub.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target src/CMakeFiles/pcl_sub.dir
+
+# All Build rule for target.
+src/CMakeFiles/pcl_sub.dir/all: CMakeFiles/rosbuild_precompile.dir/all
+	$(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/depend
+	$(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  3
+	@echo "Built target pcl_sub"
+.PHONY : src/CMakeFiles/pcl_sub.dir/all
+
+# Include target in all.
+all: src/CMakeFiles/pcl_sub.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+src/CMakeFiles/pcl_sub.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/pcl_sub.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles 0
+.PHONY : src/CMakeFiles/pcl_sub.dir/rule
+
+# Convenience name for target.
+pcl_sub: src/CMakeFiles/pcl_sub.dir/rule
+.PHONY : pcl_sub
+
+# clean rule for target.
+src/CMakeFiles/pcl_sub.dir/clean:
+	$(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/clean
+.PHONY : src/CMakeFiles/pcl_sub.dir/clean
+
+# clean rule for target.
+clean: src/CMakeFiles/pcl_sub.dir/clean
 .PHONY : clean
 
 #=============================================================================

@@ -76,4 +76,5 @@ SET(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/tests.dir/DependInfo.cmake"
   "src/CMakeFiles/example.dir/DependInfo.cmake"
   "src/CMakeFiles/pcl_pub.dir/DependInfo.cmake"
+  "src/CMakeFiles/pcl_sub.dir/DependInfo.cmake"
   )

@@ -316,6 +316,19 @@ pcl_pub/fast:
 	$(MAKE) -f src/CMakeFiles/pcl_pub.dir/build.make src/CMakeFiles/pcl_pub.dir/build
 .PHONY : pcl_pub/fast
 
+#=============================================================================
+# Target rules for targets named pcl_sub
+
+# Build rule for target.
+pcl_sub: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 pcl_sub
+.PHONY : pcl_sub
+
+# fast build rule for target.
+pcl_sub/fast:
+	$(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/build
+.PHONY : pcl_sub/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -341,6 +354,7 @@ help:
 	@echo "... tests"
 	@echo "... example"
 	@echo "... pcl_pub"
+	@echo "... pcl_sub"
 .PHONY : help
 
 
