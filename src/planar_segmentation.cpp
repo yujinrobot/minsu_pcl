@@ -18,7 +18,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 {
    //sensor_msgs::PointCloud2 cloud_filtered;
    pcl::PointCloud<pcl::PointXYZ>::Ptr downsampled_XYZ(new pcl::PointCloud<pcl::PointXYZ>);
-   sensor_msgs::PointCloud2::Ptr cloud_filtered;
+   sensor_msgs::PointCloud2::Ptr cloud_filtered(new sensor_msgs::PointCloud2);
    pcl::fromROSMsg (*cloud, *downsampled_XYZ);
 
    pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
