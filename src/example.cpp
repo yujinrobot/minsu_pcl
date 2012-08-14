@@ -21,6 +21,7 @@ cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud)
   sor.setInputCloud (cloud);
   sor.setLeafSize (0.01, 0.01, 0.01);
   sor.filter (cloud_filtered);
+  std::cout << "PointCloud after filtering : " << cloud_filtered.width * cloud_filtered.height << std::endl;
 
   // Publish the data
   pub.publish (cloud_filtered);
