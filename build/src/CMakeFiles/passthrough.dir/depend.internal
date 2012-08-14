@@ -14,7 +14,7 @@ src/CMakeFiles/passthrough.dir/passthrough.o
  /opt/ros/fuerte/include/pcl-1.5/pcl/console/print.h
  /opt/ros/fuerte/include/pcl-1.5/pcl/exceptions.h
  /opt/ros/fuerte/include/pcl-1.5/pcl/filters/filter.h
- /opt/ros/fuerte/include/pcl-1.5/pcl/filters/voxel_grid.h
+ /opt/ros/fuerte/include/pcl-1.5/pcl/filters/passthrough.h
  /opt/ros/fuerte/include/pcl-1.5/pcl/for_each_type.h
  /opt/ros/fuerte/include/pcl-1.5/pcl/impl/point_types.hpp
  /opt/ros/fuerte/include/pcl-1.5/pcl/pcl_base.h

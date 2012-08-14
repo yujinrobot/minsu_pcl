@@ -17,7 +17,7 @@ pcl/point_cloud.h
 -
 pcl/point_types.h
 -
-pcl/filters/voxel_grid.h
+pcl/filters/passthrough.h
 -
 
 /opt/ros/fuerte/include/XmlRpcDecl.h
@@ -104,15 +104,9 @@ boost/make_shared.hpp
 cfloat
 -
 
-/opt/ros/fuerte/include/pcl-1.5/pcl/filters/voxel_grid.h
+/opt/ros/fuerte/include/pcl-1.5/pcl/filters/passthrough.h
 pcl/filters/filter.h
 /opt/ros/fuerte/include/pcl-1.5/pcl/filters/pcl/filters/filter.h
-map
--
-boost/unordered_map.hpp
--
-boost/fusion/sequence/intrinsic/at_key.hpp
--
 
 /opt/ros/fuerte/include/pcl-1.5/pcl/for_each_type.h
 boost/mpl/is_sequence.hpp
