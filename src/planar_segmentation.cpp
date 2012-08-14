@@ -15,12 +15,12 @@
 ros::Publisher pub;
 //pcl::PointCloud<pcl::PointXYZ>::Ptr downsampled_XYZ;
 
-sensor_msgs::PointCloud2::Ptr cloud_filtered;
+pcl::PointCloud<pcl::PointXYZ>::Ptr downsampled_XYZ(new pcl::PointCloud<pcl::PointXYZ>);
+sensor_msgs::PointCloud2::Ptr cloud_filtered(new sensor_msgs::PointCloud2::Ptr);
 
 void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 {
    //sensor_msgs::PointCloud2 cloud_filtered;
-   pcl::PointCloud<pcl::PointXYZ>::Ptr downsampled_XYZ(new pcl::PointCloud<pcl::PointXYZ>);
 
    pcl::fromROSMsg (*cloud, *downsampled_XYZ);
 
