@@ -14,6 +14,7 @@ cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud)
   // ... do data processing
 
   sensor_msgs::PointCloud2 cloud_filtered;
+  std::cout << "PointCloud before filtering : " << cloud->width * cloud->height << std::endl;
 
   // Create the filtering object
   pcl::VoxelGrid<sensor_msgs::PointCloud2> sor;
