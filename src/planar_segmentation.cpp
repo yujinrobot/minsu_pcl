@@ -15,6 +15,8 @@
 ros::Publisher pub;
 //pcl::PointCloud<pcl::PointXYZ>::Ptr downsampled_XYZ;
 
+sensor_msgs::PointCloud2::Ptr cloud_filtered;
+
 void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 {
    sensor_msgs::PointCloud2 cloud_filtered;
@@ -49,8 +51,8 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
                                          << coefficients->values[3] << std::endl;
 
    std::cerr << "Model inliers: " << inliers->indices.size () << std::endl;
-
-   pub.publish(cloud_filtered);
+   //pcl::toROSMsg (downsampled_XYZ, cloud_filtered);
+   pub.publish(downsampled_XYZ);
 }
 
 
@@ -60,7 +62,7 @@ int
 main (int argc, char** argv)
 {
  // INITIALIZE ROS
-   ros::init (argc, argv, "table");
+   ros::init (argc, argv, "planar_segmentation");
    ros::NodeHandle nh;
    ros::Subscriber sub = nh.subscribe("cloud", 1, callback);
    pub = nh.advertise<sensor_msgs::PointCloud2> ("cloud_filtered", 1);
