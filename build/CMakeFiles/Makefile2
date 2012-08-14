@@ -524,6 +524,7 @@ src/all: src/CMakeFiles/example.dir/all
 src/all: src/CMakeFiles/passthrough.dir/all
 src/all: src/CMakeFiles/pcl_pub.dir/all
 src/all: src/CMakeFiles/pcl_sub.dir/all
+src/all: src/CMakeFiles/planar_segmentation.dir/all
 src/all: src/CMakeFiles/read_pcd_file.dir/all
 src/all: src/CMakeFiles/statistical_removal.dir/all
 .PHONY : src/all
@@ -533,6 +534,7 @@ src/clean: src/CMakeFiles/example.dir/clean
 src/clean: src/CMakeFiles/passthrough.dir/clean
 src/clean: src/CMakeFiles/pcl_pub.dir/clean
 src/clean: src/CMakeFiles/pcl_sub.dir/clean
+src/clean: src/CMakeFiles/planar_segmentation.dir/clean
 src/clean: src/CMakeFiles/read_pcd_file.dir/clean
 src/clean: src/CMakeFiles/statistical_removal.dir/clean
 .PHONY : src/clean
@@ -682,13 +684,48 @@ clean: src/CMakeFiles/pcl_sub.dir/clean
 .PHONY : clean
 
 #=============================================================================
+# Target rules for target src/CMakeFiles/planar_segmentation.dir
+
+# All Build rule for target.
+src/CMakeFiles/planar_segmentation.dir/all: CMakeFiles/rosbuild_precompile.dir/all
+	$(MAKE) -f src/CMakeFiles/planar_segmentation.dir/build.make src/CMakeFiles/planar_segmentation.dir/depend
+	$(MAKE) -f src/CMakeFiles/planar_segmentation.dir/build.make src/CMakeFiles/planar_segmentation.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  5
+	@echo "Built target planar_segmentation"
+.PHONY : src/CMakeFiles/planar_segmentation.dir/all
+
+# Include target in all.
+all: src/CMakeFiles/planar_segmentation.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+src/CMakeFiles/planar_segmentation.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/planar_segmentation.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles 0
+.PHONY : src/CMakeFiles/planar_segmentation.dir/rule
+
+# Convenience name for target.
+planar_segmentation: src/CMakeFiles/planar_segmentation.dir/rule
+.PHONY : planar_segmentation
+
+# clean rule for target.
+src/CMakeFiles/planar_segmentation.dir/clean:
+	$(MAKE) -f src/CMakeFiles/planar_segmentation.dir/build.make src/CMakeFiles/planar_segmentation.dir/clean
+.PHONY : src/CMakeFiles/planar_segmentation.dir/clean
+
+# clean rule for target.
+clean: src/CMakeFiles/planar_segmentation.dir/clean
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target src/CMakeFiles/read_pcd_file.dir
 
 # All Build rule for target.
 src/CMakeFiles/read_pcd_file.dir/all: CMakeFiles/rosbuild_precompile.dir/all
 	$(MAKE) -f src/CMakeFiles/read_pcd_file.dir/build.make src/CMakeFiles/read_pcd_file.dir/depend
 	$(MAKE) -f src/CMakeFiles/read_pcd_file.dir/build.make src/CMakeFiles/read_pcd_file.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  5
+	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  6
 	@echo "Built target read_pcd_file"
 .PHONY : src/CMakeFiles/read_pcd_file.dir/all
 
@@ -723,7 +760,7 @@ clean: src/CMakeFiles/read_pcd_file.dir/clean
 src/CMakeFiles/statistical_removal.dir/all: CMakeFiles/rosbuild_precompile.dir/all
 	$(MAKE) -f src/CMakeFiles/statistical_removal.dir/build.make src/CMakeFiles/statistical_removal.dir/depend
 	$(MAKE) -f src/CMakeFiles/statistical_removal.dir/build.make src/CMakeFiles/statistical_removal.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  6
+	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  7
 	@echo "Built target statistical_removal"
 .PHONY : src/CMakeFiles/statistical_removal.dir/all
 

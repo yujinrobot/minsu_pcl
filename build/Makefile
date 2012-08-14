@@ -343,6 +343,19 @@ pcl_sub/fast:
 .PHONY : pcl_sub/fast
 
 #=============================================================================
+# Target rules for targets named planar_segmentation
+
+# Build rule for target.
+planar_segmentation: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 planar_segmentation
+.PHONY : planar_segmentation
+
+# fast build rule for target.
+planar_segmentation/fast:
+	$(MAKE) -f src/CMakeFiles/planar_segmentation.dir/build.make src/CMakeFiles/planar_segmentation.dir/build
+.PHONY : planar_segmentation/fast
+
+#=============================================================================
 # Target rules for targets named read_pcd_file
 
 # Build rule for target.
@@ -395,6 +408,7 @@ help:
 	@echo "... passthrough"
 	@echo "... pcl_pub"
 	@echo "... pcl_sub"
+	@echo "... planar_segmentation"
 	@echo "... read_pcd_file"
 	@echo "... statistical_removal"
 .PHONY : help

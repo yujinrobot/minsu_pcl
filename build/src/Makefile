@@ -152,6 +152,20 @@ pcl_sub/fast:
 .PHONY : pcl_sub/fast
 
 # Convenience name for target.
+src/CMakeFiles/planar_segmentation.dir/rule:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/planar_segmentation.dir/rule
+.PHONY : src/CMakeFiles/planar_segmentation.dir/rule
+
+# Convenience name for target.
+planar_segmentation: src/CMakeFiles/planar_segmentation.dir/rule
+.PHONY : planar_segmentation
+
+# fast build rule for target.
+planar_segmentation/fast:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/planar_segmentation.dir/build.make src/CMakeFiles/planar_segmentation.dir/build
+.PHONY : planar_segmentation/fast
+
+# Convenience name for target.
 src/CMakeFiles/read_pcd_file.dir/rule:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/read_pcd_file.dir/rule
 .PHONY : src/CMakeFiles/read_pcd_file.dir/rule
@@ -240,6 +254,21 @@ pcl_sub.s:
 .PHONY : pcl_sub.s
 
 # target to build an object file
+planar_segmentation.o:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/planar_segmentation.dir/build.make src/CMakeFiles/planar_segmentation.dir/planar_segmentation.o
+.PHONY : planar_segmentation.o
+
+# target to preprocess a source file
+planar_segmentation.i:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/planar_segmentation.dir/build.make src/CMakeFiles/planar_segmentation.dir/planar_segmentation.i
+.PHONY : planar_segmentation.i
+
+# target to generate assembly for a file
+planar_segmentation.s:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/planar_segmentation.dir/build.make src/CMakeFiles/planar_segmentation.dir/planar_segmentation.s
+.PHONY : planar_segmentation.s
+
+# target to build an object file
 read_pcd_file.o:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/read_pcd_file.dir/build.make src/CMakeFiles/read_pcd_file.dir/read_pcd_file.o
 .PHONY : read_pcd_file.o
@@ -280,6 +309,7 @@ help:
 	@echo "... passthrough"
 	@echo "... pcl_pub"
 	@echo "... pcl_sub"
+	@echo "... planar_segmentation"
 	@echo "... read_pcd_file"
 	@echo "... rebuild_cache"
 	@echo "... statistical_removal"
@@ -295,6 +325,9 @@ help:
 	@echo "... pcl_sub.o"
 	@echo "... pcl_sub.i"
 	@echo "... pcl_sub.s"
+	@echo "... planar_segmentation.o"
+	@echo "... planar_segmentation.i"
+	@echo "... planar_segmentation.s"
 	@echo "... read_pcd_file.o"
 	@echo "... read_pcd_file.i"
 	@echo "... read_pcd_file.s"

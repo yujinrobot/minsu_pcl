@@ -189,7 +189,7 @@ TOOLCHAINCONFIG:FILEPATH=TOOLCHAINCONFIG-NOTFOUND
 USERCONFIG:FILEPATH=USERCONFIG-NOTFOUND
 
 //Path to a file.
-_file_name:FILEPATH=/opt/kobuki/minsu/minsu_pcl/src/statistical_removal.cpp
+_file_name:FILEPATH=/opt/kobuki/minsu/minsu_pcl/src/planar_segmentation.cpp
 
 //Value Computed by CMake
 minsu_pcl_BINARY_DIR:STATIC=/opt/kobuki/minsu/minsu_pcl/build
@@ -329,7 +329,7 @@ FIND_PACKAGE_MESSAGE_DETAILS_PythonInterp:INTERNAL=[/usr/bin/python][v2.7.3()]
 //ADVANCED property for variable: PYTHON_EXECUTABLE
 PYTHON_EXECUTABLE-ADVANCED:INTERNAL=1
 _rosbuild_EXPORTS:INTERNAL=
-_rosbuild_cached_flag_time:INTERNAL=1344824891.08
+_rosbuild_cached_flag_time:INTERNAL=1344937424.53
 _roslang_LANGS:INTERNAL=roscpp;rospy;roslisp
 _rospack_deps_manifests_invoke_result:INTERNAL=/opt/ros/fuerte/share/roslang/manifest.xml;/opt/ros/fuerte/share/roscpp/manifest.xml;/opt/ros/fuerte/share/rospy/manifest.xml;/opt/ros/fuerte/share/geometry_msgs/manifest.xml;/opt/ros/fuerte/share/sensor_msgs/manifest.xml;/opt/ros/fuerte/share/ros/core/rosbuild/manifest.xml;/opt/ros/fuerte/share/roslib/manifest.xml;/opt/ros/fuerte/share/rosconsole/manifest.xml;/opt/ros/fuerte/stacks/pluginlib/manifest.xml;/opt/ros/fuerte/share/message_filters/manifest.xml;/opt/ros/fuerte/stacks/image_common/image_transport/manifest.xml;/opt/ros/fuerte/share/std_msgs/manifest.xml;/opt/ros/fuerte/share/pcl/manifest.xml;/opt/ros/fuerte/share/rosbag/manifest.xml;/opt/ros/fuerte/stacks/bond_core/bond/manifest.xml;/opt/ros/fuerte/stacks/bond_core/smclib/manifest.xml;/opt/ros/fuerte/stacks/bond_core/bondcpp/manifest.xml;/opt/ros/fuerte/stacks/nodelet_core/nodelet/manifest.xml;/opt/ros/fuerte/share/rosservice/manifest.xml;/opt/ros/fuerte/stacks/dynamic_reconfigure/manifest.xml;/opt/ros/fuerte/stacks/nodelet_core/nodelet_topic_tools/manifest.xml;/opt/ros/fuerte/stacks/bullet/manifest.xml;/opt/ros/fuerte/stacks/geometry/angles/manifest.xml;/opt/ros/fuerte/share/rostest/manifest.xml;/opt/ros/fuerte/share/roswtf/manifest.xml;/opt/ros/fuerte/stacks/geometry/tf/manifest.xml;/opt/ros/fuerte/stacks/common_rosdeps/manifest.xml;/opt/ros/fuerte/stacks/perception_pcl/pcl_ros/manifest.xml
 _rospack_msgsrv_gen_invoke_result:INTERNAL=/opt/ros/fuerte/stacks/bond_core/bond/msg_gen/generated;/opt/ros/fuerte/stacks/nodelet_core/nodelet/srv_gen/generated;/opt/ros/fuerte/stacks/dynamic_reconfigure/msg_gen/generated;/opt/ros/fuerte/stacks/dynamic_reconfigure/srv_gen/generated;/opt/ros/fuerte/stacks/geometry/tf/msg_gen/generated;/opt/ros/fuerte/stacks/geometry/tf/srv_gen/generated
