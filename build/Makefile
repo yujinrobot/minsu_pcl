@@ -355,6 +355,19 @@ read_pcd_file/fast:
 	$(MAKE) -f src/CMakeFiles/read_pcd_file.dir/build.make src/CMakeFiles/read_pcd_file.dir/build
 .PHONY : read_pcd_file/fast
 
+#=============================================================================
+# Target rules for targets named statistical_removal
+
+# Build rule for target.
+statistical_removal: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 statistical_removal
+.PHONY : statistical_removal
+
+# fast build rule for target.
+statistical_removal/fast:
+	$(MAKE) -f src/CMakeFiles/statistical_removal.dir/build.make src/CMakeFiles/statistical_removal.dir/build
+.PHONY : statistical_removal/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -383,6 +396,7 @@ help:
 	@echo "... pcl_pub"
 	@echo "... pcl_sub"
 	@echo "... read_pcd_file"
+	@echo "... statistical_removal"
 .PHONY : help
 
 

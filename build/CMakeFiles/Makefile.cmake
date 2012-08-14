@@ -79,4 +79,5 @@ SET(CMAKE_DEPEND_INFO_FILES
   "src/CMakeFiles/pcl_pub.dir/DependInfo.cmake"
   "src/CMakeFiles/pcl_sub.dir/DependInfo.cmake"
   "src/CMakeFiles/read_pcd_file.dir/DependInfo.cmake"
+  "src/CMakeFiles/statistical_removal.dir/DependInfo.cmake"
   )

@@ -189,7 +189,7 @@ TOOLCHAINCONFIG:FILEPATH=TOOLCHAINCONFIG-NOTFOUND
 USERCONFIG:FILEPATH=USERCONFIG-NOTFOUND
 
 //Path to a file.
-_file_name:FILEPATH=/opt/kobuki/minsu/minsu_pcl/src/passthrough.cpp
+_file_name:FILEPATH=/opt/kobuki/minsu/minsu_pcl/src/statistical_removal.cpp
 
 //Value Computed by CMake
 minsu_pcl_BINARY_DIR:STATIC=/opt/kobuki/minsu/minsu_pcl/build

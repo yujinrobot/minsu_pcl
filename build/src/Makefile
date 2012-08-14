@@ -165,6 +165,20 @@ read_pcd_file/fast:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/read_pcd_file.dir/build.make src/CMakeFiles/read_pcd_file.dir/build
 .PHONY : read_pcd_file/fast
 
+# Convenience name for target.
+src/CMakeFiles/statistical_removal.dir/rule:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/statistical_removal.dir/rule
+.PHONY : src/CMakeFiles/statistical_removal.dir/rule
+
+# Convenience name for target.
+statistical_removal: src/CMakeFiles/statistical_removal.dir/rule
+.PHONY : statistical_removal
+
+# fast build rule for target.
+statistical_removal/fast:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/statistical_removal.dir/build.make src/CMakeFiles/statistical_removal.dir/build
+.PHONY : statistical_removal/fast
+
 # target to build an object file
 example.o:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/example.dir/build.make src/CMakeFiles/example.dir/example.o
@@ -240,6 +254,21 @@ read_pcd_file.s:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/read_pcd_file.dir/build.make src/CMakeFiles/read_pcd_file.dir/read_pcd_file.s
 .PHONY : read_pcd_file.s
 
+# target to build an object file
+statistical_removal.o:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/statistical_removal.dir/build.make src/CMakeFiles/statistical_removal.dir/statistical_removal.o
+.PHONY : statistical_removal.o
+
+# target to preprocess a source file
+statistical_removal.i:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/statistical_removal.dir/build.make src/CMakeFiles/statistical_removal.dir/statistical_removal.i
+.PHONY : statistical_removal.i
+
+# target to generate assembly for a file
+statistical_removal.s:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/statistical_removal.dir/build.make src/CMakeFiles/statistical_removal.dir/statistical_removal.s
+.PHONY : statistical_removal.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -253,6 +282,7 @@ help:
 	@echo "... pcl_sub"
 	@echo "... read_pcd_file"
 	@echo "... rebuild_cache"
+	@echo "... statistical_removal"
 	@echo "... example.o"
 	@echo "... example.i"
 	@echo "... example.s"
@@ -268,6 +298,9 @@ help:
 	@echo "... read_pcd_file.o"
 	@echo "... read_pcd_file.i"
 	@echo "... read_pcd_file.s"
+	@echo "... statistical_removal.o"
+	@echo "... statistical_removal.i"
+	@echo "... statistical_removal.s"
 .PHONY : help
 
 
