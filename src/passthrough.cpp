@@ -16,7 +16,7 @@ void cloudCb(const sensor_msgs::PointCloud2ConstPtr& cloud)
   pcl::PassThrough<sensor_msgs::PointCloud2> pass;
   pass.setInputCloud(cloud);
   pass.setFilterFieldName("z");
-  pass.setFilterLimits(0.0,1.0);
+  pass.setFilterLimits(0.0,1.0); // unit : meter
   pass.filter(cloud_filtered);
   std::cout << "PointCloud after filtering : " << cloud_filtered.width * cloud_filtered.height << std::endl;
 
