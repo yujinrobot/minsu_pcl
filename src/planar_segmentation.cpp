@@ -13,10 +13,14 @@
 #include <pcl/filters/extract_indices.h>
 
 ros::Publisher pub;
+pcl::PointCloud<pcl::PointXYZ>::Ptr downsampled_XYZ;
 
 void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 {
    sensor_msgs::PointCloud2 cloud_filtered;
+
+   pcl::fromROSMsg (*cloud, *downsampled_XYZ);
+
    pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
    pcl::PointIndices::Ptr inliers (new pcl::PointIndices ());
    // Create the segmentation object
@@ -28,6 +32,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
    seg.setMethodType (pcl::SAC_RANSAC);
    seg.setMaxIterations (1000);
    seg.setDistanceThreshold (0.01);
+   seg.setInputCloud (downsampled_XYZ);
    seg.segment (*inliers, *coefficients);
 
    if (inliers->indices.size () == 0)
