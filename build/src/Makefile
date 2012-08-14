@@ -110,6 +110,20 @@ example/fast:
 .PHONY : example/fast
 
 # Convenience name for target.
+src/CMakeFiles/passthrough.dir/rule:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/passthrough.dir/rule
+.PHONY : src/CMakeFiles/passthrough.dir/rule
+
+# Convenience name for target.
+passthrough: src/CMakeFiles/passthrough.dir/rule
+.PHONY : passthrough
+
+# fast build rule for target.
+passthrough/fast:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/passthrough.dir/build.make src/CMakeFiles/passthrough.dir/build
+.PHONY : passthrough/fast
+
+# Convenience name for target.
 src/CMakeFiles/pcl_pub.dir/rule:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/pcl_pub.dir/rule
 .PHONY : src/CMakeFiles/pcl_pub.dir/rule
@@ -137,6 +151,20 @@ pcl_sub/fast:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/build
 .PHONY : pcl_sub/fast
 
+# Convenience name for target.
+src/CMakeFiles/read_pcd_file.dir/rule:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/read_pcd_file.dir/rule
+.PHONY : src/CMakeFiles/read_pcd_file.dir/rule
+
+# Convenience name for target.
+read_pcd_file: src/CMakeFiles/read_pcd_file.dir/rule
+.PHONY : read_pcd_file
+
+# fast build rule for target.
+read_pcd_file/fast:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/read_pcd_file.dir/build.make src/CMakeFiles/read_pcd_file.dir/build
+.PHONY : read_pcd_file/fast
+
 # target to build an object file
 example.o:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/example.dir/build.make src/CMakeFiles/example.dir/example.o
@@ -151,6 +179,21 @@ example.i:
 example.s:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/example.dir/build.make src/CMakeFiles/example.dir/example.s
 .PHONY : example.s
+
+# target to build an object file
+passthrough.o:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/passthrough.dir/build.make src/CMakeFiles/passthrough.dir/passthrough.o
+.PHONY : passthrough.o
+
+# target to preprocess a source file
+passthrough.i:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/passthrough.dir/build.make src/CMakeFiles/passthrough.dir/passthrough.i
+.PHONY : passthrough.i
+
+# target to generate assembly for a file
+passthrough.s:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/passthrough.dir/build.make src/CMakeFiles/passthrough.dir/passthrough.s
+.PHONY : passthrough.s
 
 # target to build an object file
 pcl_pub.o:
@@ -182,6 +225,21 @@ pcl_sub.s:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/pcl_sub.s
 .PHONY : pcl_sub.s
 
+# target to build an object file
+read_pcd_file.o:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/read_pcd_file.dir/build.make src/CMakeFiles/read_pcd_file.dir/read_pcd_file.o
+.PHONY : read_pcd_file.o
+
+# target to preprocess a source file
+read_pcd_file.i:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/read_pcd_file.dir/build.make src/CMakeFiles/read_pcd_file.dir/read_pcd_file.i
+.PHONY : read_pcd_file.i
+
+# target to generate assembly for a file
+read_pcd_file.s:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/read_pcd_file.dir/build.make src/CMakeFiles/read_pcd_file.dir/read_pcd_file.s
+.PHONY : read_pcd_file.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -190,18 +248,26 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... example"
+	@echo "... passthrough"
 	@echo "... pcl_pub"
 	@echo "... pcl_sub"
+	@echo "... read_pcd_file"
 	@echo "... rebuild_cache"
 	@echo "... example.o"
 	@echo "... example.i"
 	@echo "... example.s"
+	@echo "... passthrough.o"
+	@echo "... passthrough.i"
+	@echo "... passthrough.s"
 	@echo "... pcl_pub.o"
 	@echo "... pcl_pub.i"
 	@echo "... pcl_pub.s"
 	@echo "... pcl_sub.o"
 	@echo "... pcl_sub.i"
 	@echo "... pcl_sub.s"
+	@echo "... read_pcd_file.o"
+	@echo "... read_pcd_file.i"
+	@echo "... read_pcd_file.s"
 .PHONY : help
 
 

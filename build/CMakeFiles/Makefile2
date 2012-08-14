@@ -521,14 +521,18 @@ clean: CMakeFiles/tests.dir/clean
 
 # Convenience name for "all" pass in the directory.
 src/all: src/CMakeFiles/example.dir/all
+src/all: src/CMakeFiles/passthrough.dir/all
 src/all: src/CMakeFiles/pcl_pub.dir/all
 src/all: src/CMakeFiles/pcl_sub.dir/all
+src/all: src/CMakeFiles/read_pcd_file.dir/all
 .PHONY : src/all
 
 # Convenience name for "clean" pass in the directory.
 src/clean: src/CMakeFiles/example.dir/clean
+src/clean: src/CMakeFiles/passthrough.dir/clean
 src/clean: src/CMakeFiles/pcl_pub.dir/clean
 src/clean: src/CMakeFiles/pcl_sub.dir/clean
+src/clean: src/CMakeFiles/read_pcd_file.dir/clean
 .PHONY : src/clean
 
 # Convenience name for "preinstall" pass in the directory.
@@ -571,13 +575,48 @@ clean: src/CMakeFiles/example.dir/clean
 .PHONY : clean
 
 #=============================================================================
+# Target rules for target src/CMakeFiles/passthrough.dir
+
+# All Build rule for target.
+src/CMakeFiles/passthrough.dir/all: CMakeFiles/rosbuild_precompile.dir/all
+	$(MAKE) -f src/CMakeFiles/passthrough.dir/build.make src/CMakeFiles/passthrough.dir/depend
+	$(MAKE) -f src/CMakeFiles/passthrough.dir/build.make src/CMakeFiles/passthrough.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  2
+	@echo "Built target passthrough"
+.PHONY : src/CMakeFiles/passthrough.dir/all
+
+# Include target in all.
+all: src/CMakeFiles/passthrough.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+src/CMakeFiles/passthrough.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/passthrough.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles 0
+.PHONY : src/CMakeFiles/passthrough.dir/rule
+
+# Convenience name for target.
+passthrough: src/CMakeFiles/passthrough.dir/rule
+.PHONY : passthrough
+
+# clean rule for target.
+src/CMakeFiles/passthrough.dir/clean:
+	$(MAKE) -f src/CMakeFiles/passthrough.dir/build.make src/CMakeFiles/passthrough.dir/clean
+.PHONY : src/CMakeFiles/passthrough.dir/clean
+
+# clean rule for target.
+clean: src/CMakeFiles/passthrough.dir/clean
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target src/CMakeFiles/pcl_pub.dir
 
 # All Build rule for target.
 src/CMakeFiles/pcl_pub.dir/all: CMakeFiles/rosbuild_precompile.dir/all
 	$(MAKE) -f src/CMakeFiles/pcl_pub.dir/build.make src/CMakeFiles/pcl_pub.dir/depend
 	$(MAKE) -f src/CMakeFiles/pcl_pub.dir/build.make src/CMakeFiles/pcl_pub.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  2
+	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  3
 	@echo "Built target pcl_pub"
 .PHONY : src/CMakeFiles/pcl_pub.dir/all
 
@@ -612,7 +651,7 @@ clean: src/CMakeFiles/pcl_pub.dir/clean
 src/CMakeFiles/pcl_sub.dir/all: CMakeFiles/rosbuild_precompile.dir/all
 	$(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/depend
 	$(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  3
+	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  4
 	@echo "Built target pcl_sub"
 .PHONY : src/CMakeFiles/pcl_sub.dir/all
 
@@ -638,6 +677,41 @@ src/CMakeFiles/pcl_sub.dir/clean:
 
 # clean rule for target.
 clean: src/CMakeFiles/pcl_sub.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target src/CMakeFiles/read_pcd_file.dir
+
+# All Build rule for target.
+src/CMakeFiles/read_pcd_file.dir/all: CMakeFiles/rosbuild_precompile.dir/all
+	$(MAKE) -f src/CMakeFiles/read_pcd_file.dir/build.make src/CMakeFiles/read_pcd_file.dir/depend
+	$(MAKE) -f src/CMakeFiles/read_pcd_file.dir/build.make src/CMakeFiles/read_pcd_file.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  5
+	@echo "Built target read_pcd_file"
+.PHONY : src/CMakeFiles/read_pcd_file.dir/all
+
+# Include target in all.
+all: src/CMakeFiles/read_pcd_file.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+src/CMakeFiles/read_pcd_file.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/read_pcd_file.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles 0
+.PHONY : src/CMakeFiles/read_pcd_file.dir/rule
+
+# Convenience name for target.
+read_pcd_file: src/CMakeFiles/read_pcd_file.dir/rule
+.PHONY : read_pcd_file
+
+# clean rule for target.
+src/CMakeFiles/read_pcd_file.dir/clean:
+	$(MAKE) -f src/CMakeFiles/read_pcd_file.dir/build.make src/CMakeFiles/read_pcd_file.dir/clean
+.PHONY : src/CMakeFiles/read_pcd_file.dir/clean
+
+# clean rule for target.
+clean: src/CMakeFiles/read_pcd_file.dir/clean
 .PHONY : clean
 
 #=============================================================================

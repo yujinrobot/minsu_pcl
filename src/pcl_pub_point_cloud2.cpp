@@ -14,7 +14,6 @@ int main(int argc, char** argv)
   cloud_msg.header.frame_id = "some_tf_frame";
   cloud_msg.height = cloud_msg.width = 1;
 
-
   ros::Rate loop_rate(4);
   while (nh.ok())
   {

@@ -304,6 +304,19 @@ example/fast:
 .PHONY : example/fast
 
 #=============================================================================
+# Target rules for targets named passthrough
+
+# Build rule for target.
+passthrough: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 passthrough
+.PHONY : passthrough
+
+# fast build rule for target.
+passthrough/fast:
+	$(MAKE) -f src/CMakeFiles/passthrough.dir/build.make src/CMakeFiles/passthrough.dir/build
+.PHONY : passthrough/fast
+
+#=============================================================================
 # Target rules for targets named pcl_pub
 
 # Build rule for target.
@@ -329,6 +342,19 @@ pcl_sub/fast:
 	$(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/build
 .PHONY : pcl_sub/fast
 
+#=============================================================================
+# Target rules for targets named read_pcd_file
+
+# Build rule for target.
+read_pcd_file: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 read_pcd_file
+.PHONY : read_pcd_file
+
+# fast build rule for target.
+read_pcd_file/fast:
+	$(MAKE) -f src/CMakeFiles/read_pcd_file.dir/build.make src/CMakeFiles/read_pcd_file.dir/build
+.PHONY : read_pcd_file/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -353,8 +379,10 @@ help:
 	@echo "... test-results-run"
 	@echo "... tests"
 	@echo "... example"
+	@echo "... passthrough"
 	@echo "... pcl_pub"
 	@echo "... pcl_sub"
+	@echo "... read_pcd_file"
 .PHONY : help
 
 
