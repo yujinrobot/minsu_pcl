@@ -29,7 +29,7 @@ int main(int argc, char** argv)
   ros::NodeHandle nh;
 
   ros::Subscriber sub = nh.subscribe("cloud", 1, cloudCb);
-  ros::Publisher pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_filtered",1);
+  pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_filtered",1);
 
   ros::spin();
 }
