@@ -19,7 +19,7 @@ sensor_msgs::PointCloud2::Ptr cloud_filtered;
 
 void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 {
-   sensor_msgs::PointCloud2 cloud_filtered;
+   //sensor_msgs::PointCloud2 cloud_filtered;
    pcl::PointCloud<pcl::PointXYZ>::Ptr downsampled_XYZ(new pcl::PointCloud<pcl::PointXYZ>);
 
    pcl::fromROSMsg (*cloud, *downsampled_XYZ);
@@ -51,8 +51,8 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
                                          << coefficients->values[3] << std::endl;
 
    std::cerr << "Model inliers: " << inliers->indices.size () << std::endl;
-   //pcl::toROSMsg (downsampled_XYZ, cloud_filtered);
-   pub.publish(downsampled_XYZ);
+   pcl::toROSMsg (*downsampled_XYZ, *cloud_filtered);
+   pub.publish(cloud_filtered);
 }
 
 
