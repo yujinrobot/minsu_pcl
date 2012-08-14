@@ -48,6 +48,11 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
                                          << coefficients->values[3] << std::endl;
 
    std::cerr << "Model inliers: " << inliers->indices.size () << std::endl;
+   for (size_t i = 0; i < inliers->indices.size (); ++i)
+       std::cerr << inliers->indices[i] << "    " << downsampled_XYZ->points[inliers->indices[i]].x << " "
+                                                  << downsampled_XYZ->points[inliers->indices[i]].y << " "
+                                                  << downsampled_XYZ->points[inliers->indices[i]].z << std::endl;
+
    pcl::toROSMsg (*downsampled_XYZ, *cloud_filtered);
    pub.publish(cloud_filtered);
 }
