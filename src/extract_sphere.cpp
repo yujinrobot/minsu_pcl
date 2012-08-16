@@ -61,6 +61,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
   // The cloud normals
   pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal> ());
+  pcl::PointCloud<pcl::Normal>::Ptr cloud_normals2 (new pcl::PointCloud<pcl::Normal> ());
 
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
   pcl::fromROSMsg (*cloud, *transformed_cloud);
@@ -122,7 +123,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   segmentation_from_normals.setDistanceThreshold (0.05);
   segmentation_from_normals.setRadiusLimits (0, 0.1);
   segmentation_from_normals.setInputCloud (transformed_cloud);
-  segmentation_from_normals.setInputNormals (cloud_normals);
+  segmentation_from_normals.setInputNormals (cloud_normals2);
 
   // Obtain the sphere inliers and coefficients
   segmentation_from_normals.segment (*inliers_sphere, *coefficients_sphere);
@@ -133,6 +134,10 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   extract_indices.setIndices (inliers_sphere);
   extract_indices.setNegative (false);
   extract_indices.filter (*cloud_sphere);
+
+  if (cloud_sphere->points.empty ())
+     std::cerr << "Can't find the cylindrical component." << std::endl;
+
 
   pcl::toROSMsg (*cloud_sphere, *sphere_output_cloud);
   rest_pub.publish(sphere_output_cloud);
