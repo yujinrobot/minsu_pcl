@@ -118,12 +118,12 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   extract_indices.setNegative (true);
   extract_indices.filter (*remove_transformed_cloud);
   transformed_cloud.swap (remove_transformed_cloud);
-
+/*
   extract_normals.setNegative (true);
   extract_normals.setInputCloud (cloud_normals);
   extract_normals.setIndices (inliers_plane);
   extract_normals.filter (*cloud_normals2);
-
+*/
   std::cout << "size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
   // publish result of Removal the planar inliers, extract the rest
   pcl::toROSMsg (*transformed_cloud, *rest_output_cloud);
@@ -142,7 +142,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   segmentation_from_normals.setDistanceThreshold (0.05);
   segmentation_from_normals.setRadiusLimits (0, 0.5);
   segmentation_from_normals.setInputCloud (cylinder_cloud);
-  segmentation_from_normals.setInputNormals (cloud_normals2);
+  segmentation_from_normals.setInputNormals (cloud_normals);
 
   // Obtain the sphere inliers and coefficients
   segmentation_from_normals.segment (*inliers_sphere, *coefficients_sphere);
