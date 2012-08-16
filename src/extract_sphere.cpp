@@ -37,29 +37,29 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
   pcl::ModelCoefficients::Ptr coefficients_plane (new pcl::ModelCoefficients ());
 
-  // The plane and sphere inliers
+  // The plane and sphere inliers  // The point clouds
   pcl::PointIndices::Ptr inliers (new pcl::PointIndices ());
   pcl::PointIndices::Ptr inliers_plane (new pcl::PointIndices ());
 
+  // The point clouds
+  //sensor_msgs::PointCloud2::Ptr downsampled (new sensor_msgs::PointCloud2);
+  //pcl::PointCloud<pcl::PointXYZ>::Ptr extract_cloud (new pcl::PointCloud<pcl::PointXYZ>);
 
-  sensor_msgs::PointCloud2::Ptr downsampled (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr output_cloud (new sensor_msgs::PointCloud2);
-
   sensor_msgs::PointCloud2::Ptr cloud_filtered (new sensor_msgs::PointCloud2);
-
-  pcl::PointCloud<pcl::PointXYZ>::Ptr transform_cloud (new pcl::PointCloud<pcl::PointXYZ>);
-  pcl::PointCloud<pcl::PointXYZ>::Ptr extract_cloud (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr transformed_cloud (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr remove_transformed_cloud (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plane (new pcl::PointCloud<pcl::PointXYZ>);
 
   // The cloud normals
   pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal> ());
 
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-  pcl::fromROSMsg (*cloud, *transform_cloud);
+  pcl::fromROSMsg (*cloud, *transformed_cloud);
 
   // Estimate point normals
   normal_estimation.setSearchMethod (tree);
-  normal_estimation.setInputCloud (transform_cloud);
+  normal_estimation.setInputCloud (transformed_cloud);
   normal_estimation.setKSearch (50);
   normal_estimation.compute (*cloud_normals);
 
@@ -70,19 +70,39 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   segmentation_from_normals.setMethodType (pcl::SAC_RANSAC);
   segmentation_from_normals.setMaxIterations (100);
   segmentation_from_normals.setDistanceThreshold (0.03);
-  segmentation_from_normals.setInputCloud (transform_cloud);
+  segmentation_from_normals.setInputCloud (transformed_cloud);
   segmentation_from_normals.setInputNormals (cloud_normals);
+
   // Obtain the plane inliers and coefficients
   segmentation_from_normals.segment (*inliers_plane, *coefficients_plane);
   std::cerr << "Plane coefficients: " << *coefficients_plane << std::endl;
 
   // Extract the planar inliers from the input cloud
-  extract_indices.setInputCloud (transform_cloud);
+  extract_indices.setInputCloud (transformed_cloud);
   extract_indices.setIndices (inliers_plane);
   extract_indices.setNegative (false);
   extract_indices.filter (*cloud_plane);
 
-  pcl::toROSMsg (*cloud_plane, *output_cloud);
+  // Remove the planar inliers, extract the rest
+  // Create the filtering object
+  extract_indices.setNegative (true);
+  extract_indices.filter (*remove_transformed_cloud);
+  transformed_cloud.swap (remove_transformed_cloud);
+
+  /*
+  // Create the segmentation object for sphere segmentation and set all the paopennirameters
+  segmentation_from_normals.setOptimizeCoefficients (true);
+  segmentation_from_normals.setModelType (pcl::SACMODEL_SPHERE);
+  segmentation_from_normals.setMethodType (pcl::SAC_RANSAC);
+  segmentation_from_normals.setNormalDistanceWeight (0.1);
+  segmentation_from_normals.setMaxIterations (10000);
+  segmentation_from_normals.setDistanceThreshold (0.05);
+  segmentation_from_normals.setRadiusLimits (0, 0.1);
+  segmentation_from_normals.setInputCloud (transformed_cloud);
+  segmentation_from_normals.setInputNormals (cloud_normals);
+  */
+
+  pcl::toROSMsg (*remove_transformed_cloud, *output_cloud);
   pub.publish(output_cloud);
 
 }
