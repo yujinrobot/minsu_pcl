@@ -131,7 +131,7 @@ int main(int argc, char** argv)
       ROS_INFO ("Point Cloud size after voxel grid: %zu", cloud_filtered->points.size ());
   */
 
-      msg->header.frame_id = "/openni_depth_optical_frame";
+      msg->header.frame_id = "/camera_depth_optical_frame";
       msg->height = 1;
       msg->width = cloud_sphere->points.size ();
       msg->points = cloud_sphere->points;
