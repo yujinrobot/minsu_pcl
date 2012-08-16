@@ -18,8 +18,9 @@
 #include <pcl/sample_consensus/model_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
 
-ros::Publisher pub;
-ros::Publisher test_pub;
+ros::Publisher rest_pub;
+ros::Publisher plane_pub;
+ros::Publisher sphere_pub;
 
 void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 {
@@ -37,23 +38,26 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   // The plane and sphere coefficients
   pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
   pcl::ModelCoefficients::Ptr coefficients_plane (new pcl::ModelCoefficients ());
+  pcl::ModelCoefficients::Ptr coefficients_sphere (new pcl::ModelCoefficients ());
 
   // The plane and sphere inliers  // The point clouds
   pcl::PointIndices::Ptr inliers (new pcl::PointIndices ());
   pcl::PointIndices::Ptr inliers_plane (new pcl::PointIndices ());
-
+  pcl::PointIndices::Ptr inliers_sphere (new pcl::PointIndices ());
   // The point clouds
   //sensor_msgs::PointCloud2::Ptr downsampled (new sensor_msgs::PointCloud2);
   //pcl::PointCloud<pcl::PointXYZ>::Ptr extract_cloud (new pcl::PointCloud<pcl::PointXYZ>);
 
 
-  sensor_msgs::PointCloud2::Ptr test_output_cloud (new sensor_msgs::PointCloud2);
+  sensor_msgs::PointCloud2::Ptr plane_output_cloud (new sensor_msgs::PointCloud2);
+  sensor_msgs::PointCloud2::Ptr rest_output_cloud (new sensor_msgs::PointCloud2);
+  sensor_msgs::PointCloud2::Ptr sphere_output_cloud (new sensor_msgs::PointCloud2);
 
-  sensor_msgs::PointCloud2::Ptr output_cloud (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr cloud_filtered (new sensor_msgs::PointCloud2);
   pcl::PointCloud<pcl::PointXYZ>::Ptr transformed_cloud (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr remove_transformed_cloud (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plane (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_sphere (new pcl::PointCloud<pcl::PointXYZ>);
 
   // The cloud normals
   pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal> ());
@@ -87,8 +91,8 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   extract_indices.setNegative (false);
   extract_indices.filter (*cloud_plane);
 
-  pcl::toROSMsg (*cloud_plane, *test_output_cloud);
-  test_pub.publish(test_output_cloud);
+  pcl::toROSMsg (*cloud_plane, *plane_output_cloud);
+  plane_pub.publish(plane_output_cloud);
 
   // Remove the planar inliers, extract the rest
   //extract_indices.setNegative (true);
@@ -103,8 +107,11 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   extract_indices.filter (*remove_transformed_cloud);
   transformed_cloud.swap (remove_transformed_cloud);
 
+  // publish result of Removal the planar inliers, extract the rest
+  pcl::toROSMsg (*transformed_cloud, *rest_output_cloud);
+  rest_pub.publish(rest_output_cloud);
 
-  /*
+
   // Create the segmentation object for sphere segmentation and set all the paopennirameters
   segmentation_from_normals.setOptimizeCoefficients (true);
   segmentation_from_normals.setModelType (pcl::SACMODEL_SPHERE);
@@ -115,10 +122,19 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   segmentation_from_normals.setRadiusLimits (0, 0.1);
   segmentation_from_normals.setInputCloud (transformed_cloud);
   segmentation_from_normals.setInputNormals (cloud_normals);
-  */
 
-  pcl::toROSMsg (*transformed_cloud, *output_cloud);
-  pub.publish(output_cloud);
+  // Obtain the sphere inliers and coefficients
+  segmentation_from_normals.segment (*inliers_sphere, *coefficients_sphere);
+  std::cerr << "Sphere coefficients: " << *coefficients_sphere << std::endl;
+
+  // Publish the sphere cloud
+  extract_indices.setInputCloud (transformed_cloud);
+  extract_indices.setIndices (inliers_sphere);
+  extract_indices.setNegative (false);
+  extract_indices.filter (*cloud_sphere);
+
+  pcl::toROSMsg (*cloud_sphere, *sphere_output_cloud);
+  rest_pub.publish(sphere_output_cloud);
 
 }
 
@@ -130,8 +146,9 @@ main (int argc, char** argv)
    ros::init (argc, argv, "extract_indices");
    ros::NodeHandle nh;
    ros::Subscriber sub = nh.subscribe("camera/depth/points", 1, callback);
-   pub = nh.advertise<sensor_msgs::PointCloud2> ("cloud_filtered", 1);
-   test_pub = nh.advertise<sensor_msgs::PointCloud2> ("test_cloud_filtered", 1);
+   rest_pub = nh.advertise<sensor_msgs::PointCloud2> ("rest_cloud_filtered", 1);
+   plane_pub = nh.advertise<sensor_msgs::PointCloud2> ("plane_cloud_filtered", 1);
+   sphere_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_cloud_filtered", 1);
 
    ros::spin();
 
