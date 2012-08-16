@@ -13,8 +13,8 @@
 #include <pcl/filters/extract_indices.h>
 
 ros::Publisher pub;
-sensor_msgs::PointCloud2::Ptr downsampled,output;
-pcl::PointCloud<pcl::PointXYZ>::Ptr output_p, downsampled_XYZ;
+sensor_msgs::PointCloud2::Ptr downsampled(new sensor_msgs::PointCloud2),output(new sensor_msgs::PointCloud2);
+pcl::PointCloud<pcl::PointXYZ>::Ptr output_p(new pcl::PointCloud<pcl::PointXYZ>), downsampled_XYZ(new pcl::PointCloud<pcl::PointXYZ>);
 
 void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 {
