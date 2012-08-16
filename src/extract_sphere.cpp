@@ -118,6 +118,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   extract_indices.setNegative (true);
   extract_indices.filter (*remove_transformed_cloud);
   transformed_cloud.swap (remove_transformed_cloud);
+  extract_normals.filter (*cloud_normals2);
 
   // publish result of Removal the planar inliers, extract the rest
   pcl::toROSMsg (*transformed_cloud, *rest_output_cloud);
