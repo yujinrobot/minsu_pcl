@@ -31,7 +31,7 @@ int main(int argc, char** argv)
   ros::init (argc, argv, "pcl_filter");
   ros::NodeHandle nh;
   ros::Subscriber sub = nh.subscribe<PointCloud>("/camera/depth/points", 1, callback);
-  ros::Publisher pub = nh.advertise<PointCloud> ("filtered", 1);
+  ros::Publisher pub = nh.advertise<sensor_msgs::PointCloud2> ("filtered", 1);
 
   // The point clouds
   PointCloud::Ptr msg (new PointCloud);
@@ -103,7 +103,7 @@ int main(int argc, char** argv)
       extract_normals.setIndices (inliers_plane);
       extract_normals.filter (*cloud_normals);
 
-      // Create the segmentation object for sphere segmentation and set all the parameters
+      // Create the segmentation object for sphere segmentation and set all the paopennirameters
       segmentation_from_normals.setOptimizeCoefficients (true);
       segmentation_from_normals.setModelType (pcl::SACMODEL_SPHERE);
       segmentation_from_normals.setMethodType (pcl::SAC_RANSAC);
