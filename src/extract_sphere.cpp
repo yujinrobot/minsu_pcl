@@ -84,12 +84,18 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   extract_indices.filter (*cloud_plane);
 
   // Remove the planar inliers, extract the rest
+  //extract_indices.setNegative (true);
+  //extract_indices.filter (*transformed_cloud);
+  //extract_normals.setNegative (true);
+  //extract_normals.setInputCloud (cloud_normals);
+  //extract_normals.setIndices (inliers_plane);
+  //extract_normals.filter (*cloud_normals);
+
+  // Create the filtering object
   extract_indices.setNegative (true);
-  extract_indices.filter (*transformed_cloud);
-  extract_normals.setNegative (true);
-  extract_normals.setInputCloud (cloud_normals);
-  extract_normals.setIndices (inliers_plane);
-  extract_normals.filter (*cloud_normals);
+  extract_indices.filter (*remove_transformed_cloud);
+  transformed_cloud.swap (remove_transformed_cloud);
+
 
   /*
   // Create the segmentation object for sphere segmentation and set all the paopennirameters
@@ -104,7 +110,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   segmentation_from_normals.setInputNormals (cloud_normals);
   */
 
-  pcl::toROSMsg (*cloud_normals, *output_cloud);
+  pcl::toROSMsg (*remove_transformed_cloud, *output_cloud);
   pub.publish(output_cloud);
 
 }
