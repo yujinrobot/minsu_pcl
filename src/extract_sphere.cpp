@@ -44,7 +44,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   //segmentation_from_normals.setNormalDistanceWeight (0.1);
   seg.setMaxIterations (1000);
   seg.setDistanceThreshold (0.01);
-  seg.setRadiusLimits(0.001, 0.01);
+  seg.setRadiusLimits(0.001, 0.6);
   seg.setInputCloud (transform_cloud);
   seg.segment (*inliers, *coefficients);
 
