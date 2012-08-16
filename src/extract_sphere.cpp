@@ -48,6 +48,12 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   seg.setInputCloud (transform_cloud);
   seg.segment (*inliers, *coefficients);
 
+  std::cerr << "Model coefficients: " << coefficients->values[0] << " "
+                                      << coefficients->values[1] << " "
+                                      << coefficients->values[2] << " "
+                                      << coefficients->values[3] << std::endl;
+
+
   if (inliers->indices.size () == 0)
   {
     PCL_ERROR ("Could not estimate a planar model for the given dataset.");
