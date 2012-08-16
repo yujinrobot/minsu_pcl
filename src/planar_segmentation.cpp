@@ -58,14 +58,15 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 {
   pcl::PointCloud<pcl::PointXYZ>::Ptr transform_cloud(new pcl::PointCloud<pcl::PointXYZ>);
 
+  sensor_msgs::PointCloud2::Ptr output_cloud(new sensor_msgs::PointCloud2);
+
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
   pcl::fromROSMsg (*cloud, *transform_cloud);
 
   pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
   pcl::PointIndices::Ptr inliers (new pcl::PointIndices ());
 
-  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-  // Create the segmentation object
+    // Create the segmentation object
   pcl::SACSegmentation<pcl::PointXYZ> seg;
   // Optional
   seg.setOptimizeCoefficients (true);
@@ -91,8 +92,8 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
     std::cerr << inliers->indices[i] << "    " << transform_cloud->points[inliers->indices[i]].x << " "
                                                << transform_cloud->points[inliers->indices[i]].y << " "
                                                << transform_cloud->points[inliers->indices[i]].z << std::endl;
-
-  pub.publish(transform_cloud);
+  pcl::toROSMsg (*transform_cloud, *output_cloud);
+  pub.publish(output_cloud);
 
 }
 
