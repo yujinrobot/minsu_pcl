@@ -104,6 +104,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   //extract_normals.filter (*cloud_normals);
 
   // Create the filtering object
+  // Remove the planar inliers, extract the rest
   extract_indices.setNegative (true);
   extract_indices.filter (*remove_transformed_cloud);
   transformed_cloud.swap (remove_transformed_cloud);
@@ -140,7 +141,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
 
   pcl::toROSMsg (*cloud_sphere, *sphere_output_cloud);
-  rest_pub.publish(sphere_output_cloud);
+  sphere_pub.publish(sphere_output_cloud);
 
 }
 
