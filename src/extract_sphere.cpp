@@ -120,7 +120,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   transformed_cloud.swap (remove_transformed_cloud);
 
   extract_normals.setNegative (true);
-  extract_normals.setInputCloud (transformed_cloud);
+  extract_normals.setInputCloud (cloud_normals);
   extract_normals.setIndices (inliers_plane);
   extract_normals.filter (*cloud_normals2);
 
