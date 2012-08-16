@@ -26,7 +26,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   pcl::VoxelGrid<sensor_msgs::PointCloud2> voxel_grid;
   pcl::PassThrough<sensor_msgs::PointCloud2> pass;
   pcl::ExtractIndices<pcl::PointXYZ> extract_indices;
-  pcl::ExtractIndices<pcl::PointXYZ> extract_normals;
+  pcl::ExtractIndices<pcl::Normal> extract_normals;
 
   // Normal estimation
   pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> normal_estimation;
@@ -84,10 +84,12 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   extract_indices.filter (*cloud_plane);
 
   // Remove the planar inliers, extract the rest
-  // Create the filtering object
   extract_indices.setNegative (true);
-  extract_indices.filter (*remove_transformed_cloud);
-  transformed_cloud.swap (remove_transformed_cloud);
+  extract_indices.filter (*transformed_cloud);
+  extract_normals.setNegative (true);
+  extract_normals.setInputCloud (cloud_normals);
+  extract_normals.setIndices (inliers_plane);
+  extract_normals.filter (*cloud_normals);
 
   /*
   // Create the segmentation object for sphere segmentation and set all the paopennirameters
@@ -102,7 +104,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   segmentation_from_normals.setInputNormals (cloud_normals);
   */
 
-  pcl::toROSMsg (*remove_transformed_cloud, *output_cloud);
+  pcl::toROSMsg (*cloud_normals, *output_cloud);
   pub.publish(output_cloud);
 
 }
