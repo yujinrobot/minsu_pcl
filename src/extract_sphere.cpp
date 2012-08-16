@@ -19,6 +19,7 @@
 #include <pcl/segmentation/sac_segmentation.h>
 
 ros::Publisher pub;
+ros::Publisher test_pub;
 
 void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 {
@@ -44,6 +45,9 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   // The point clouds
   //sensor_msgs::PointCloud2::Ptr downsampled (new sensor_msgs::PointCloud2);
   //pcl::PointCloud<pcl::PointXYZ>::Ptr extract_cloud (new pcl::PointCloud<pcl::PointXYZ>);
+
+
+  sensor_msgs::PointCloud2::Ptr test_output_cloud (new sensor_msgs::PointCloud2);
 
   sensor_msgs::PointCloud2::Ptr output_cloud (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr cloud_filtered (new sensor_msgs::PointCloud2);
@@ -82,6 +86,9 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   extract_indices.setIndices (inliers_plane);
   extract_indices.setNegative (false);
   extract_indices.filter (*cloud_plane);
+
+  pcl::toROSMsg (*cloud_plane, *test_output_cloud);
+  test_pub.publish(test_output_cloud);
 
   // Remove the planar inliers, extract the rest
   //extract_indices.setNegative (true);
@@ -124,6 +131,7 @@ main (int argc, char** argv)
    ros::NodeHandle nh;
    ros::Subscriber sub = nh.subscribe("camera/depth/points", 1, callback);
    pub = nh.advertise<sensor_msgs::PointCloud2> ("cloud_filtered", 1);
+   test_pub = nh.advertise<sensor_msgs::PointCloud2> ("test_cloud_filtered", 1);
 
    ros::spin();
 
