@@ -291,58 +291,6 @@ tests/fast:
 .PHONY : tests/fast
 
 #=============================================================================
-# Target rules for targets named exam_extract_indices
-
-# Build rule for target.
-exam_extract_indices: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 exam_extract_indices
-.PHONY : exam_extract_indices
-
-# fast build rule for target.
-exam_extract_indices/fast:
-	$(MAKE) -f src/CMakeFiles/exam_extract_indices.dir/build.make src/CMakeFiles/exam_extract_indices.dir/build
-.PHONY : exam_extract_indices/fast
-
-#=============================================================================
-# Target rules for targets named exam_planar_seg
-
-# Build rule for target.
-exam_planar_seg: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 exam_planar_seg
-.PHONY : exam_planar_seg
-
-# fast build rule for target.
-exam_planar_seg/fast:
-	$(MAKE) -f src/CMakeFiles/exam_planar_seg.dir/build.make src/CMakeFiles/exam_planar_seg.dir/build
-.PHONY : exam_planar_seg/fast
-
-#=============================================================================
-# Target rules for targets named example
-
-# Build rule for target.
-example: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 example
-.PHONY : example
-
-# fast build rule for target.
-example/fast:
-	$(MAKE) -f src/CMakeFiles/example.dir/build.make src/CMakeFiles/example.dir/build
-.PHONY : example/fast
-
-#=============================================================================
-# Target rules for targets named extract_indices
-
-# Build rule for target.
-extract_indices: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 extract_indices
-.PHONY : extract_indices
-
-# fast build rule for target.
-extract_indices/fast:
-	$(MAKE) -f src/CMakeFiles/extract_indices.dir/build.make src/CMakeFiles/extract_indices.dir/build
-.PHONY : extract_indices/fast
-
-#=============================================================================
 # Target rules for targets named extract_sphere
 
 # Build rule for target.
@@ -354,84 +302,6 @@ extract_sphere: cmake_check_build_system
 extract_sphere/fast:
 	$(MAKE) -f src/CMakeFiles/extract_sphere.dir/build.make src/CMakeFiles/extract_sphere.dir/build
 .PHONY : extract_sphere/fast
-
-#=============================================================================
-# Target rules for targets named passthrough
-
-# Build rule for target.
-passthrough: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 passthrough
-.PHONY : passthrough
-
-# fast build rule for target.
-passthrough/fast:
-	$(MAKE) -f src/CMakeFiles/passthrough.dir/build.make src/CMakeFiles/passthrough.dir/build
-.PHONY : passthrough/fast
-
-#=============================================================================
-# Target rules for targets named pcl_pub
-
-# Build rule for target.
-pcl_pub: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 pcl_pub
-.PHONY : pcl_pub
-
-# fast build rule for target.
-pcl_pub/fast:
-	$(MAKE) -f src/CMakeFiles/pcl_pub.dir/build.make src/CMakeFiles/pcl_pub.dir/build
-.PHONY : pcl_pub/fast
-
-#=============================================================================
-# Target rules for targets named pcl_sub
-
-# Build rule for target.
-pcl_sub: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 pcl_sub
-.PHONY : pcl_sub
-
-# fast build rule for target.
-pcl_sub/fast:
-	$(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/build
-.PHONY : pcl_sub/fast
-
-#=============================================================================
-# Target rules for targets named planar_segmentation
-
-# Build rule for target.
-planar_segmentation: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 planar_segmentation
-.PHONY : planar_segmentation
-
-# fast build rule for target.
-planar_segmentation/fast:
-	$(MAKE) -f src/CMakeFiles/planar_segmentation.dir/build.make src/CMakeFiles/planar_segmentation.dir/build
-.PHONY : planar_segmentation/fast
-
-#=============================================================================
-# Target rules for targets named read_pcd_file
-
-# Build rule for target.
-read_pcd_file: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 read_pcd_file
-.PHONY : read_pcd_file
-
-# fast build rule for target.
-read_pcd_file/fast:
-	$(MAKE) -f src/CMakeFiles/read_pcd_file.dir/build.make src/CMakeFiles/read_pcd_file.dir/build
-.PHONY : read_pcd_file/fast
-
-#=============================================================================
-# Target rules for targets named statistical_removal
-
-# Build rule for target.
-statistical_removal: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 statistical_removal
-.PHONY : statistical_removal
-
-# fast build rule for target.
-statistical_removal/fast:
-	$(MAKE) -f src/CMakeFiles/statistical_removal.dir/build.make src/CMakeFiles/statistical_removal.dir/build
-.PHONY : statistical_removal/fast
 
 # Help Target
 help:
@@ -456,17 +326,7 @@ help:
 	@echo "... test-results"
 	@echo "... test-results-run"
 	@echo "... tests"
-	@echo "... exam_extract_indices"
-	@echo "... exam_planar_seg"
-	@echo "... example"
-	@echo "... extract_indices"
 	@echo "... extract_sphere"
-	@echo "... passthrough"
-	@echo "... pcl_pub"
-	@echo "... pcl_sub"
-	@echo "... planar_segmentation"
-	@echo "... read_pcd_file"
-	@echo "... statistical_removal"
 .PHONY : help
 
 
