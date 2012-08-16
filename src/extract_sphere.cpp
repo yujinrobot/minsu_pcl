@@ -118,6 +118,10 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   extract_indices.setNegative (true);
   extract_indices.filter (*remove_transformed_cloud);
   transformed_cloud.swap (remove_transformed_cloud);
+
+  extract_normals.setNegative (true);
+  extract_normals.setInputCloud (transformed_cloud);
+  extract_normals.setIndices (inliers_plane);
   extract_normals.filter (*cloud_normals2);
 
   std::cout << "size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
