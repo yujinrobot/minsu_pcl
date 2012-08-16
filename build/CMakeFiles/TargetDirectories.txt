@@ -3,6 +3,7 @@
 /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles/ROSBUILD_gensrv_cpp.dir
 /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles/ROSBUILD_gensrv_lisp.dir
 /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles/clean-test-results.dir
+/opt/kobuki/minsu/minsu_pcl/build/src/CMakeFiles/exam_planar_seg.dir
 /opt/kobuki/minsu/minsu_pcl/build/src/CMakeFiles/example.dir
 /opt/kobuki/minsu/minsu_pcl/build/src/CMakeFiles/passthrough.dir
 /opt/kobuki/minsu/minsu_pcl/build/src/CMakeFiles/pcl_pub.dir

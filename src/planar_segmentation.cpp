@@ -92,6 +92,8 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
                                                << transform_cloud->points[inliers->indices[i]].y << " "
                                                << transform_cloud->points[inliers->indices[i]].z << std::endl;
 
+  pub.publish(transform_cloud);
+
 }
 
 

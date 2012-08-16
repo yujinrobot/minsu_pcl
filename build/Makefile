@@ -291,6 +291,19 @@ tests/fast:
 .PHONY : tests/fast
 
 #=============================================================================
+# Target rules for targets named exam_planar_seg
+
+# Build rule for target.
+exam_planar_seg: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 exam_planar_seg
+.PHONY : exam_planar_seg
+
+# fast build rule for target.
+exam_planar_seg/fast:
+	$(MAKE) -f src/CMakeFiles/exam_planar_seg.dir/build.make src/CMakeFiles/exam_planar_seg.dir/build
+.PHONY : exam_planar_seg/fast
+
+#=============================================================================
 # Target rules for targets named example
 
 # Build rule for target.
@@ -404,6 +417,7 @@ help:
 	@echo "... test-results"
 	@echo "... test-results-run"
 	@echo "... tests"
+	@echo "... exam_planar_seg"
 	@echo "... example"
 	@echo "... passthrough"
 	@echo "... pcl_pub"

@@ -96,6 +96,20 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+src/CMakeFiles/exam_planar_seg.dir/rule:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/exam_planar_seg.dir/rule
+.PHONY : src/CMakeFiles/exam_planar_seg.dir/rule
+
+# Convenience name for target.
+exam_planar_seg: src/CMakeFiles/exam_planar_seg.dir/rule
+.PHONY : exam_planar_seg
+
+# fast build rule for target.
+exam_planar_seg/fast:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/exam_planar_seg.dir/build.make src/CMakeFiles/exam_planar_seg.dir/build
+.PHONY : exam_planar_seg/fast
+
+# Convenience name for target.
 src/CMakeFiles/example.dir/rule:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/example.dir/rule
 .PHONY : src/CMakeFiles/example.dir/rule
@@ -192,6 +206,21 @@ statistical_removal: src/CMakeFiles/statistical_removal.dir/rule
 statistical_removal/fast:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/statistical_removal.dir/build.make src/CMakeFiles/statistical_removal.dir/build
 .PHONY : statistical_removal/fast
+
+# target to build an object file
+exam_planar_seg.o:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/exam_planar_seg.dir/build.make src/CMakeFiles/exam_planar_seg.dir/exam_planar_seg.o
+.PHONY : exam_planar_seg.o
+
+# target to preprocess a source file
+exam_planar_seg.i:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/exam_planar_seg.dir/build.make src/CMakeFiles/exam_planar_seg.dir/exam_planar_seg.i
+.PHONY : exam_planar_seg.i
+
+# target to generate assembly for a file
+exam_planar_seg.s:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/exam_planar_seg.dir/build.make src/CMakeFiles/exam_planar_seg.dir/exam_planar_seg.s
+.PHONY : exam_planar_seg.s
 
 # target to build an object file
 example.o:
@@ -305,6 +334,7 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
+	@echo "... exam_planar_seg"
 	@echo "... example"
 	@echo "... passthrough"
 	@echo "... pcl_pub"
@@ -313,6 +343,9 @@ help:
 	@echo "... read_pcd_file"
 	@echo "... rebuild_cache"
 	@echo "... statistical_removal"
+	@echo "... exam_planar_seg.o"
+	@echo "... exam_planar_seg.i"
+	@echo "... exam_planar_seg.s"
 	@echo "... example.o"
 	@echo "... example.i"
 	@echo "... example.s"
