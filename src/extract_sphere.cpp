@@ -75,5 +75,12 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "extract_sphere");
+  ros::NodeHandle nh;
+  ros::Subscriber sub = nh.subscribe("camera/depth/points", 1, callback);
+  pub = nh.advertise<sensor_msgs::PointCloud2> ("cloud_filtered", 1);
+
+  ros::spin();
+
+  return (0);
 
 }
