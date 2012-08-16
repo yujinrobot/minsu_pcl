@@ -7,10 +7,13 @@
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/ModelCoefficients.h>
+#include <pcl/features/normal_3d.h>
 #include <pcl/sample_consensus/method_types.h>
 #include <pcl/sample_consensus/model_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
+
 #include <pcl/filters/extract_indices.h>
+#include <pcl/filters/passthrough.h>
 
 ros::Publisher pub;
 
@@ -39,19 +42,12 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   // Optional
   seg.setOptimizeCoefficients (true);
   // Mandatory
-  seg.setModelType (pcl::SACMODEL_SPHERE);
+  seg.setModelType (pcl::SACMODEL_PLANE);
   seg.setMethodType (pcl::SAC_RANSAC);
-  //segmentation_from_normals.setNormalDistanceWeight (0.1);
   seg.setMaxIterations (1000);
   seg.setDistanceThreshold (0.01);
-  seg.setRadiusLimits(0.001, 0.6);
   seg.setInputCloud (transform_cloud);
   seg.segment (*inliers, *coefficients);
-
-  std::cerr << "Model coefficients: " << coefficients->values[0] << " "
-                                      << coefficients->values[1] << " "
-                                      << coefficients->values[2] << " "
-                                      << coefficients->values[3] << std::endl;
 
 
   if (inliers->indices.size () == 0)
@@ -75,18 +71,19 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   // Convert the pcl/PointCloud to sensor_msgs/PointCloud2 data
   pcl::toROSMsg (*extract_cloud, *output_cloud);
   pub.publish(output_cloud);
-
 }
 
-int main(int argc, char** argv)
+
+int
+main (int argc, char** argv)
 {
-  ros::init(argc, argv, "extract_sphere");
-  ros::NodeHandle nh;
-  ros::Subscriber sub = nh.subscribe("camera/depth/points", 1, callback);
-  pub = nh.advertise<sensor_msgs::PointCloud2> ("cloud_filtered", 1);
+ // INITIALIZE ROS
+   ros::init (argc, argv, "extract_indices");
+   ros::NodeHandle nh;
+   ros::Subscriber sub = nh.subscribe("camera/depth/points", 1, callback);
+   pub = nh.advertise<sensor_msgs::PointCloud2> ("cloud_filtered", 1);
 
-  ros::spin();
+   ros::spin();
 
-  return (0);
-
+   return (0);
 }
