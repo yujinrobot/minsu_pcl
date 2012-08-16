@@ -1,76 +1,90 @@
 #include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
-// PCL specific includes
+
+#include <pcl_ros/point_cloud.h>
 #include <pcl/ros/conversions.h>
-#include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
-#include <pcl/filters/voxel_grid.h>
+
 #include <pcl/io/pcd_io.h>
 #include <pcl/ModelCoefficients.h>
+
+#include <pcl/filters/voxel_grid.h>
+#include <pcl/filters/passthrough.h>
+#include <pcl/filters/extract_indices.h>
+
 #include <pcl/features/normal_3d.h>
+
 #include <pcl/sample_consensus/method_types.h>
 #include <pcl/sample_consensus/model_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
-
-#include <pcl/filters/extract_indices.h>
-#include <pcl/filters/passthrough.h>
 
 ros::Publisher pub;
 
 void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 {
-  sensor_msgs::PointCloud2::Ptr downsampled(new sensor_msgs::PointCloud2);
-  sensor_msgs::PointCloud2::Ptr output_cloud(new sensor_msgs::PointCloud2);
-  pcl::PointCloud<pcl::PointXYZ>::Ptr transform_cloud(new pcl::PointCloud<pcl::PointXYZ>);
-  pcl::PointCloud<pcl::PointXYZ>::Ptr extract_cloud(new pcl::PointCloud<pcl::PointXYZ>);
+  // filter
+  pcl::VoxelGrid<sensor_msgs::PointCloud2> voxel_grid;
+  pcl::PassThrough<sensor_msgs::PointCloud2> pass;
+  pcl::ExtractIndices<pcl::PointXYZ> extract_indices;
+  pcl::ExtractIndices<pcl::PointXYZ> extract_normals;
 
-  // Do some downsampling to the point cloud
-  pcl::VoxelGrid<sensor_msgs::PointCloud2> sor;
-  sor.setInputCloud (cloud);
-  sor.setLeafSize (0.01f, 0.01f, 0.01f);
-  sor.filter (*downsampled);
+  // Normal estimation
+  pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> normal_estimation;
+  pcl::SACSegmentationFromNormals<pcl::PointXYZ, pcl::Normal> segmentation_from_normals;
+  pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ> ());
+
+  // The plane and sphere coefficients
+  pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
+  pcl::ModelCoefficients::Ptr coefficients_plane (new pcl::ModelCoefficients ());
+
+  // The plane and sphere inliers
+  pcl::PointIndices::Ptr inliers (new pcl::PointIndices ());
+  pcl::PointIndices::Ptr inliers_plane (new pcl::PointIndices ());
+
+
+  sensor_msgs::PointCloud2::Ptr downsampled (new sensor_msgs::PointCloud2);
+  sensor_msgs::PointCloud2::Ptr output_cloud (new sensor_msgs::PointCloud2);
+
+  sensor_msgs::PointCloud2::Ptr cloud_filtered (new sensor_msgs::PointCloud2);
+
+  pcl::PointCloud<pcl::PointXYZ>::Ptr transform_cloud (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr extract_cloud (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plane (new pcl::PointCloud<pcl::PointXYZ>);
+
+  // The cloud normals
+  pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal> ());
 
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-  pcl::fromROSMsg (*downsampled, *transform_cloud);
+  pcl::fromROSMsg (*cloud, *transform_cloud);
 
+  // Estimate point normals
+  normal_estimation.setSearchMethod (tree);
+  normal_estimation.setInputCloud (transform_cloud);
+  normal_estimation.setKSearch (50);
+  normal_estimation.compute (*cloud_normals);
 
-  pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
-  pcl::PointIndices::Ptr inliers (new pcl::PointIndices ());
+  // Create the segmentation object for the planar model and set all the parameters
+  segmentation_from_normals.setOptimizeCoefficients (true);
+  segmentation_from_normals.setModelType (pcl::SACMODEL_NORMAL_PLANE);
+  segmentation_from_normals.setNormalDistanceWeight (0.1);
+  segmentation_from_normals.setMethodType (pcl::SAC_RANSAC);
+  segmentation_from_normals.setMaxIterations (100);
+  segmentation_from_normals.setDistanceThreshold (0.03);
+  segmentation_from_normals.setInputCloud (transform_cloud);
+  segmentation_from_normals.setInputNormals (cloud_normals);
+  // Obtain the plane inliers and coefficients
+  segmentation_from_normals.segment (*inliers_plane, *coefficients_plane);
+  std::cerr << "Plane coefficients: " << *coefficients_plane << std::endl;
 
-    // Create the segmentation object
-  pcl::SACSegmentation<pcl::PointXYZ> seg;
-  // Optional
-  seg.setOptimizeCoefficients (true);
-  // Mandatory
-  seg.setModelType (pcl::SACMODEL_PLANE);
-  seg.setMethodType (pcl::SAC_RANSAC);
-  seg.setMaxIterations (1000);
-  seg.setDistanceThreshold (0.01);
-  seg.setInputCloud (transform_cloud);
-  seg.segment (*inliers, *coefficients);
+  // Extract the planar inliers from the input cloud
+  extract_indices.setInputCloud (transform_cloud);
+  extract_indices.setIndices (inliers_plane);
+  extract_indices.setNegative (false);
+  extract_indices.filter (*cloud_plane);
 
-
-  if (inliers->indices.size () == 0)
-  {
-    PCL_ERROR ("Could not estimate a planar model for the given dataset.");
-  }
-  // Create the filtering object
-  pcl::ExtractIndices<pcl::PointXYZ> extract;
-
-  extract.setInputCloud(transform_cloud);
-  extract.setIndices(inliers);
-  extract.setNegative(false);
-  extract.filter(*extract_cloud);
-  std::cerr << "PointCloud representing the planar component: " << extract_cloud->width * extract_cloud->height << " data points." << std::endl;
-
-  // Create the filtering object
-  // extract.setNegative (true);
-  // extract.filter (*cloud_f);
-  // cloud_filtered.swap (cloud_f);
-
-  // Convert the pcl/PointCloud to sensor_msgs/PointCloud2 data
-  pcl::toROSMsg (*extract_cloud, *output_cloud);
+  pcl::toROSMsg (*cloud_plane, *output_cloud);
   pub.publish(output_cloud);
+
 }
 
 

@@ -531,6 +531,7 @@ src/all: src/CMakeFiles/pcl_sub.dir/all
 src/all: src/CMakeFiles/planar_segmentation.dir/all
 src/all: src/CMakeFiles/read_pcd_file.dir/all
 src/all: src/CMakeFiles/statistical_removal.dir/all
+src/all: src/CMakeFiles/test.dir/all
 .PHONY : src/all
 
 # Convenience name for "clean" pass in the directory.
@@ -545,6 +546,7 @@ src/clean: src/CMakeFiles/pcl_sub.dir/clean
 src/clean: src/CMakeFiles/planar_segmentation.dir/clean
 src/clean: src/CMakeFiles/read_pcd_file.dir/clean
 src/clean: src/CMakeFiles/statistical_removal.dir/clean
+src/clean: src/CMakeFiles/test.dir/clean
 .PHONY : src/clean
 
 # Convenience name for "preinstall" pass in the directory.
@@ -934,6 +936,41 @@ src/CMakeFiles/statistical_removal.dir/clean:
 
 # clean rule for target.
 clean: src/CMakeFiles/statistical_removal.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target src/CMakeFiles/test.dir
+
+# All Build rule for target.
+src/CMakeFiles/test.dir/all: CMakeFiles/rosbuild_precompile.dir/all
+	$(MAKE) -f src/CMakeFiles/test.dir/build.make src/CMakeFiles/test.dir/depend
+	$(MAKE) -f src/CMakeFiles/test.dir/build.make src/CMakeFiles/test.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  12
+	@echo "Built target test"
+.PHONY : src/CMakeFiles/test.dir/all
+
+# Include target in all.
+all: src/CMakeFiles/test.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+src/CMakeFiles/test.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/test.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles 0
+.PHONY : src/CMakeFiles/test.dir/rule
+
+# Convenience name for target.
+test: src/CMakeFiles/test.dir/rule
+.PHONY : test
+
+# clean rule for target.
+src/CMakeFiles/test.dir/clean:
+	$(MAKE) -f src/CMakeFiles/test.dir/build.make src/CMakeFiles/test.dir/clean
+.PHONY : src/CMakeFiles/test.dir/clean
+
+# clean rule for target.
+clean: src/CMakeFiles/test.dir/clean
 .PHONY : clean
 
 #=============================================================================

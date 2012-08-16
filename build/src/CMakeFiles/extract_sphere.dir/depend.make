@@ -149,6 +149,7 @@ src/CMakeFiles/extract_sphere.dir/extract_sphere.o: /opt/ros/fuerte/include/sens
 src/CMakeFiles/extract_sphere.dir/extract_sphere.o: /opt/ros/fuerte/include/sensor_msgs/PointCloud2.h
 src/CMakeFiles/extract_sphere.dir/extract_sphere.o: /opt/ros/fuerte/include/sensor_msgs/PointField.h
 src/CMakeFiles/extract_sphere.dir/extract_sphere.o: /opt/ros/fuerte/include/std_msgs/Header.h
+src/CMakeFiles/extract_sphere.dir/extract_sphere.o: /opt/ros/fuerte/stacks/perception_pcl/pcl_ros/include/pcl_ros/point_cloud.h
 src/CMakeFiles/extract_sphere.dir/extract_sphere.o: /usr/include/eigen3/Eigen/Cholesky
 src/CMakeFiles/extract_sphere.dir/extract_sphere.o: /usr/include/eigen3/Eigen/Core
 src/CMakeFiles/extract_sphere.dir/extract_sphere.o: /usr/include/eigen3/Eigen/Eigen2Support

@@ -150,6 +150,7 @@ src/CMakeFiles/extract_sphere.dir/extract_sphere.o
  /opt/ros/fuerte/include/sensor_msgs/PointCloud2.h
  /opt/ros/fuerte/include/sensor_msgs/PointField.h
  /opt/ros/fuerte/include/std_msgs/Header.h
+ /opt/ros/fuerte/stacks/perception_pcl/pcl_ros/include/pcl_ros/point_cloud.h
  /usr/include/eigen3/Eigen/Cholesky
  /usr/include/eigen3/Eigen/Core
  /usr/include/eigen3/Eigen/Eigen2Support

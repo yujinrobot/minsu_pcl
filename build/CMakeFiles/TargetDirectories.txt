@@ -19,7 +19,7 @@
 /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles/rospack_genmsg_libexe.dir
 /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles/rospack_gensrv.dir
 /opt/kobuki/minsu/minsu_pcl/build/src/CMakeFiles/statistical_removal.dir
-/opt/kobuki/minsu/minsu_pcl/build/CMakeFiles/test.dir
+/opt/kobuki/minsu/minsu_pcl/build/src/CMakeFiles/test.dir
 /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles/test-future.dir
 /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles/test-results.dir
 /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles/test-results-run.dir

@@ -249,6 +249,20 @@ statistical_removal/fast:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/statistical_removal.dir/build.make src/CMakeFiles/statistical_removal.dir/build
 .PHONY : statistical_removal/fast
 
+# Convenience name for target.
+src/CMakeFiles/test.dir/rule:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/test.dir/rule
+.PHONY : src/CMakeFiles/test.dir/rule
+
+# Convenience name for target.
+test: src/CMakeFiles/test.dir/rule
+.PHONY : test
+
+# fast build rule for target.
+test/fast:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/test.dir/build.make src/CMakeFiles/test.dir/build
+.PHONY : test/fast
+
 # target to build an object file
 exam_extract_indices.o:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/exam_extract_indices.dir/build.make src/CMakeFiles/exam_extract_indices.dir/exam_extract_indices.o
@@ -414,6 +428,21 @@ statistical_removal.s:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/statistical_removal.dir/build.make src/CMakeFiles/statistical_removal.dir/statistical_removal.s
 .PHONY : statistical_removal.s
 
+# target to build an object file
+test.o:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/test.dir/build.make src/CMakeFiles/test.dir/test.o
+.PHONY : test.o
+
+# target to preprocess a source file
+test.i:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/test.dir/build.make src/CMakeFiles/test.dir/test.i
+.PHONY : test.i
+
+# target to generate assembly for a file
+test.s:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/test.dir/build.make src/CMakeFiles/test.dir/test.s
+.PHONY : test.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -433,6 +462,7 @@ help:
 	@echo "... read_pcd_file"
 	@echo "... rebuild_cache"
 	@echo "... statistical_removal"
+	@echo "... test"
 	@echo "... exam_extract_indices.o"
 	@echo "... exam_extract_indices.i"
 	@echo "... exam_extract_indices.s"
@@ -466,6 +496,9 @@ help:
 	@echo "... statistical_removal.o"
 	@echo "... statistical_removal.i"
 	@echo "... statistical_removal.s"
+	@echo "... test.o"
+	@echo "... test.i"
+	@echo "... test.s"
 .PHONY : help
 
 
