@@ -55,6 +55,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
   sensor_msgs::PointCloud2::Ptr cloud_filtered (new sensor_msgs::PointCloud2);
   pcl::PointCloud<pcl::PointXYZ>::Ptr transformed_cloud (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr cylinder_cloud (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr remove_transformed_cloud (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plane (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_sphere (new pcl::PointCloud<pcl::PointXYZ>);
@@ -113,6 +114,8 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   pcl::toROSMsg (*transformed_cloud, *rest_output_cloud);
   rest_pub.publish(rest_output_cloud);
 
+  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
+  pcl::fromROSMsg (*rest_output_cloud, *cylinder_cloud);
 
   // Create the segmentation object for sphere segmentation and set all the paopennirameters
   segmentation_from_normals.setOptimizeCoefficients (true);
@@ -123,7 +126,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   segmentation_from_normals.setMaxIterations (10000);
   segmentation_from_normals.setDistanceThreshold (0.05);
   segmentation_from_normals.setRadiusLimits (0, 0.5);
-  segmentation_from_normals.setInputCloud (transformed_cloud);
+  segmentation_from_normals.setInputCloud (cylinder_cloud);
   segmentation_from_normals.setInputNormals (cloud_normals2);
 
   // Obtain the sphere inliers and coefficients
@@ -131,7 +134,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   std::cerr << "Sphere coefficients: " << *coefficients_sphere << std::endl;
 
   // Publish the sphere cloud
-  extract_indices.setInputCloud (transformed_cloud);
+  extract_indices.setInputCloud (cylinder_cloud);
   extract_indices.setIndices (inliers_sphere);
   extract_indices.setNegative (false);
   extract_indices.filter (*cloud_sphere);
