@@ -120,6 +120,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   transformed_cloud.swap (remove_transformed_cloud);
   extract_normals.filter (*cloud_normals2);
 
+  std::cout << "size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
   // publish result of Removal the planar inliers, extract the rest
   pcl::toROSMsg (*transformed_cloud, *rest_output_cloud);
   rest_pub.publish(rest_output_cloud);
