@@ -96,6 +96,20 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+src/CMakeFiles/exam_extract_indices.dir/rule:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/exam_extract_indices.dir/rule
+.PHONY : src/CMakeFiles/exam_extract_indices.dir/rule
+
+# Convenience name for target.
+exam_extract_indices: src/CMakeFiles/exam_extract_indices.dir/rule
+.PHONY : exam_extract_indices
+
+# fast build rule for target.
+exam_extract_indices/fast:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/exam_extract_indices.dir/build.make src/CMakeFiles/exam_extract_indices.dir/build
+.PHONY : exam_extract_indices/fast
+
+# Convenience name for target.
 src/CMakeFiles/exam_planar_seg.dir/rule:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/exam_planar_seg.dir/rule
 .PHONY : src/CMakeFiles/exam_planar_seg.dir/rule
@@ -122,6 +136,20 @@ example: src/CMakeFiles/example.dir/rule
 example/fast:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/example.dir/build.make src/CMakeFiles/example.dir/build
 .PHONY : example/fast
+
+# Convenience name for target.
+src/CMakeFiles/extract_indices.dir/rule:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/extract_indices.dir/rule
+.PHONY : src/CMakeFiles/extract_indices.dir/rule
+
+# Convenience name for target.
+extract_indices: src/CMakeFiles/extract_indices.dir/rule
+.PHONY : extract_indices
+
+# fast build rule for target.
+extract_indices/fast:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/extract_indices.dir/build.make src/CMakeFiles/extract_indices.dir/build
+.PHONY : extract_indices/fast
 
 # Convenience name for target.
 src/CMakeFiles/passthrough.dir/rule:
@@ -208,6 +236,21 @@ statistical_removal/fast:
 .PHONY : statistical_removal/fast
 
 # target to build an object file
+exam_extract_indices.o:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/exam_extract_indices.dir/build.make src/CMakeFiles/exam_extract_indices.dir/exam_extract_indices.o
+.PHONY : exam_extract_indices.o
+
+# target to preprocess a source file
+exam_extract_indices.i:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/exam_extract_indices.dir/build.make src/CMakeFiles/exam_extract_indices.dir/exam_extract_indices.i
+.PHONY : exam_extract_indices.i
+
+# target to generate assembly for a file
+exam_extract_indices.s:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/exam_extract_indices.dir/build.make src/CMakeFiles/exam_extract_indices.dir/exam_extract_indices.s
+.PHONY : exam_extract_indices.s
+
+# target to build an object file
 exam_planar_seg.o:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/exam_planar_seg.dir/build.make src/CMakeFiles/exam_planar_seg.dir/exam_planar_seg.o
 .PHONY : exam_planar_seg.o
@@ -236,6 +279,21 @@ example.i:
 example.s:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/example.dir/build.make src/CMakeFiles/example.dir/example.s
 .PHONY : example.s
+
+# target to build an object file
+extract_indices.o:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/extract_indices.dir/build.make src/CMakeFiles/extract_indices.dir/extract_indices.o
+.PHONY : extract_indices.o
+
+# target to preprocess a source file
+extract_indices.i:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/extract_indices.dir/build.make src/CMakeFiles/extract_indices.dir/extract_indices.i
+.PHONY : extract_indices.i
+
+# target to generate assembly for a file
+extract_indices.s:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/extract_indices.dir/build.make src/CMakeFiles/extract_indices.dir/extract_indices.s
+.PHONY : extract_indices.s
 
 # target to build an object file
 passthrough.o:
@@ -334,8 +392,10 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
+	@echo "... exam_extract_indices"
 	@echo "... exam_planar_seg"
 	@echo "... example"
+	@echo "... extract_indices"
 	@echo "... passthrough"
 	@echo "... pcl_pub"
 	@echo "... pcl_sub"
@@ -343,12 +403,18 @@ help:
 	@echo "... read_pcd_file"
 	@echo "... rebuild_cache"
 	@echo "... statistical_removal"
+	@echo "... exam_extract_indices.o"
+	@echo "... exam_extract_indices.i"
+	@echo "... exam_extract_indices.s"
 	@echo "... exam_planar_seg.o"
 	@echo "... exam_planar_seg.i"
 	@echo "... exam_planar_seg.s"
 	@echo "... example.o"
 	@echo "... example.i"
 	@echo "... example.s"
+	@echo "... extract_indices.o"
+	@echo "... extract_indices.i"
+	@echo "... extract_indices.s"
 	@echo "... passthrough.o"
 	@echo "... passthrough.i"
 	@echo "... passthrough.s"

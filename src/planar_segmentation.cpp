@@ -13,46 +13,6 @@
 #include <pcl/filters/extract_indices.h>
 
 ros::Publisher pub;
-/*
-void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
-{
-  //sensor_msgs::PointCloud2 cloud_filtered;
-     pcl::PointCloud<pcl::PointXYZ>::Ptr downsampled_XYZ(new pcl::PointCloud<pcl::PointXYZ>);
-     sensor_msgs::PointCloud2::Ptr cloud_filtered(new sensor_msgs::PointCloud2);
-     pcl::fromROSMsg (*cloud, *downsampled_XYZ);
-
-     pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
-     pcl::PointIndices::Ptr inliers (new pcl::PointIndices ());
-
-     // Create the segmentation object
-     pcl::SACSegmentation<pcl::PointXYZ> seg;
-     // Optional
-     seg.setOptimizeCoefficients (true);
-     // Mandatory
-     seg.setModelType (pcl::SACMODEL_PLANE);
-     seg.setMethodType (pcl::SAC_RANSAC);
-     seg.setMaxIterations (1000);
-     seg.setDistanceThreshold (0.01);
-     seg.setInputCloud (downsampled_XYZ);
-     seg.segment (*inliers, *coefficients);
-
-     if (inliers->indices.size () == 0)
-     {
-       PCL_ERROR ("Could not estimate a planar model for the given dataset.");
-       return ;
-     }
-
-     std::cerr << "Model coefficients: "   << coefficients->values[0] << " "
-                                           << coefficients->values[1] << " "
-                                           << coefficients->values[2] << " "
-                                           << coefficients->values[3] << std::endl;
-
-     std::cerr << "Model inliers: " << inliers->indices.size () << std::endl;
-     for (size_t i = 0; i < inliers->indices.size (); ++i)
-     pcl::toROSMsg (*downsampled_XYZ, *cloud_filtered);
-     pub.publish(cloud_filtered);
-}
-*/
 
 void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 {
@@ -92,6 +52,8 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
     std::cerr << inliers->indices[i] << "    " << transform_cloud->points[inliers->indices[i]].x << " "
                                                << transform_cloud->points[inliers->indices[i]].y << " "
                                                << transform_cloud->points[inliers->indices[i]].z << std::endl;
+
+  // Convert the pcl/PointCloud to sensor_msgs/PointCloud2 data
   pcl::toROSMsg (*transform_cloud, *output_cloud);
   pub.publish(output_cloud);
 

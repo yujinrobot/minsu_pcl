@@ -291,6 +291,19 @@ tests/fast:
 .PHONY : tests/fast
 
 #=============================================================================
+# Target rules for targets named exam_extract_indices
+
+# Build rule for target.
+exam_extract_indices: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 exam_extract_indices
+.PHONY : exam_extract_indices
+
+# fast build rule for target.
+exam_extract_indices/fast:
+	$(MAKE) -f src/CMakeFiles/exam_extract_indices.dir/build.make src/CMakeFiles/exam_extract_indices.dir/build
+.PHONY : exam_extract_indices/fast
+
+#=============================================================================
 # Target rules for targets named exam_planar_seg
 
 # Build rule for target.
@@ -315,6 +328,19 @@ example: cmake_check_build_system
 example/fast:
 	$(MAKE) -f src/CMakeFiles/example.dir/build.make src/CMakeFiles/example.dir/build
 .PHONY : example/fast
+
+#=============================================================================
+# Target rules for targets named extract_indices
+
+# Build rule for target.
+extract_indices: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 extract_indices
+.PHONY : extract_indices
+
+# fast build rule for target.
+extract_indices/fast:
+	$(MAKE) -f src/CMakeFiles/extract_indices.dir/build.make src/CMakeFiles/extract_indices.dir/build
+.PHONY : extract_indices/fast
 
 #=============================================================================
 # Target rules for targets named passthrough
@@ -417,8 +443,10 @@ help:
 	@echo "... test-results"
 	@echo "... test-results-run"
 	@echo "... tests"
+	@echo "... exam_extract_indices"
 	@echo "... exam_planar_seg"
 	@echo "... example"
+	@echo "... extract_indices"
 	@echo "... passthrough"
 	@echo "... pcl_pub"
 	@echo "... pcl_sub"
