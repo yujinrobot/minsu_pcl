@@ -51,7 +51,7 @@ int main(int argc, char** argv)
   // Normal estimation
   pcl::NormalEstimation<PointT, pcl::Normal> normal_estimation;
   pcl::SACSegmentationFromNormals<PointT, pcl::Normal> segmentation_from_normals;
-  pcl::KdTreeFLANN<PointT>::Ptr tree (new pcl::KdTreeFLANN<PointT> ());
+  pcl::search::KdTree<PointT>::Ptr tree (new pcl::search::KdTree<PointT> ());
 
   // The plane and sphere coefficients
   pcl::ModelCoefficients::Ptr coefficients_plane (new pcl::ModelCoefficients ()), coefficients_sphere (new pcl::ModelCoefficients ());
