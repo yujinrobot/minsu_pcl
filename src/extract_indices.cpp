@@ -41,7 +41,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   // Mandatory
   seg.setModelType (pcl::SACMODEL_PLANE);
   seg.setMethodType (pcl::SAC_RANSAC);
-  //seg.setMaxIterations (1000);
+  seg.setMaxIterations (1000);
   seg.setDistanceThreshold (0.01);
   seg.setInputCloud (transform_cloud);
   seg.segment (*inliers, *coefficients);
