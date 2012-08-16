@@ -114,7 +114,8 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
   // Create the segmentation object for sphere segmentation and set all the paopennirameters
   segmentation_from_normals.setOptimizeCoefficients (true);
-  segmentation_from_normals.setModelType (pcl::SACMODEL_SPHERE);
+  //segmentation_from_normals.setModelType (pcl::SACMODEL_SPHERE);
+  segmentation_from_normals.setModelType (pcl::SACMODEL_CYLINDER);
   segmentation_from_normals.setMethodType (pcl::SAC_RANSAC);
   segmentation_from_normals.setNormalDistanceWeight (0.1);
   segmentation_from_normals.setMaxIterations (10000);
