@@ -7,6 +7,7 @@
 /opt/kobuki/minsu/minsu_pcl/build/src/CMakeFiles/exam_planar_seg.dir
 /opt/kobuki/minsu/minsu_pcl/build/src/CMakeFiles/example.dir
 /opt/kobuki/minsu/minsu_pcl/build/src/CMakeFiles/extract_indices.dir
+/opt/kobuki/minsu/minsu_pcl/build/src/CMakeFiles/extract_sphere.dir
 /opt/kobuki/minsu/minsu_pcl/build/src/CMakeFiles/passthrough.dir
 /opt/kobuki/minsu/minsu_pcl/build/src/CMakeFiles/pcl_pub.dir
 /opt/kobuki/minsu/minsu_pcl/build/src/CMakeFiles/pcl_sub.dir

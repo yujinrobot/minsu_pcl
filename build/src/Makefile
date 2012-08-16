@@ -152,6 +152,20 @@ extract_indices/fast:
 .PHONY : extract_indices/fast
 
 # Convenience name for target.
+src/CMakeFiles/extract_sphere.dir/rule:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/extract_sphere.dir/rule
+.PHONY : src/CMakeFiles/extract_sphere.dir/rule
+
+# Convenience name for target.
+extract_sphere: src/CMakeFiles/extract_sphere.dir/rule
+.PHONY : extract_sphere
+
+# fast build rule for target.
+extract_sphere/fast:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/extract_sphere.dir/build.make src/CMakeFiles/extract_sphere.dir/build
+.PHONY : extract_sphere/fast
+
+# Convenience name for target.
 src/CMakeFiles/passthrough.dir/rule:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/passthrough.dir/rule
 .PHONY : src/CMakeFiles/passthrough.dir/rule
@@ -296,6 +310,21 @@ extract_indices.s:
 .PHONY : extract_indices.s
 
 # target to build an object file
+extract_sphere.o:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/extract_sphere.dir/build.make src/CMakeFiles/extract_sphere.dir/extract_sphere.o
+.PHONY : extract_sphere.o
+
+# target to preprocess a source file
+extract_sphere.i:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/extract_sphere.dir/build.make src/CMakeFiles/extract_sphere.dir/extract_sphere.i
+.PHONY : extract_sphere.i
+
+# target to generate assembly for a file
+extract_sphere.s:
+	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/extract_sphere.dir/build.make src/CMakeFiles/extract_sphere.dir/extract_sphere.s
+.PHONY : extract_sphere.s
+
+# target to build an object file
 passthrough.o:
 	cd /opt/kobuki/minsu/minsu_pcl/build && $(MAKE) -f src/CMakeFiles/passthrough.dir/build.make src/CMakeFiles/passthrough.dir/passthrough.o
 .PHONY : passthrough.o
@@ -396,6 +425,7 @@ help:
 	@echo "... exam_planar_seg"
 	@echo "... example"
 	@echo "... extract_indices"
+	@echo "... extract_sphere"
 	@echo "... passthrough"
 	@echo "... pcl_pub"
 	@echo "... pcl_sub"
@@ -415,6 +445,9 @@ help:
 	@echo "... extract_indices.o"
 	@echo "... extract_indices.i"
 	@echo "... extract_indices.s"
+	@echo "... extract_sphere.o"
+	@echo "... extract_sphere.i"
+	@echo "... extract_sphere.s"
 	@echo "... passthrough.o"
 	@echo "... passthrough.i"
 	@echo "... passthrough.s"

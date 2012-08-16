@@ -343,6 +343,19 @@ extract_indices/fast:
 .PHONY : extract_indices/fast
 
 #=============================================================================
+# Target rules for targets named extract_sphere
+
+# Build rule for target.
+extract_sphere: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 extract_sphere
+.PHONY : extract_sphere
+
+# fast build rule for target.
+extract_sphere/fast:
+	$(MAKE) -f src/CMakeFiles/extract_sphere.dir/build.make src/CMakeFiles/extract_sphere.dir/build
+.PHONY : extract_sphere/fast
+
+#=============================================================================
 # Target rules for targets named passthrough
 
 # Build rule for target.
@@ -447,6 +460,7 @@ help:
 	@echo "... exam_planar_seg"
 	@echo "... example"
 	@echo "... extract_indices"
+	@echo "... extract_sphere"
 	@echo "... passthrough"
 	@echo "... pcl_pub"
 	@echo "... pcl_sub"

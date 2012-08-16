@@ -524,6 +524,7 @@ src/all: src/CMakeFiles/exam_extract_indices.dir/all
 src/all: src/CMakeFiles/exam_planar_seg.dir/all
 src/all: src/CMakeFiles/example.dir/all
 src/all: src/CMakeFiles/extract_indices.dir/all
+src/all: src/CMakeFiles/extract_sphere.dir/all
 src/all: src/CMakeFiles/passthrough.dir/all
 src/all: src/CMakeFiles/pcl_pub.dir/all
 src/all: src/CMakeFiles/pcl_sub.dir/all
@@ -537,6 +538,7 @@ src/clean: src/CMakeFiles/exam_extract_indices.dir/clean
 src/clean: src/CMakeFiles/exam_planar_seg.dir/clean
 src/clean: src/CMakeFiles/example.dir/clean
 src/clean: src/CMakeFiles/extract_indices.dir/clean
+src/clean: src/CMakeFiles/extract_sphere.dir/clean
 src/clean: src/CMakeFiles/passthrough.dir/clean
 src/clean: src/CMakeFiles/pcl_pub.dir/clean
 src/clean: src/CMakeFiles/pcl_sub.dir/clean
@@ -690,13 +692,48 @@ clean: src/CMakeFiles/extract_indices.dir/clean
 .PHONY : clean
 
 #=============================================================================
+# Target rules for target src/CMakeFiles/extract_sphere.dir
+
+# All Build rule for target.
+src/CMakeFiles/extract_sphere.dir/all: CMakeFiles/rosbuild_precompile.dir/all
+	$(MAKE) -f src/CMakeFiles/extract_sphere.dir/build.make src/CMakeFiles/extract_sphere.dir/depend
+	$(MAKE) -f src/CMakeFiles/extract_sphere.dir/build.make src/CMakeFiles/extract_sphere.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  5
+	@echo "Built target extract_sphere"
+.PHONY : src/CMakeFiles/extract_sphere.dir/all
+
+# Include target in all.
+all: src/CMakeFiles/extract_sphere.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+src/CMakeFiles/extract_sphere.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/extract_sphere.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles 0
+.PHONY : src/CMakeFiles/extract_sphere.dir/rule
+
+# Convenience name for target.
+extract_sphere: src/CMakeFiles/extract_sphere.dir/rule
+.PHONY : extract_sphere
+
+# clean rule for target.
+src/CMakeFiles/extract_sphere.dir/clean:
+	$(MAKE) -f src/CMakeFiles/extract_sphere.dir/build.make src/CMakeFiles/extract_sphere.dir/clean
+.PHONY : src/CMakeFiles/extract_sphere.dir/clean
+
+# clean rule for target.
+clean: src/CMakeFiles/extract_sphere.dir/clean
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target src/CMakeFiles/passthrough.dir
 
 # All Build rule for target.
 src/CMakeFiles/passthrough.dir/all: CMakeFiles/rosbuild_precompile.dir/all
 	$(MAKE) -f src/CMakeFiles/passthrough.dir/build.make src/CMakeFiles/passthrough.dir/depend
 	$(MAKE) -f src/CMakeFiles/passthrough.dir/build.make src/CMakeFiles/passthrough.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  5
+	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  6
 	@echo "Built target passthrough"
 .PHONY : src/CMakeFiles/passthrough.dir/all
 
@@ -731,7 +768,7 @@ clean: src/CMakeFiles/passthrough.dir/clean
 src/CMakeFiles/pcl_pub.dir/all: CMakeFiles/rosbuild_precompile.dir/all
 	$(MAKE) -f src/CMakeFiles/pcl_pub.dir/build.make src/CMakeFiles/pcl_pub.dir/depend
 	$(MAKE) -f src/CMakeFiles/pcl_pub.dir/build.make src/CMakeFiles/pcl_pub.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  6
+	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  7
 	@echo "Built target pcl_pub"
 .PHONY : src/CMakeFiles/pcl_pub.dir/all
 
@@ -766,7 +803,7 @@ clean: src/CMakeFiles/pcl_pub.dir/clean
 src/CMakeFiles/pcl_sub.dir/all: CMakeFiles/rosbuild_precompile.dir/all
 	$(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/depend
 	$(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  7
+	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  8
 	@echo "Built target pcl_sub"
 .PHONY : src/CMakeFiles/pcl_sub.dir/all
 
@@ -801,7 +838,7 @@ clean: src/CMakeFiles/pcl_sub.dir/clean
 src/CMakeFiles/planar_segmentation.dir/all: CMakeFiles/rosbuild_precompile.dir/all
 	$(MAKE) -f src/CMakeFiles/planar_segmentation.dir/build.make src/CMakeFiles/planar_segmentation.dir/depend
 	$(MAKE) -f src/CMakeFiles/planar_segmentation.dir/build.make src/CMakeFiles/planar_segmentation.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  8
+	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  9
 	@echo "Built target planar_segmentation"
 .PHONY : src/CMakeFiles/planar_segmentation.dir/all
 
@@ -836,7 +873,7 @@ clean: src/CMakeFiles/planar_segmentation.dir/clean
 src/CMakeFiles/read_pcd_file.dir/all: CMakeFiles/rosbuild_precompile.dir/all
 	$(MAKE) -f src/CMakeFiles/read_pcd_file.dir/build.make src/CMakeFiles/read_pcd_file.dir/depend
 	$(MAKE) -f src/CMakeFiles/read_pcd_file.dir/build.make src/CMakeFiles/read_pcd_file.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  9
+	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  10
 	@echo "Built target read_pcd_file"
 .PHONY : src/CMakeFiles/read_pcd_file.dir/all
 
@@ -871,7 +908,7 @@ clean: src/CMakeFiles/read_pcd_file.dir/clean
 src/CMakeFiles/statistical_removal.dir/all: CMakeFiles/rosbuild_precompile.dir/all
 	$(MAKE) -f src/CMakeFiles/statistical_removal.dir/build.make src/CMakeFiles/statistical_removal.dir/depend
 	$(MAKE) -f src/CMakeFiles/statistical_removal.dir/build.make src/CMakeFiles/statistical_removal.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  10
+	$(CMAKE_COMMAND) -E cmake_progress_report /opt/kobuki/minsu/minsu_pcl/build/CMakeFiles  11
 	@echo "Built target statistical_removal"
 .PHONY : src/CMakeFiles/statistical_removal.dir/all
 
