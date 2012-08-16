@@ -110,7 +110,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   segmentation_from_normals.setInputNormals (cloud_normals);
   */
 
-  pcl::toROSMsg (*remove_transformed_cloud, *output_cloud);
+  pcl::toROSMsg (*transformed_cloud, *output_cloud);
   pub.publish(output_cloud);
 
 }
