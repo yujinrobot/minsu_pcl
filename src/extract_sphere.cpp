@@ -34,6 +34,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> normal_estimation;
   pcl::SACSegmentationFromNormals<pcl::PointXYZ, pcl::Normal> segmentation_from_normals;
   pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ> ());
+  pcl::search::KdTree<pcl::PointXYZ>::Ptr tree2 (new pcl::search::KdTree<pcl::PointXYZ> ());
 
   // The plane and sphere coefficients
   pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
@@ -69,13 +70,13 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   pcl::fromROSMsg (*cloud, *transformed_cloud);
 
 //  pass through filter
-  pass.setInputCloud (cloud);
-  pass.setFilterFieldName ("z");
-  pass.setFilterLimits (0, 1.5);
-  pass.filter (*cloud_filtered);
-
-  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-  pcl::fromROSMsg (*cloud_filtered, *transformed_cloud);
+//  pass.setInputCloud (cloud);
+//  pass.setFilterFieldName ("z");
+//  pass.setFilterLimits (0, 1.5);
+//  pass.filter (*cloud_filtered);
+//
+//  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
+//  pcl::fromROSMsg (*cloud_filtered, *transformed_cloud);
 
   // Estimate point normals
   normal_estimation.setSearchMethod (tree);
@@ -131,21 +132,24 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   rest_pub.publish(rest_output_cloud);
 
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-  pcl::fromROSMsg (*rest_output_cloud, *cylinder_cloud);
+//  pcl::fromROSMsg (*rest_output_cloud, *cylinder_cloud);
 
+  // pass through filter
+  pass.setInputCloud (cloud);
+  pass.setFilterFieldName ("z");
+  pass.setFilterLimits (0, 1.5);
+  pass.filter (*cloud_filtered);
+
+  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
+  pcl::fromROSMsg (*cloud_filtered, *cylinder_cloud);
 
   // Estimate point normals
-  normal_estimation.setSearchMethod (tree);
+  normal_estimation.setSearchMethod (tree2);
   normal_estimation.setInputCloud (cylinder_cloud);
   normal_estimation.setKSearch (50);
   normal_estimation.compute (*cloud_normals2);
 
-  std::cout << "cloud size : " << cloud->width * cloud->height << std::endl;
-  std::cout << "cloud_normals2 size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
-
-
-
-  // Create the segmentation object for sphere segmentation and set all the paopennirameters
+  // Create the segmentation object for sphere segmentation and set all the parameters
   segmentation_from_normals.setOptimizeCoefficients (true);
   //segmentation_from_normals.setModelType (pcl::SACMODEL_SPHERE);
   segmentation_from_normals.setModelType (pcl::SACMODEL_CYLINDER);
@@ -173,6 +177,10 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
   pcl::toROSMsg (*cloud_sphere, *sphere_output_cloud);
   sphere_pub.publish(sphere_output_cloud);
+
+  std::cout << "cloud size : " << cloud->width * cloud->height << std::endl;
+  std::cout << "cloud_normals size : " << cloud_normals->width * cloud_normals->height << std::endl;
+  std::cout << "cloud_normals2 size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
 
 }
 
