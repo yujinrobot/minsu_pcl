@@ -159,7 +159,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   // pass through filter
   pass.setInputCloud (rest_output_cloud);
   pass.setFilterFieldName ("z");
-  pass.setFilterLimits (0, 3.0);
+  pass.setFilterLimits (0, 2.0);
   pass.filter (*rest_cloud_filtered);
 
 
@@ -174,7 +174,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   pcl::fromROSMsg (*rest_cloud_filtered, *cylinder_cloud);
 
   // Estimate point normals
-  normal_estimation.setSearchMethod (tree);
+  normal_estimation.setSearchMethod (tree2);
   normal_estimation.setInputCloud (cylinder_cloud);
   normal_estimation.setKSearch (50);
   normal_estimation.compute (*cloud_normals2);
@@ -257,7 +257,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   std::cout << "cloud size : " << cloud->width * cloud->height << std::endl;
   std::cout << "cloud_normals size : " << cloud_normals->width * cloud_normals->height << std::endl;
   std::cout << "cloud_normals2 size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
-  //std::cout << "cloud_normals3 size : " << cloud_normals3->width * cloud_normals3->height << std::endl;
+  //std::cout << "cloud_normals3 size : " << cloud_normals3->widtcoefficients_cylinderh * cloud_normals3->height << std::endl;
 
 }
 
