@@ -142,6 +142,12 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
   pcl::fromROSMsg (*cloud_filtered, *cylinder_cloud);
 
+  // Estimate point normals
+  normal_estimation.setSearchMethod (tree);
+  normal_estimation.setInputCloud (cylinder_cloud);
+  normal_estimation.setKSearch (50);
+  normal_estimation.compute (*cloud_normals);
+
 
 
 
