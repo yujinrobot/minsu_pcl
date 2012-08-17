@@ -159,7 +159,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   // pass through filter
   pass.setInputCloud (rest_output_cloud);
   pass.setFilterFieldName ("z");
-  pass.setFilterLimits (0, 1.5);
+  pass.setFilterLimits (0, 2.5);
   pass.filter (*rest_cloud_filtered);
 
 
