@@ -101,7 +101,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   extract_indices.setInputCloud (transformed_cloud);
   extract_indices.setIndices (inliers_plane);
   extract_indices.setNegative (false);
-  extract_indices.filter (*cloud_plane);transformed_cloud
+  extract_indices.filter (*cloud_plane);
 
   pcl::toROSMsg (*cloud_plane, *plane_output_cloud);
   plane_pub.publish(plane_output_cloud);
