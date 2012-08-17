@@ -159,7 +159,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   // pass through filter
   pass.setInputCloud (rest_output_cloud);
   pass.setFilterFieldName ("z");
-  pass.setFilterLimits (0, 2.0);
+  pass.setFilterLimits (0, 1.5);
   pass.filter (*rest_cloud_filtered);
 
 
@@ -181,7 +181,6 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
   // Create the segmentation object for sphere segmentation and set all the paopennirameters
   segmentation_from_normals.setOptimizeCoefficients (true);
-  //segmentation_from_normals.setModelType (pcl::SACMODEL_SPHERE);
   segmentation_from_normals.setModelType (pcl::SACMODEL_CYLINDER);
   segmentation_from_normals.setMethodType (pcl::SAC_RANSAC);
   segmentation_from_normals.setNormalDistanceWeight (0.1);
