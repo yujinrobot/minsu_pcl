@@ -146,7 +146,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   normal_estimation.setSearchMethod (tree);
   normal_estimation.setInputCloud (cylinder_cloud);
   normal_estimation.setKSearch (50);
-  normal_estimation.compute (*cloud_normals);
+  normal_estimation.compute (*cloud_normals2);
 
 
 
@@ -161,7 +161,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   segmentation_from_normals.setDistanceThreshold (0.05);
   segmentation_from_normals.setRadiusLimits (0, 0.5);
   segmentation_from_normals.setInputCloud (cylinder_cloud);
-  segmentation_from_normals.setInputNormals (cloud_normals);
+  segmentation_from_normals.setInputNormals (cloud_normals2);
 
   // Obtain the sphere inliers and coefficients
   segmentation_from_normals.segment (*inliers_sphere, *coefficients_sphere);
