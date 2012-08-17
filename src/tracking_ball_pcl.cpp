@@ -30,23 +30,31 @@ void cloudCb(const sensor_msgs::PointCloud2::Ptr& cloud)
   {
     //printf ("\t(%f, %f, %f)\n", pt.x, pt.y, pt.z);
 
-    if(!std::isnan(z)) {
-      z += pt.z;
-      n++;
+//    if(!std::isnan(z)) {
+//      z += pt.z;
+//      n++;
+//    }
+//
+//    if(n) {
+//      z /= n;
+//
+//      printf ("\t(z : %f) (n : %d)\n", z, n);
+//      geometry_msgs::Twist cmd;
+//      if(z < 2.0) {
+//        cmd.linear.x = 0.2;
+//      } else if (z < 1.25) {
+//        pub_cmd.publish(geometry_msgs::Twist());
+//      }
+//      pub_cmd.publish(cmd);
+//    }
+    geometry_msgs::Twist cmd;
+    if(pt.z < 2.0) {
+      cmd.linear.x = 0.2;
+    } else if (pt.z < 1.25) {
+      pub_cmd.publish(geometry_msgs::Twist());
     }
-
-    if(n) {
-      z /= n;
-
-      printf ("\t(z : %f) (n : %d)\n", z, n);
-      geometry_msgs::Twist cmd;
-      if(z < 2.0) {
-        cmd.linear.x = 0.2;
-      } else if (z < 1.25) {
-        pub_cmd.publish(geometry_msgs::Twist());
-      }
-      pub_cmd.publish(cmd);
-    }
+    pub_cmd.publish(cmd);
+    printf ("\t(z : %f)\n", pt.z);
 
   }
 }
