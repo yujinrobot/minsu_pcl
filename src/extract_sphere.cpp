@@ -135,7 +135,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 //  pcl::fromROSMsg (*rest_output_cloud, *cylinder_cloud);
 
   // pass through filter
-  pass.setInputCloud (cloud);
+  pass.setInputCloud (rest_output_cloud);
   pass.setFilterFieldName ("z");
   pass.setFilterLimits (0, 1.5);
   pass.filter (*cloud_filtered);
