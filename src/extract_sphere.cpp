@@ -131,7 +131,19 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   rest_pub.publish(rest_output_cloud);
 
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-  pcl::fromROSMsg (*rest_output_cloud, *cylinder_cloud);
+//  pcl::fromROSMsg (*rest_output_cloud, *cylinder_cloud);
+
+  // pass through filter
+  pass.setInputCloud (cloud);
+  pass.setFilterFieldName ("z");
+  pass.setFilterLimits (0, 1.5);
+  pass.filter (*cloud_filtered);
+
+  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
+  pcl::fromROSMsg (*cloud_filtered, *cylinder_cloud);
+
+
+
 
   // Create the segmentation object for sphere segmentation and set all the paopennirameters
   segmentation_from_normals.setOptimizeCoefficients (true);
