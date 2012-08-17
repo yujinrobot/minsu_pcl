@@ -20,6 +20,7 @@
 
 ros::Publisher rest_pub;
 ros::Publisher plane_pub;
+ros::Publisher cylinder_pub;
 ros::Publisher sphere_pub;
 
 void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
@@ -39,35 +40,50 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   // The plane and sphere coefficients
   pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
   pcl::ModelCoefficients::Ptr coefficients_plane (new pcl::ModelCoefficients ());
+  pcl::ModelCoefficients::Ptr coefficients_cylinder (new pcl::ModelCoefficients ());
   pcl::ModelCoefficients::Ptr coefficients_sphere (new pcl::ModelCoefficients ());
 
-  // The plane and sphere inliers  // The point clouds
+  // The plane and sphere inliers
   pcl::PointIndices::Ptr inliers (new pcl::PointIndices ());
   pcl::PointIndices::Ptr inliers_plane (new pcl::PointIndices ());
+  pcl::PointIndices::Ptr inliers_cylinder (new pcl::PointIndices ());
   pcl::PointIndices::Ptr inliers_sphere (new pcl::PointIndices ());
+
   // The point clouds
-  //sensor_msgs::PointCloud2::Ptr downsampled (new sensor_msgs::PointCloud2);
-  //pcl::PointCloud<pcl::PointXYZ>::Ptr extract_cloud (new pcl::PointCloud<pcl::PointXYZ>);
-
-
-
+  sensor_msgs::PointCloud2::Ptr voxelgrid_filtered (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr plane_output_cloud (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr rest_output_cloud (new sensor_msgs::PointCloud2);
+  sensor_msgs::PointCloud2::Ptr rest_cloud_filtered (new sensor_msgs::PointCloud2);
+  sensor_msgs::PointCloud2::Ptr cylinder_output_cloud (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr sphere_output_cloud (new sensor_msgs::PointCloud2);
 
-  sensor_msgs::PointCloud2::Ptr cloud_filtered (new sensor_msgs::PointCloud2);
+
+  // The PointCloud
   pcl::PointCloud<pcl::PointXYZ>::Ptr transformed_cloud (new pcl::PointCloud<pcl::PointXYZ>);
-  pcl::PointCloud<pcl::PointXYZ>::Ptr cylinder_cloud (new pcl::PointCloud<pcl::PointXYZ>);
-  pcl::PointCloud<pcl::PointXYZ>::Ptr remove_transformed_cloud (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plane (new pcl::PointCloud<pcl::PointXYZ>);
-  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_sphere (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr remove_transformed_cloud (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr cylinder_cloud (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr cylinder_output (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr sphere_cloud (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr sphere_output (new pcl::PointCloud<pcl::PointXYZ>);
 
   // The cloud normals
-  pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal> ());
-  pcl::PointCloud<pcl::Normal>::Ptr cloud_normals2 (new pcl::PointCloud<pcl::Normal> ());
+  pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal> ());        // for plane
+  pcl::PointCloud<pcl::Normal>::Ptr cloud_normals2 (new pcl::PointCloud<pcl::Normal> ());       // for cylinder
+  pcl::PointCloud<pcl::Normal>::Ptr cloud_normals3 (new pcl::PointCloud<pcl::Normal> ());       // for sphere
+
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // Create VoxelGrid filtering
+  voxel_grid.setInputCloud (cloud);
+  voxel_grid.setLeafSize (0.01, 0.01, 0.01);
+  voxel_grid.filter (*voxelgrid_filtered);
 
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-  pcl::fromROSMsg (*cloud, *transformed_cloud);
+  pcl::fromROSMsg (*voxelgrid_filtered, *transformed_cloud);
 
 //  pass through filter
 //  pass.setInputCloud (cloud);
@@ -137,11 +153,19 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   // pass through filter
   pass.setInputCloud (rest_output_cloud);
   pass.setFilterFieldName ("z");
-  pass.setFilterLimits (0, 2.0);
-  pass.filter (*cloud_filtered);
+  pass.setFilterLimits (0, 3.0);
+  pass.filter (*rest_cloud_filtered);
 
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
+   * for cylinder features
+   */
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  /*
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-  pcl::fromROSMsg (*cloud_filtered, *cylinder_cloud);
+  pcl::fromROSMsg (*rest_cloud_filtered, *cylinder_cloud);
 
   // Estimate point normals
   normal_estimation.setSearchMethod (tree);
@@ -162,25 +186,71 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   segmentation_from_normals.setInputNormals (cloud_normals2);
 
   // Obtain the sphere inliers and coefficients
-  segmentation_from_normals.segment (*inliers_sphere, *coefficients_sphere);
-  std::cerr << "Sphere coefficients: " << *coefficients_sphere << std::endl;
+  segmentation_from_normals.segment (*inliers_cylinder, *coefficients_cylinder);
+  std::cerr << "Sphere coefficients: " << *coefficients_cylinder << std::endl;
 
   // Publish the sphere cloud
   extract_indices.setInputCloud (cylinder_cloud);
-  extract_indices.setIndices (inliers_sphere);
+  extract_indices.setIndices (inliers_cylinder);
   extract_indices.setNegative (false);
-  extract_indices.filter (*cloud_sphere);
+  extract_indices.filter (*cylinder_output);
 
-  if (cloud_sphere->points.empty ())
+  if (cylinder_output->points.empty ())
      std::cerr << "Can't find the cylindrical component." << std::endl;
 
+  pcl::toROSMsg (*cylinder_output, *cylinder_output_cloud);
+  cylinder_pub.publish(cylinder_output_cloud);
+  */
 
-  pcl::toROSMsg (*cloud_sphere, *sphere_output_cloud);
-  sphere_pub.publish(sphere_output_cloud);
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
+   * for sphere features
+   */
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
+  pcl::fromROSMsg (*rest_cloud_filtered, *sphere_cloud);
+
+  // Estimate point normals
+  normal_estimation.setSearchMethod (tree);
+  normal_estimation.setInputCloud (sphere_cloud);
+  normal_estimation.setKSearch (50);
+  normal_estimation.compute (*cloud_normals3);
+
+  // Create the segmentation object for sphere segmentation and set all the paopennirameters
+  segmentation_from_normals.setOptimizeCoefficients (true);
+  //segmentation_from_normals.setModelType (pcl::SACMODEL_SPHERE);
+  segmentation_from_normals.setModelType (pcl::SACMODEL_SPHERE);
+  segmentation_from_normals.setMethodType (pcl::SAC_RANSAC);
+  segmentation_from_normals.setNormalDistanceWeight (0.1);
+  segmentation_from_normals.setMaxIterations (10000);
+  segmentation_from_normals.setDistanceThreshold (0.05);
+  segmentation_from_normals.setRadiusLimits (0, 0.5);
+  segmentation_from_normals.setInputCloud (sphere_cloud);
+  segmentation_from_normals.setInputNormals (cloud_normals3);
+
+  // Obtain the sphere inliers and coefficients
+  segmentation_from_normals.segment (*inliers_sphere, *coefficients_cylinder);
+  std::cerr << "Sphere coefficients: " << *coefficients_cylinder << std::endl;
+
+  // Publish the sphere cloud
+  extract_indices.setInputCloud (sphere_cloud);
+  extract_indices.setIndices (inliers_sphere);
+  extract_indices.setNegative (false);
+  extract_indices.filter (*sphere_output);
+
+  if (sphere_output->points.empty ())
+     std::cerr << "Can't find the cylindrical component." << std::endl;
+
+  pcl::toROSMsg (*sphere_output, *sphere_output_cloud);
+  cylinder_pub.publish(sphere_output_cloud);
+
+
 
   std::cout << "cloud size : " << cloud->width * cloud->height << std::endl;
-  std::cout << "cloud_normals2 size : " << cloud_normals->width * cloud_normals->height << std::endl;
-  std::cout << "cloud_normals2 size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
+  std::cout << "cloud_normals size : " << cloud_normals->width * cloud_normals->height << std::endl;
+  //std::cout << "cloud_normals2 size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
+  std::cout << "cloud_normals3 size : " << cloud_normals3->width * cloud_normals3->height << std::endl;
 
 }
 
@@ -194,6 +264,7 @@ main (int argc, char** argv)
    ros::Subscriber sub = nh.subscribe("camera/depth/points", 1, callback);
    rest_pub = nh.advertise<sensor_msgs::PointCloud2> ("rest_cloud_filtered", 1);
    plane_pub = nh.advertise<sensor_msgs::PointCloud2> ("plane_cloud_filtered", 1);
+   cylinder_pub = nh.advertise<sensor_msgs::PointCloud2> ("cylinder_cloud_filtered", 1);
    sphere_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_cloud_filtered", 1);
 
    ros::spin();
