@@ -252,9 +252,9 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
 
   std::cout << "cloud size : " << cloud->width * cloud->height << std::endl;
-  std::cout << "cloud_normals size : " << cloud_normals->width * cloud_normals->height << std::endl;
-  //std::cout << "cloud_normals2 size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
-  std::cout << "cloud_normals3 size : " << cloud_normals3->width * cloud_normals3->height << std::endl;
+  std::cout << "plane size : " << cloud_normals->width * cloud_normals->height << std::endl;
+  //std::cout << "cylinder size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
+  std::cout << "sphere size : " << cloud_normals3->width * cloud_normals3->height << std::endl;
 
 }
 

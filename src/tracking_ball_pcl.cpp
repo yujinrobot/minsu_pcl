@@ -27,6 +27,9 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "tracking_ball_pcl");
   ros::NodeHandle nh;
   ros::Subscriber sub_cloud = nh.subscribe("sphere_cloud", 1, cloudCb);
+
+  ros::spin();
+
   return 0;
 
 }
