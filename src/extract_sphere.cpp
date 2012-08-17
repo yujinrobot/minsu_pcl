@@ -118,7 +118,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
   // Obtain the plane inliers and coefficients
   segmentation_from_normals.segment (*inliers_plane, *coefficients_plane);
-  std::cerr << "Plane coefficients: " << *coefficients_plane << std::endl;
+  //std::cerr << "Plane coefficients: " << *coefficients_plane << std::endl;
 
   // Extract the planar inliers from the input cloud
   extract_indices.setInputCloud (transformed_cloud);
@@ -192,7 +192,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
   // Obtain the sphere inliers and coefficients
   segmentation_from_normals.segment (*inliers_cylinder, *coefficients_cylinder);
-  std::cerr << "Cylinder coefficients: " << *coefficients_cylinder << std::endl;
+  //std::cerr << "Cylinder coefficients: " << *coefficients_cylinder << std::endl;
 
   // Publish the sphere cloud
   extract_indices.setInputCloud (cylinder_cloud);
@@ -237,7 +237,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
   // Obtain the sphere inliers and coefficients
   segmentation_from_normals.segment (*inliers_sphere, *coefficients_sphere);
-  std::cerr << "Sphere coefficients: " << *coefficients_sphere << std::endl;
+  //std::cerr << "Sphere coefficients: " << *coefficients_sphere << std::endl;
 
   // Publish the sphere cloud
   extract_indices.setInputCloud (sphere_cloud);

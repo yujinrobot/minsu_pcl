@@ -10,3 +10,4 @@
 #rosbuild_add_executable(extract_indices extract_indices.cpp)
 rosbuild_add_executable(extract_sphere extract_sphere.cpp)
 rosbuild_add_executable(test test.cpp)
+rosbuild_add_executable(tracking_ball_pcl tracking_ball_pcl.cpp)
