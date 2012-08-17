@@ -78,13 +78,13 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   //
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  // Create VoxelGrid filtering
-  voxel_grid.setInputCloud (cloud);
-  voxel_grid.setLeafSize (0.01, 0.01, 0.01);
-  voxel_grid.filter (*voxelgrid_filtered);
-
-  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-  pcl::fromROSMsg (*voxelgrid_filtered, *transformed_cloud);
+//  // Create VoxelGrid filtering
+//  voxel_grid.setInputCloud (cloud);
+//  voxel_grid.setLeafSize (0.01, 0.01, 0.01);
+//  voxel_grid.filter (*voxelgrid_filtered);
+//
+//  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
+//  pcl::fromROSMsg (*voxelgrid_filtered, *transformed_cloud);
 
 
 //  pass through filter
@@ -97,8 +97,8 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 //  pcl::fromROSMsg (*cloud_filtered, *transformed_cloud);
 
 
-//  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-//  pcl::fromROSMsg (*cloud, *transformed_cloud);
+  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
+  pcl::fromROSMsg (*cloud, *transformed_cloud);
 
   // Estimate point normals
   normal_estimation.setSearchMethod (tree);
