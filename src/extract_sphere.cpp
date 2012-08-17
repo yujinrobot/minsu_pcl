@@ -268,10 +268,10 @@ main (int argc, char** argv)
    ros::init (argc, argv, "extract_indices");
    ros::NodeHandle nh;
    ros::Subscriber sub = nh.subscribe("camera/depth/points", 1, callback);
-   rest_pub = nh.advertise<sensor_msgs::PointCloud2> ("rest_cloud_filtered", 1);
-   plane_pub = nh.advertise<sensor_msgs::PointCloud2> ("plane_cloud_filtered", 1);
-   cylinder_pub = nh.advertise<sensor_msgs::PointCloud2> ("cylinder_cloud_filtered", 1);
-   sphere_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_cloud_filtered", 1);
+   rest_pub = nh.advertise<sensor_msgs::PointCloud2> ("rest_cloud", 1);
+   plane_pub = nh.advertise<sensor_msgs::PointCloud2> ("plane_cloud", 1);
+   cylinder_pub = nh.advertise<sensor_msgs::PointCloud2> ("cylinder_cloud", 1);
+   sphere_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_cloud", 1);
 
    ros::spin();
 
