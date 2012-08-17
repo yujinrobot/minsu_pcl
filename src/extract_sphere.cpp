@@ -271,7 +271,7 @@ main (int argc, char** argv)
    rest_pub = nh.advertise<sensor_msgs::PointCloud2> ("rest_cloud_filtered", 1);
    plane_pub = nh.advertise<sensor_msgs::PointCloud2> ("plane_cloud_filtered", 1);
    cylinder_pub = nh.advertise<sensor_msgs::PointCloud2> ("cylinder_cloud_filtered", 1);
-   //sphere_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_cloud_filtered", 1);
+   sphere_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_cloud_filtered", 1);
 
    ros::spin();
 
