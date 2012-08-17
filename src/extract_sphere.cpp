@@ -230,8 +230,8 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   segmentation_from_normals.setInputNormals (cloud_normals3);
 
   // Obtain the sphere inliers and coefficients
-  segmentation_from_normals.segment (*inliers_sphere, *coefficients_cylinder);
-  std::cerr << "Sphere coefficients: " << *coefficients_cylinder << std::endl;
+  segmentation_from_normals.segment (*inliers_sphere, *coefficients_sphere);
+  std::cerr << "Sphere coefficients: " << *coefficients_sphere << std::endl;
 
   // Publish the sphere cloud
   extract_indices.setInputCloud (sphere_cloud);
