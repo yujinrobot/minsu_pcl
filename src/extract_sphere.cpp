@@ -213,7 +213,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
    */
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  /*
+
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
   pcl::fromROSMsg (*rest_cloud_filtered, *sphere_cloud);
 
@@ -250,13 +250,13 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
   pcl::toROSMsg (*sphere_output, *sphere_output_cloud);
   sphere_pub.publish(sphere_output_cloud);
-  */
+
 
 
   std::cout << "cloud size : " << cloud->width * cloud->height << std::endl;
   std::cout << "cloud_normals size : " << cloud_normals->width * cloud_normals->height << std::endl;
   std::cout << "cloud_normals2 size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
-  //std::cout << "cloud_normals3 size : " << cloud_normals3->widtcoefficients_cylinderh * cloud_normals3->height << std::endl;
+  std::cout << "cloud_normals3 size : " << cloud_normals3->width * cloud_normals3->height << std::endl;
 
 }
 
