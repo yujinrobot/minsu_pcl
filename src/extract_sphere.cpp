@@ -101,7 +101,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   extract_indices.setInputCloud (transformed_cloud);
   extract_indices.setIndices (inliers_plane);
   extract_indices.setNegative (false);
-  extract_indices.filter (*cloud_plane);
+  extract_indices.filter (*cloud_plane);transformed_cloud
 
   pcl::toROSMsg (*cloud_plane, *plane_output_cloud);
   plane_pub.publish(plane_output_cloud);
@@ -125,7 +125,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   extract_normals.setIndices (inliers_plane);
   extract_normals.filter (*cloud_normals2);
 */
-  std::cout << "size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
+
   // publish result of Removal the planar inliers, extract the rest
   pcl::toROSMsg (*transformed_cloud, *rest_output_cloud);
   rest_pub.publish(rest_output_cloud);
@@ -148,6 +148,8 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   normal_estimation.setKSearch (50);
   normal_estimation.compute (*cloud_normals2);
 
+  std::cout << "cloud size : " << cloud->width * cloud->height << std::endl;
+  std::cout << "cloud_normals2 size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
 
 
 
