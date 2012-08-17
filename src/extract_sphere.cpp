@@ -36,6 +36,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   pcl::SACSegmentationFromNormals<pcl::PointXYZ, pcl::Normal> segmentation_from_normals;
   pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ> ());
   pcl::search::KdTree<pcl::PointXYZ>::Ptr tree2 (new pcl::search::KdTree<pcl::PointXYZ> ());
+  pcl::search::KdTree<pcl::PointXYZ>::Ptr tree3 (new pcl::search::KdTree<pcl::PointXYZ> ());
 
   // The plane and sphere coefficients
   pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
@@ -163,7 +164,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
    */
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  /*
+
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
   pcl::fromROSMsg (*rest_cloud_filtered, *cylinder_cloud);
 
@@ -187,7 +188,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
   // Obtain the sphere inliers and coefficients
   segmentation_from_normals.segment (*inliers_cylinder, *coefficients_cylinder);
-  std::cerr << "Sphere coefficients: " << *coefficients_cylinder << std::endl;
+  std::cerr << "Cylinder coefficients: " << *coefficients_cylinder << std::endl;
 
   // Publish the sphere cloud
   extract_indices.setInputCloud (cylinder_cloud);
@@ -200,7 +201,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
   pcl::toROSMsg (*cylinder_output, *cylinder_output_cloud);
   cylinder_pub.publish(cylinder_output_cloud);
-  */
+
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /*
@@ -212,7 +213,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   pcl::fromROSMsg (*rest_cloud_filtered, *sphere_cloud);
 
   // Estimate point normals
-  normal_estimation.setSearchMethod (tree);
+  normal_estimation.setSearchMethod (tree3);
   normal_estimation.setInputCloud (sphere_cloud);
   normal_estimation.setKSearch (50);
   normal_estimation.compute (*cloud_normals3);
@@ -240,16 +241,16 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   extract_indices.filter (*sphere_output);
 
   if (sphere_output->points.empty ())
-     std::cerr << "Can't find the cylindrical component." << std::endl;
+     std::cerr << "Can't find the sphere component." << std::endl;
 
   pcl::toROSMsg (*sphere_output, *sphere_output_cloud);
-  cylinder_pub.publish(sphere_output_cloud);
+  sphere_pub.publish(sphere_output_cloud);
 
 
 
   std::cout << "cloud size : " << cloud->width * cloud->height << std::endl;
   std::cout << "cloud_normals size : " << cloud_normals->width * cloud_normals->height << std::endl;
-  //std::cout << "cloud_normals2 size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
+  std::cout << "cloud_normals2 size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
   std::cout << "cloud_normals3 size : " << cloud_normals3->width * cloud_normals3->height << std::endl;
 
 }
