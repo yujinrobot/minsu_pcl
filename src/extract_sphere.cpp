@@ -162,14 +162,13 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   pass.setFilterLimits (0, 2.5);
   pass.filter (*rest_cloud_filtered);
 
-
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /*
    * for cylinder features
    */
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+  /*
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
   pcl::fromROSMsg (*rest_cloud_filtered, *cylinder_cloud);
 
@@ -205,14 +204,13 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
   pcl::toROSMsg (*cylinder_output, *cylinder_output_cloud);
   cylinder_pub.publish(cylinder_output_cloud);
-
+  */
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /*
    * for sphere features
    */
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
   pcl::fromROSMsg (*rest_cloud_filtered, *sphere_cloud);
@@ -231,7 +229,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   segmentation_from_normals.setNormalDistanceWeight (0.1);
   segmentation_from_normals.setMaxIterations (10000);
   segmentation_from_normals.setDistanceThreshold (0.05);
-  segmentation_from_normals.setRadiusLimits (0, 0.5);
+  segmentation_from_normals.setRadiusLimits (0, 0.2);
   segmentation_from_normals.setInputCloud (sphere_cloud);
   segmentation_from_normals.setInputNormals (cloud_normals3);
 
@@ -255,7 +253,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
   std::cout << "cloud size : " << cloud->width * cloud->height << std::endl;
   std::cout << "cloud_normals size : " << cloud_normals->width * cloud_normals->height << std::endl;
-  std::cout << "cloud_normals2 size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
+  //std::cout << "cloud_normals2 size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
   std::cout << "cloud_normals3 size : " << cloud_normals3->width * cloud_normals3->height << std::endl;
 
 }
@@ -270,7 +268,7 @@ main (int argc, char** argv)
    ros::Subscriber sub = nh.subscribe("camera/depth/points", 1, callback);
    rest_pub = nh.advertise<sensor_msgs::PointCloud2> ("rest_cloud", 1);
    plane_pub = nh.advertise<sensor_msgs::PointCloud2> ("plane_cloud", 1);
-   cylinder_pub = nh.advertise<sensor_msgs::PointCloud2> ("cylinder_cloud", 1);
+   //cylinder_pub = nh.advertise<sensor_msgs::PointCloud2> ("cylinder_cloud", 1);
    sphere_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_cloud", 1);
 
    ros::spin();
