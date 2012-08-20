@@ -25,7 +25,10 @@ ros::Publisher sphere_pub;
 
 void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 {
-  ros::Time start = ros::Time::now();
+  ros::Time whole_start = ros::Time::now();
+
+  ros::Time declare_types_start = ros::Time::now();
+
   // filter
   pcl::VoxelGrid<sensor_msgs::PointCloud2> voxel_grid;
   pcl::PassThrough<sensor_msgs::PointCloud2> pass;
@@ -75,6 +78,10 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   pcl::PointCloud<pcl::Normal>::Ptr cloud_normals3 (new pcl::PointCloud<pcl::Normal> ());       // for sphere
 
 
+  ros::Time declare_types_end = ros::Time::now();
+  std::cout << "declare types time : " << declare_types_end - declare_types_start << " sec" << std::endl;
+
+
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,6 +105,8 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 //  pcl::fromROSMsg (*cloud_filtered, *transformed_cloud);
 
 
+  ros::Time estimate_start = ros::Time::now();
+
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
   pcl::fromROSMsg (*cloud, *transformed_cloud);
 
@@ -106,6 +115,11 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   normal_estimation.setInputCloud (transformed_cloud);
   normal_estimation.setKSearch (50);
   normal_estimation.compute (*cloud_normals);
+
+  ros::Time estimate_end = ros::Time::now();
+
+
+  ros::Time plane_start = ros::Time::now();
 
   // Create the segmentation object for the planar model and set all the parameters
   segmentation_from_normals.setOptimizeCoefficients (true);
@@ -130,6 +144,9 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   pcl::toROSMsg (*cloud_plane, *plane_output_cloud);
   plane_pub.publish(plane_output_cloud);
 
+  ros::Time plane_end = ros::Time::now();
+
+
   // Remove the planar inliers, extract the rest
   //extract_indices.setNegative (true);
   //extract_indices.filter (*transformed_cloud);
@@ -137,6 +154,8 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   //extract_normals.setInputCloud (cloud_normals);
   //extract_normals.setIndices (inliers_plane);
   //extract_normals.filter (*cloud_normals);
+
+  ros::Time rest_pass_start = ros::Time::now();
 
   // Create the filtering object
   // Remove the planar inliers, extract the rest
@@ -162,6 +181,9 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   pass.setFilterFieldName ("z");
   pass.setFilterLimits (0, 2.5);
   pass.filter (*rest_cloud_filtered);
+
+  ros::Time rest_pass_end = ros::Time::now();
+
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /*
@@ -213,6 +235,9 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
    */
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+  ros::Time sphere_start = ros::Time::now();
+
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
   pcl::fromROSMsg (*rest_cloud_filtered, *sphere_cloud);
 
@@ -250,6 +275,9 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   pcl::toROSMsg (*sphere_output, *sphere_output_cloud);
   sphere_pub.publish(sphere_output_cloud);
 
+  ros::Time sphere_end = ros::Time::now();
+
+
 
 
   std::cout << "cloud size : " << cloud->width * cloud->height << std::endl;
@@ -257,11 +285,13 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   //std::cout << "cylinder size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
   std::cout << "sphere size : " << cloud_normals3->width * cloud_normals3->height << std::endl;
 
+  ros::Time whole_now = ros::Time::now();
+  std::cout << "whole time : " << std::setw(10) << whole_now - whole_start << " sec" << std::endl;
+  std::cout << "estimate time : " << std::setw(10) << estimate_end - estimate_start << " sec" << std::endl;
+  std::cout << "plane time : " << std::setw(10) << plane_end - plane_start << " sec" << std::endl;
+  std::cout << "rest and pass time : " << std::setw(10) << rest_pass_end - rest_pass_start << " sec" << std::endl;
+  std::cout << "sphere time : " << std::setw(10) << sphere_end - sphere_start << " sec" << std::endl;
   printf("\n");
-
-  ros::Time now = ros::Time::now();
-  std::cout << "time : " << now - start << " sec" << std::endl;
-
 }
 
 
