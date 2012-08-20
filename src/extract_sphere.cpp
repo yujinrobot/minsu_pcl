@@ -113,18 +113,18 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
    */
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  ros::Time estimate_start = ros::Time::now();
-
-  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-  pcl::fromROSMsg (*cloud, *transformed_cloud);
-
-  // Estimate point normals
-  normal_estimation.setSearchMethod (tree);
-  normal_estimation.setInputCloud (transformed_cloud);
-  normal_estimation.setKSearch (50);
-  normal_estimation.compute (*cloud_normals);
-
-  ros::Time estimate_end = ros::Time::now();
+//  ros::Time estimate_start = ros::Time::now();
+//
+//  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
+//  pcl::fromROSMsg (*cloud, *transformed_cloud);
+//
+//  // Estimate point normals
+//  normal_estimation.setSearchMethod (tree);
+//  normal_estimation.setInputCloud (transformed_cloud);
+//  normal_estimation.setKSearch (50);
+//  normal_estimation.compute (*cloud_normals);
+//
+//  ros::Time estimate_end = ros::Time::now();
 
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -163,18 +163,26 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
   ros::Time plane_start = ros::Time::now();
-  // Optional
+
+  pcl::fromROSMsg (*cloud, *transformed_cloud);
+
   seg.setOptimizeCoefficients (true);
-  // Mandatory
   seg.setModelType (pcl::SACMODEL_PLANE);
   seg.setMethodType (pcl::SAC_RANSAC);
-  //seg.setMaxIterations (1000);
+  seg.setMaxIterations (1000);
   seg.setDistanceThreshold (0.01);
   seg.setInputCloud (transformed_cloud);
-  seg.segment (*inliers, *coefficients);
-  pcl::toROSMsg (*transformed_cloud, *plane_output_cloud);
+  seg.segment (*inliers_plane, *coefficients_plane);
+
+
+  extract_indices.setInputCloud(transformed_cloud);
+  extract_indices.setIndices(inliers_plane);
+  extract_indices.setNegative(false);
+  extract_indices.filter(*cloud_plane);
+
+
+  pcl::toROSMsg (*cloud_plane, *plane_output_cloud);
   plane_pub.publish(plane_output_cloud);
   ros::Time plane_end = ros::Time::now();
 
@@ -316,7 +324,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   ros::Time whole_now = ros::Time::now();
   std::cout << "whole time         : " << whole_now - whole_start << " sec" << std::endl;
   std::cout << "declare types time : " << declare_types_end - declare_types_start << " sec" << std::endl;
-  std::cout << "estimate time      : " << estimate_end - estimate_start << " sec" << std::endl;
+  //std::cout << "estimate time      : " << estimate_end - estimate_start << " sec" << std::endl;
   std::cout << "plane time         : " << plane_end - plane_start << " sec" << std::endl;
   std::cout << "rest and pass time : " << rest_pass_end - rest_pass_start << " sec" << std::endl;
   std::cout << "sphere time        : " << sphere_end - sphere_start << " sec" << std::endl;
