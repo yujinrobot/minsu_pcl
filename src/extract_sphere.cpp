@@ -79,8 +79,6 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
 
   ros::Time declare_types_end = ros::Time::now();
-  std::cout << "declare types time : " << declare_types_end - declare_types_start << " sec" << std::endl;
-
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //
@@ -286,11 +284,13 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   std::cout << "sphere size : " << cloud_normals3->width * cloud_normals3->height << std::endl;
 
   ros::Time whole_now = ros::Time::now();
-  std::cout << "whole time : " << std::setw(10) << whole_now - whole_start << " sec" << std::endl;
-  std::cout << "estimate time : " << std::setw(10) << estimate_end - estimate_start << " sec" << std::endl;
-  std::cout << "plane time : " << std::setw(10) << plane_end - plane_start << " sec" << std::endl;
-  std::cout << "rest and pass time : " << std::setw(10) << rest_pass_end - rest_pass_start << " sec" << std::endl;
-  std::cout << "sphere time : " << std::setw(10) << sphere_end - sphere_start << " sec" << std::endl;
+  std::cout << std::setw(10) << "whole time : " << whole_now - whole_start << " sec" << std::endl;
+  std::cout << std::setw(10) << "declare types time : " << declare_types_end - declare_types_start << " sec" << std::endl;
+  std::cout << std::setw(10) << "estimate time : " << estimate_end - estimate_start << " sec" << std::endl;
+  std::cout << std::setw(10) << "plane time : " << plane_end - plane_start << " sec" << std::endl;
+  std::cout << std::setw(10) << "rest and pass time : " << rest_pass_end - rest_pass_start << " sec" << std::endl;
+  std::cout << std::setw(10) << "sphere time : " << sphere_end - sphere_start << " sec" << std::endl;
+
   printf("\n");
 }
 
