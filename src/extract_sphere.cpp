@@ -126,12 +126,12 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
   pass.setInputCloud (cloud);
   pass.setFilterFieldName ("z");
-  pass.setFilterLimits (0, 1.5);
+  pass.setFilterLimits (0, 3.5);
   pass.filter (*passthrough_filtered);
 
   pass.setInputCloud (passthrough_filtered);
   pass.setFilterFieldName ("y");
-  pass.setFilterLimits (-0.5, 0.2);
+  pass.setFilterLimits (-0.1, 0.15);
   pass.filter (*passthrough_filtered);
 
   passthrough_pub.publish(passthrough_filtered);
