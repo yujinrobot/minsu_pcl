@@ -88,14 +88,29 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   //
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  // Create VoxelGrid filtering
-  voxel_grid.setInputCloud (cloud);
-  voxel_grid.setLeafSize (0.01, 0.01, 0.01);
-  voxel_grid.filter (*voxelgrid_filtered);
-//
-  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-  pcl::fromROSMsg (*voxelgrid_filtered, *transformed_cloud);
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
+   * Voxel grid Filtering
+   */
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//  // Create VoxelGrid filtering
+//  voxel_grid.setInputCloud (cloud);
+//  voxel_grid.setLeafSize (0.01, 0.01, 0.01);
+//  voxel_grid.filter (*voxelgrid_filtered);
+//
+//  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
+//  pcl::fromROSMsg (*voxelgrid_filtered, *transformed_cloud);
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
+   * Passthrough Filtering
+   */
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //  pass through filter
 //  pass.setInputCloud (cloud);
@@ -165,7 +180,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
   ros::Time plane_start = ros::Time::now();
 
-//  pcl::fromROSMsg (*cloud, *transformed_cloud);
+  pcl::fromROSMsg (*cloud, *transformed_cloud);
 
   seg.setOptimizeCoefficients (true);
   seg.setModelType (pcl::SACMODEL_PLANE);
@@ -313,15 +328,15 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
   ros::Time sphere_end = ros::Time::now();
 
-
-
-
   std::cout << "cloud size : " << cloud->width * cloud->height << std::endl;
   std::cout << "plane size : " << cloud_normals->width * cloud_normals->height << std::endl;
   //std::cout << "cylinder size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
   std::cout << "sphere size : " << cloud_normals3->width * cloud_normals3->height << std::endl;
 
   ros::Time whole_now = ros::Time::now();
+
+  printf("\n");
+
   std::cout << "whole time         : " << whole_now - whole_start << " sec" << std::endl;
   std::cout << "declare types time : " << declare_types_end - declare_types_start << " sec" << std::endl;
   //std::cout << "estimate time      : " << estimate_end - estimate_start << " sec" << std::endl;
