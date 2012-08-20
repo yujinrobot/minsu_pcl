@@ -26,6 +26,9 @@
  *
  *  cloud -> passthrough filter -> estimate normal -> sphere
  *
+ *  handling of pass through filter
+ *  we set a boundary value about floor.
+ *
  */
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -195,11 +198,11 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   std::cout << "pass_th size : " << passthrough_filtered->width * passthrough_filtered->height << std::endl;
   std::cout << "sphere size : " << cloud_normals3->width * cloud_normals3->height << std::endl;
 
-  ros::Time whole_now = ros::Time::now();
+  ros::Time whole_end = ros::Time::now();
 
   printf("\n");
 
-  std::cout << "whole time         : " << whole_now - whole_start << " sec" << std::endl;
+  std::cout << "whole time         : " << whole_end - whole_start << " sec" << std::endl;
   std::cout << "declare types time : " << declare_types_end - declare_types_start << " sec" << std::endl;
   std::cout << "passthrough time   : " << pass_end - pass_start << " sec" << std::endl;
   std::cout << "sphere time        : " << sphere_end - sphere_start << " sec" << std::endl;
