@@ -329,7 +329,8 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   ros::Time sphere_end = ros::Time::now();
 
   std::cout << "cloud size : " << cloud->width * cloud->height << std::endl;
-  std::cout << "plane size : " << cloud_normals->width * cloud_normals->height << std::endl;
+  std::cout << "after voxel grid filtering cloud size : " << transformed_cloud->width * transformed_cloud->height << std::endl;
+  //std::cout << "plane size : " << cloud_normals->width * cloud_normals->height << std::endl;
   //std::cout << "cylinder size : " << cloud_normals2->width * cloud_normals2->height << std::endl;
   std::cout << "sphere size : " << cloud_normals3->width * cloud_normals3->height << std::endl;
 
