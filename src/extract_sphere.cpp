@@ -25,6 +25,7 @@ ros::Publisher sphere_pub;
 
 void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 {
+  ros::Time start = ros::Time::now();
   // filter
   pcl::VoxelGrid<sensor_msgs::PointCloud2> voxel_grid;
   pcl::PassThrough<sensor_msgs::PointCloud2> pass;
@@ -257,6 +258,9 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   std::cout << "sphere size : " << cloud_normals3->width * cloud_normals3->height << std::endl;
 
   printf("\n");
+
+  ros::Time now = ros::Time::now();
+  std::cout << "time : " << now - start << " sec" << std::endl;
 
 }
 
