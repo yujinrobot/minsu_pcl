@@ -127,6 +127,8 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   pass.setInputCloud (cloud);
   pass.setFilterFieldName ("z");
   pass.setFilterLimits (0, 1.5);
+  pass.setFilterFieldName ("y");
+  pass.setFilterLimits (0, 1.0);
   pass.filter (*passthrough_filtered);
 
   passthrough_pub.publish(passthrough_filtered);
@@ -187,7 +189,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   ros::Time sphere_end = ros::Time::now();
 
   std::cout << "cloud size : " << cloud->width * cloud->height << std::endl;
-  std::cout << "pass_th size : " << transformed_cloud->width * transformed_cloud->height << std::endl;
+  std::cout << "pass_th size : " << passthrough_filtered->width * passthrough_filtered->height << std::endl;
   std::cout << "sphere size : " << cloud_normals3->width * cloud_normals3->height << std::endl;
 
   ros::Time whole_now = ros::Time::now();
