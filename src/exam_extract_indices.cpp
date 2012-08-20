@@ -13,72 +13,71 @@
 #include <pcl/filters/extract_indices.h>
 
 ros::Publisher pub;
-sensor_msgs::PointCloud2::Ptr downsampled(new sensor_msgs::PointCloud2),output(new sensor_msgs::PointCloud2);
-pcl::PointCloud<pcl::PointXYZ>::Ptr output_p(new pcl::PointCloud<pcl::PointXYZ>), downsampled_XYZ(new pcl::PointCloud<pcl::PointXYZ>);
 
 void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 {
-   // Do some downsampling to the point cloud
-   pcl::VoxelGrid<sensor_msgs::PointCloud2> sor;
-   sor.setInputCloud (cloud);
-   sor.setLeafSize (0.01f, 0.01f, 0.01f);
-   sor.filter (*downsampled);
+  sensor_msgs::PointCloud2::Ptr downsampled(new sensor_msgs::PointCloud2);
+  sensor_msgs::PointCloud2::Ptr output_cloud(new sensor_msgs::PointCloud2);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr transform_cloud(new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr extract_cloud(new pcl::PointCloud<pcl::PointXYZ>);
 
-   // Change from type sensor_msgs::PointCloud2 to pcl::PointXYZ
-   pcl::fromROSMsg (*downsampled, *downsampled_XYZ);
+  // Do some downsampling to the point cloud
+  pcl::VoxelGrid<sensor_msgs::PointCloud2> sor;
+  sor.setInputCloud (cloud);
+  sor.setLeafSize (0.01f, 0.01f, 0.01f);
+  sor.filter (*downsampled);
 
-
-   pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
-   pcl::PointIndices::Ptr inliers (new pcl::PointIndices ());
-   // Create the segmentation object
-   pcl::SACSegmentation<pcl::PointXYZ> seg;
-   // Optional
-   seg.setOptimizeCoefficients (true);
-   // Mandatory
-   seg.setModelType (pcl::SACMODEL_PLANE);
-   seg.setMethodType (pcl::SAC_RANSAC);
-   seg.setMaxIterations (1000);
-   seg.setDistanceThreshold (0.01);
-
-   // Create the filtering object
-   pcl::ExtractIndices<pcl::PointXYZ> extract;
-
-   // Segment the largest planar component from the cloud
-   seg.setInputCloud (downsampled_XYZ);
-   seg.segment (*inliers, *coefficients);
-   if (inliers->indices.size () == 0)
-   {
-     std::cerr << "Could not estimate a planar model for the given dataset." << std::endl;
-   }
-   // Extract the inliers
-   extract.setInputCloud (downsampled_XYZ);
-   extract.setIndices (inliers);
-   extract.setNegative (false);
-   extract.filter (*output_p);
-   std::cerr << "PointCloud representing the planar component: " << output_p->width * output_p->height << " data points." << std::endl;
-
-   // Create the filtering object
-   // extract.setNegative (true);
-   // extract.filter (*cloud_f);
-   // cloud_filtered.swap (cloud_f);
+  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
+  pcl::fromROSMsg (*downsampled, *transform_cloud);
 
 
-   pcl::toROSMsg (*output_p, *output);
-   //Publish the results
-   pub.publish(output);
+  pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
+  pcl::PointIndices::Ptr inliers (new pcl::PointIndices ());
+
+    // Create the segmentation object
+  pcl::SACSegmentation<pcl::PointXYZ> seg;
+  // Optional
+  seg.setOptimizeCoefficients (true);
+  // Mandatory
+  seg.setModelType (pcl::SACMODEL_PLANE);
+  seg.setMethodType (pcl::SAC_RANSAC);
+  seg.setMaxIterations (1000);
+  seg.setDistanceThreshold (0.01);
+  seg.setInputCloud (transform_cloud);
+  seg.segment (*inliers, *coefficients);
+
+  if (inliers->indices.size () == 0)
+  {
+    PCL_ERROR ("Could not estimate a planar model for the given dataset.");
+  }
+  // Create the filtering object
+  pcl::ExtractIndices<pcl::PointXYZ> extract;
+
+  extract.setInputCloud(transform_cloud);
+  extract.setIndices(inliers);
+  extract.setNegative(false);
+  extract.filter(*extract_cloud);
+  std::cerr << "PointCloud representing the planar component: " << extract_cloud->width * extract_cloud->height << " data points." << std::endl;
+
+  // Create the filtering object
+  // extract.setNegative (true);
+  // extract.filter (*cloud_f);
+  // cloud_filtered.swap (cloud_f);
+
+  // Convert the pcl/PointCloud to sensor_msgs/PointCloud2 data
+  pcl::toROSMsg (*extract_cloud, *output_cloud);
+  pub.publish(output_cloud);
 }
-
-
 
 
 int
 main (int argc, char** argv)
 {
  // INITIALIZE ROS
-   ros::init (argc, argv, "table");
+   ros::init (argc, argv, "extract_indices");
    ros::NodeHandle nh;
-   ros::Subscriber sub = nh.subscribe("/camera/depth_registered/points", 1, callback);
-   pub = nh.advertise<sensor_msgs::PointCloud2> ("table", 1);
+   ros::Subscriber sub = nh.subscribe("camera/depth/points", 1, callback);
+   pub = nh.advertise<sensor_msgs::PointCloud2> ("cloud_filtered", 1);
 
    ros::spin();
 
