@@ -38,6 +38,10 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   // Normal estimation
   pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> normal_estimation;
   pcl::SACSegmentationFromNormals<pcl::PointXYZ, pcl::Normal> segmentation_from_normals;
+
+  // Create the segmentation object
+  pcl::SACSegmentation<pcl::PointXYZ> seg;
+
   pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ> ());
   pcl::search::KdTree<pcl::PointXYZ>::Ptr tree2 (new pcl::search::KdTree<pcl::PointXYZ> ());
   pcl::search::KdTree<pcl::PointXYZ>::Ptr tree3 (new pcl::search::KdTree<pcl::PointXYZ> ());
@@ -103,6 +107,12 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 //  pcl::fromROSMsg (*cloud_filtered, *transformed_cloud);
 
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
+   * Estimate point normals
+   */
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   ros::Time estimate_start = ros::Time::now();
 
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
@@ -117,41 +127,63 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   ros::Time estimate_end = ros::Time::now();
 
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
+   * Create and processing the plane extraction
+   */
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//  ros::Time plane_start = ros::Time::now();
+//
+//  // Create the segmentation object for the planar model and set all the parameters
+//  segmentation_from_normals.setOptimizeCoefficients (true);
+//  segmentation_from_normals.setModelType (pcl::SACMODEL_NORMAL_PLANE);
+//  segmentation_from_normals.setNormalDistanceWeight (0.1);
+//  segmentation_from_normals.setMethodType (pcl::SAC_RANSAC);
+//  segmentation_from_normals.setMaxIterations (100);
+//  segmentation_from_normals.setDistanceThreshold (0.03);
+//  segmentation_from_normals.setInputCloud (transformed_cloud);
+//  segmentation_from_normals.setInputNormals (cloud_normals);
+//
+//  // Obtain the plane inliers and coefficients
+//  segmentation_from_normals.segment (*inliers_plane, *coefficients_plane);
+//  //std::cerr << "Plane coefficients: " << *coefficients_plane << std::endl;
+//
+//  // Extract the planar inliers from the input cloud
+//  extract_indices.setInputCloud (transformed_cloud);
+//  extract_indices.setIndices (inliers_plane);
+//  extract_indices.setNegative (false);
+//  extract_indices.filter (*cloud_plane);
+//
+//  pcl::toROSMsg (*cloud_plane, *plane_output_cloud);
+//  plane_pub.publish(plane_output_cloud);
+//
+//  ros::Time plane_end = ros::Time::now();
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
   ros::Time plane_start = ros::Time::now();
-
-  // Create the segmentation object for the planar model and set all the parameters
-  segmentation_from_normals.setOptimizeCoefficients (true);
-  segmentation_from_normals.setModelType (pcl::SACMODEL_NORMAL_PLANE);
-  segmentation_from_normals.setNormalDistanceWeight (0.1);
-  segmentation_from_normals.setMethodType (pcl::SAC_RANSAC);
-  segmentation_from_normals.setMaxIterations (100);
-  segmentation_from_normals.setDistanceThreshold (0.03);
-  segmentation_from_normals.setInputCloud (transformed_cloud);
-  segmentation_from_normals.setInputNormals (cloud_normals);
-
-  // Obtain the plane inliers and coefficients
-  segmentation_from_normals.segment (*inliers_plane, *coefficients_plane);
-  //std::cerr << "Plane coefficients: " << *coefficients_plane << std::endl;
-
-  // Extract the planar inliers from the input cloud
-  extract_indices.setInputCloud (transformed_cloud);
-  extract_indices.setIndices (inliers_plane);
-  extract_indices.setNegative (false);
-  extract_indices.filter (*cloud_plane);
-
-  pcl::toROSMsg (*cloud_plane, *plane_output_cloud);
+  // Optional
+  seg.setOptimizeCoefficients (true);
+  // Mandatory
+  seg.setModelType (pcl::SACMODEL_PLANE);
+  seg.setMethodType (pcl::SAC_RANSAC);
+  //seg.setMaxIterations (1000);
+  seg.setDistanceThreshold (0.01);
+  seg.setInputCloud (transformed_cloud);
+  seg.segment (*inliers, *coefficients);
+  pcl::toROSMsg (*transformed_cloud, *plane_output_cloud);
   plane_pub.publish(plane_output_cloud);
-
   ros::Time plane_end = ros::Time::now();
 
 
-  // Remove the planar inliers, extract the rest
-  //extract_indices.setNegative (true);
-  //extract_indices.filter (*transformed_cloud);
-  //extract_normals.setNegative (true);
-  //extract_normals.setInputCloud (cloud_normals);
-  //extract_normals.setIndices (inliers_plane);
-  //extract_normals.filter (*cloud_normals);
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
+   * Extract rest plane and passthrough filtering
+   */
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   ros::Time rest_pass_start = ros::Time::now();
 
@@ -160,12 +192,6 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   extract_indices.setNegative (true);
   extract_indices.filter (*remove_transformed_cloud);
   transformed_cloud.swap (remove_transformed_cloud);
-/*
-  extract_normals.setNegative (true);
-  extract_normals.setInputCloud (cloud_normals);
-  extract_normals.setIndices (inliers_plane);
-  extract_normals.filter (*cloud_normals2);
-*/
 
   // publish result of Removal the planar inliers, extract the rest
   pcl::toROSMsg (*transformed_cloud, *rest_output_cloud);
@@ -181,6 +207,10 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   pass.filter (*rest_cloud_filtered);
 
   ros::Time rest_pass_end = ros::Time::now();
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
