@@ -95,13 +95,13 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
    */
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  // Create VoxelGrid filtering
-  voxel_grid.setInputCloud (cloud);
-  voxel_grid.setLeafSize (0.01, 0.01, 0.01);
-  voxel_grid.filter (*voxelgrid_filtered);
-
-  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-  pcl::fromROSMsg (*voxelgrid_filtered, *transformed_cloud);
+//  // Create VoxelGrid filtering
+//  voxel_grid.setInputCloud (cloud);
+//  voxel_grid.setLeafSize (0.01, 0.01, 0.01);
+//  voxel_grid.filter (*voxelgrid_filtered);
+//
+//  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
+//  pcl::fromROSMsg (*voxelgrid_filtered, *transformed_cloud);
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -180,7 +180,7 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 
   ros::Time plane_start = ros::Time::now();
 
-//  pcl::fromROSMsg (*cloud, *transformed_cloud);
+  pcl::fromROSMsg (*cloud, *transformed_cloud);
 
   seg.setOptimizeCoefficients (true);
   seg.setModelType (pcl::SACMODEL_PLANE);
