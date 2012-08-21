@@ -1,7 +1,8 @@
 <launch>
-
+    <arg name="pi" value="3.141597" />
     <node pkg="tf" type="static_transform_publisher" name="offset_frame"
-          args = "0 0 0 0 0 0.57" /camera_depth_optical_frame /offset_frame 100" />
-          
+          args = "0 0 0 0 0 0.052 /camera_depth_optical_frame /offset_frame 100" />
+
+    <node pkg="minsu_pcl" type="transform_frame_PointCloud" name="transform_frame_PointCloud" output="screen" />
 
 </launch>
