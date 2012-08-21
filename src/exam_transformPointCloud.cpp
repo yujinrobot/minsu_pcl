@@ -4,7 +4,6 @@
 
 #include <tf/tfMessage.h>
 #include <tf/transform_listener.h>
-//#include <transform_listener.h>
 
 #include <pcl_ros/point_cloud.h>
 #include <pcl/ros/conversions.h>
@@ -29,6 +28,7 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "test_transformPointCloud");
   ros::NodeHandle nh;
 
+  ros::Subscriber sub = nh.subscribe("camera/depth/points", 1, cloudCb);
   transform_pub = nh.advertise<sensor_msgs::PointCloud2>("transform_Pointcloud", 1);
 
   ros::spin();
