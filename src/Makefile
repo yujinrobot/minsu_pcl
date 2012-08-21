@@ -96,91 +96,33 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-src/CMakeFiles/example.dir/rule:
-	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/example.dir/rule
-.PHONY : src/CMakeFiles/example.dir/rule
+src/CMakeFiles/extract_sphere.dir/rule:
+	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/extract_sphere.dir/rule
+.PHONY : src/CMakeFiles/extract_sphere.dir/rule
 
 # Convenience name for target.
-example: src/CMakeFiles/example.dir/rule
-.PHONY : example
+extract_sphere: src/CMakeFiles/extract_sphere.dir/rule
+.PHONY : extract_sphere
 
 # fast build rule for target.
-example/fast:
-	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f src/CMakeFiles/example.dir/build.make src/CMakeFiles/example.dir/build
-.PHONY : example/fast
-
-# Convenience name for target.
-src/CMakeFiles/pcl_pub.dir/rule:
-	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/pcl_pub.dir/rule
-.PHONY : src/CMakeFiles/pcl_pub.dir/rule
-
-# Convenience name for target.
-pcl_pub: src/CMakeFiles/pcl_pub.dir/rule
-.PHONY : pcl_pub
-
-# fast build rule for target.
-pcl_pub/fast:
-	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f src/CMakeFiles/pcl_pub.dir/build.make src/CMakeFiles/pcl_pub.dir/build
-.PHONY : pcl_pub/fast
-
-# Convenience name for target.
-src/CMakeFiles/pcl_sub.dir/rule:
-	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/pcl_sub.dir/rule
-.PHONY : src/CMakeFiles/pcl_sub.dir/rule
-
-# Convenience name for target.
-pcl_sub: src/CMakeFiles/pcl_sub.dir/rule
-.PHONY : pcl_sub
-
-# fast build rule for target.
-pcl_sub/fast:
-	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/build
-.PHONY : pcl_sub/fast
+extract_sphere/fast:
+	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f src/CMakeFiles/extract_sphere.dir/build.make src/CMakeFiles/extract_sphere.dir/build
+.PHONY : extract_sphere/fast
 
 # target to build an object file
-example.o:
-	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f src/CMakeFiles/example.dir/build.make src/CMakeFiles/example.dir/example.o
-.PHONY : example.o
+extract_sphere.o:
+	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f src/CMakeFiles/extract_sphere.dir/build.make src/CMakeFiles/extract_sphere.dir/extract_sphere.o
+.PHONY : extract_sphere.o
 
 # target to preprocess a source file
-example.i:
-	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f src/CMakeFiles/example.dir/build.make src/CMakeFiles/example.dir/example.i
-.PHONY : example.i
+extract_sphere.i:
+	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f src/CMakeFiles/extract_sphere.dir/build.make src/CMakeFiles/extract_sphere.dir/extract_sphere.i
+.PHONY : extract_sphere.i
 
 # target to generate assembly for a file
-example.s:
-	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f src/CMakeFiles/example.dir/build.make src/CMakeFiles/example.dir/example.s
-.PHONY : example.s
-
-# target to build an object file
-pcl_pub.o:
-	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f src/CMakeFiles/pcl_pub.dir/build.make src/CMakeFiles/pcl_pub.dir/pcl_pub.o
-.PHONY : pcl_pub.o
-
-# target to preprocess a source file
-pcl_pub.i:
-	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f src/CMakeFiles/pcl_pub.dir/build.make src/CMakeFiles/pcl_pub.dir/pcl_pub.i
-.PHONY : pcl_pub.i
-
-# target to generate assembly for a file
-pcl_pub.s:
-	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f src/CMakeFiles/pcl_pub.dir/build.make src/CMakeFiles/pcl_pub.dir/pcl_pub.s
-.PHONY : pcl_pub.s
-
-# target to build an object file
-pcl_sub.o:
-	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/pcl_sub.o
-.PHONY : pcl_sub.o
-
-# target to preprocess a source file
-pcl_sub.i:
-	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/pcl_sub.i
-.PHONY : pcl_sub.i
-
-# target to generate assembly for a file
-pcl_sub.s:
-	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f src/CMakeFiles/pcl_sub.dir/build.make src/CMakeFiles/pcl_sub.dir/pcl_sub.s
-.PHONY : pcl_sub.s
+extract_sphere.s:
+	cd /opt/kobuki/minsu/minsu_pcl && $(MAKE) -f src/CMakeFiles/extract_sphere.dir/build.make src/CMakeFiles/extract_sphere.dir/extract_sphere.s
+.PHONY : extract_sphere.s
 
 # Help Target
 help:
@@ -189,19 +131,11 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
-	@echo "... example"
-	@echo "... pcl_pub"
-	@echo "... pcl_sub"
+	@echo "... extract_sphere"
 	@echo "... rebuild_cache"
-	@echo "... example.o"
-	@echo "... example.i"
-	@echo "... example.s"
-	@echo "... pcl_pub.o"
-	@echo "... pcl_pub.i"
-	@echo "... pcl_pub.s"
-	@echo "... pcl_sub.o"
-	@echo "... pcl_sub.i"
-	@echo "... pcl_sub.s"
+	@echo "... extract_sphere.o"
+	@echo "... extract_sphere.i"
+	@echo "... extract_sphere.s"
 .PHONY : help
 
 

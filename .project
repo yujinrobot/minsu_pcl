@@ -119,107 +119,37 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] example</name>
+			<name>[Targets]/[exe] extract_sphere</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] example/</name>
+			<name>[Targets]/[exe] extract_sphere/</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] example/Source Files</name>
+			<name>[Targets]/[exe] extract_sphere/Source Files</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] example/Source Files/example.cpp</name>
+			<name>[Targets]/[exe] extract_sphere/Source Files/extract_sphere.cpp</name>
 			<type>1</type>
-			<location>/opt/kobuki/minsu/minsu_pcl/src/example.cpp</location>
+			<location>/opt/kobuki/minsu/minsu_pcl/src/extract_sphere.cpp</location>
 		</link>
 		<link>
-			<name>[Targets]/[exe] example/Header Files</name>
+			<name>[Targets]/[exe] extract_sphere/Header Files</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] example/CMake Rules</name>
+			<name>[Targets]/[exe] extract_sphere/CMake Rules</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Targets]/[exe] example/Resources</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>[Targets]/[exe] pcl_pub</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>[Targets]/[exe] pcl_pub/</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>[Targets]/[exe] pcl_pub/Source Files</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>[Targets]/[exe] pcl_pub/Source Files/pcl_pub.cpp</name>
-			<type>1</type>
-			<location>/opt/kobuki/minsu/minsu_pcl/src/pcl_pub.cpp</location>
-		</link>
-		<link>
-			<name>[Targets]/[exe] pcl_pub/Header Files</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>[Targets]/[exe] pcl_pub/CMake Rules</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>[Targets]/[exe] pcl_pub/Resources</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>[Targets]/[exe] pcl_sub</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>[Targets]/[exe] pcl_sub/</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>[Targets]/[exe] pcl_sub/Source Files</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>[Targets]/[exe] pcl_sub/Source Files/pcl_sub.cpp</name>
-			<type>1</type>
-			<location>/opt/kobuki/minsu/minsu_pcl/src/pcl_sub.cpp</location>
-		</link>
-		<link>
-			<name>[Targets]/[exe] pcl_sub/Header Files</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>[Targets]/[exe] pcl_sub/CMake Rules</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>[Targets]/[exe] pcl_sub/Resources</name>
+			<name>[Targets]/[exe] extract_sphere/Resources</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
