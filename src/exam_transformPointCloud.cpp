@@ -18,16 +18,16 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   sensor_msgs::PointCloud2 cloud_out;
   tf::TransformBroadcaster br;
   tf::Transform transform;
-/*
+
   transform.setOrigin( tf::Vector3(0.0, 0.0, 0.0) );
   transform.setRotation( tf::Quaternion(0, 0, 0) );
   br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "camera_depth_optical_frame", "test_frame"));
-*/
+
 
   tf::TransformListener tf_listener;
-  cloud_out.header.frame_id = "/test_frame";
+  cloud_out.header.frame_id = "test_frame";
 
-  pcl_ros::transformPointCloud("/test_frame", *cloud, cloud_out, tf_listener);
+  pcl_ros::transformPointCloud("camera_depth_optical_frame", *cloud, cloud_out, tf_listener);
 
   transform_pub.publish(cloud_out);
 
