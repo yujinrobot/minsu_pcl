@@ -26,7 +26,7 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   tf::TransformListener tf_listener;
 
 
-  pcl_ros::transformPointCloud("/camera_link", *cloud, cloud_out, tf_listener);
+  pcl_ros::transformPointCloud("/test_frame", *cloud, cloud_out, tf_listener);
 
   transform_pub.publish(cloud_out);
 
