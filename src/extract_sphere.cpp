@@ -29,6 +29,9 @@
  *  handling of pass through filter
  *  we set a boundary value about floor.
  *
+ *  subscribe topic : /transformed_frame_Pointcloud
+ *  This topic is transformed by transform_frame_PointCloud.cpp
+ *
  */
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -214,14 +217,15 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
 int
 main (int argc, char** argv)
 {
- // INITIALIZE ROS
-   ros::init (argc, argv, "extract_sphere");
-   ros::NodeHandle nh;
-   ros::Subscriber sub = nh.subscribe("camera/depth/points", 1, callback);
-   passthrough_pub = nh.advertise<sensor_msgs::PointCloud2> ("passthrough_cloud", 1);
-   sphere_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_cloud", 1);
+  // INITIALIZE ROS
+  ros::init (argc, argv, "extract_sphere");
+  ros::NodeHandle nh;
+  //ros::Subscriber sub = nh.subscribe("camera/depth/points", 1, callback);
+  ros::Subscriber sub = nh.subscribe("transformed_frame_Pointcloud", 1, callback);
+  passthrough_pub = nh.advertise<sensor_msgs::PointCloud2> ("passthrough_cloud", 1);
+  sphere_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_cloud", 1);
 
-   ros::spin();
+  ros::spin();
 
-   return (0);
+  return (0);
 }

@@ -49,7 +49,7 @@ int main(int argc, char** argv)
   ros::NodeHandle nh;
   
   ros::Subscriber sub = nh.subscribe("camera/depth/points", 1, cloudCb);
-  transform_pub = nh.advertise<sensor_msgs::PointCloud2>("transform_Pointcloud", 1);
+  transform_pub = nh.advertise<sensor_msgs::PointCloud2>("transformed_frame_Pointcloud", 1);
 
   
   ros::spin();
