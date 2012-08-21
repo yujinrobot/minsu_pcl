@@ -1,0 +1,7 @@
+<launch>
+
+    <node pkg="tf" type="static_transform_publisher" name="offset_frame"
+          args = "0 0 0 0 0 0.57" /camera_depth_optical_frame /offset_frame 100" />
+          
+
+</launch>
