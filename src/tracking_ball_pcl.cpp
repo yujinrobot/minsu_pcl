@@ -60,7 +60,7 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 //  }
   BOOST_FOREACH (const pcl::PointXYZ& pt, point_cloud->points)
   {
-    ROS_INFO("%f", pt.z);
+    //ROS_INFO("%f", pt.z);
 
     if(!std::isnan(z)) {
       z += pt.z;
@@ -68,10 +68,9 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
     }
 
     if(n) {
+      printf("z : %f n : %d \n", z, n);
+
       z /= n;
-
-      printf("%f\n", z);
-
       geometry_msgs::Twist cmd;
 
       if(pt.z < 2.0) {
@@ -82,7 +81,7 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
       pub_cmd.publish(cmd);
     }
   }
-  printf("--------------------------------------------/n");
+  printf("\n----------------------------------------------------------------------------\n");
 }
 
 int main(int argc, char** argv)
