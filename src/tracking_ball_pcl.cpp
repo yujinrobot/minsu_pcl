@@ -66,7 +66,7 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
     if(pt.z < 2.0) {
       cmd.linear.x = 0.2;
-    } else if (pt.z < 1.25) {
+    } else if (pt.z < 0.8) {
       pub_cmd.publish(geometry_msgs::Twist());
     }
     pub_cmd.publish(cmd);
