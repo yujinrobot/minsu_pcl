@@ -13,10 +13,10 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   //X,Y,Z of the centroid
   //double x = 0.0;
   //double y = 0.0;
-  //double z = 0.0;
+  double z = 0.0;
 
   //Number of points observed
-  //unsigned int n = 0;
+  unsigned int n = 0;
 
   pcl::PointCloud<pcl::PointXYZ>::Ptr point_cloud (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::fromROSMsg (*cloud, *point_cloud);
@@ -62,15 +62,27 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   {
     ROS_INFO("%f", pt.z);
 
-    geometry_msgs::Twist cmd;
-
-    if(pt.z < 2.0) {
-      cmd.linear.x = 0.2;
-    } else if (pt.z < 0.8) {
-      pub_cmd.publish(geometry_msgs::Twist());
+    if(!std::isnan(z)) {
+      z += pt.z;
+      n++;
     }
-    pub_cmd.publish(cmd);
+
+    if(n) {
+      z /= n;
+
+      printf("%f\n", z);
+
+      geometry_msgs::Twist cmd;
+
+      if(pt.z < 2.0) {
+        cmd.linear.x = 0.2;
+      } else if (pt.z < 0.8) {
+        pub_cmd.publish(geometry_msgs::Twist());
+      }
+      pub_cmd.publish(cmd);
+    }
   }
+  printf("--------------------------------------------/n");
 }
 
 int main(int argc, char** argv)
