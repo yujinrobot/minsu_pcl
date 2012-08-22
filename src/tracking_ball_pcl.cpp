@@ -8,15 +8,15 @@
 
 ros::Publisher pub_cmd;
 
-void cloudCb(const sensor_msgs::PointCloud2::Ptr& cloud)
+void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 {
   //X,Y,Z of the centroid
   //double x = 0.0;
   //double y = 0.0;
-  double z = 0.0;
+  //double z = 0.0;
 
   //Number of points observed
-  unsigned int n = 0;
+  //unsigned int n = 0;
 
   pcl::PointCloud<pcl::PointXYZ>::Ptr point_cloud (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::fromROSMsg (*cloud, *point_cloud);
@@ -25,11 +25,11 @@ void cloudCb(const sensor_msgs::PointCloud2::Ptr& cloud)
     std::cerr << "Can't subscribe the sphere point cloud information." << std::endl;
   }
 
-  printf ("Cloud: width = %d, height = %d size : %d\n", point_cloud->width, point_cloud->height, point_cloud->width*point_cloud->height);
-  //BOOST_FOREACH (const pcl::PointXYZ& pt, point_cloud->points)
-  //{
-    //printf ("\t(%f, %f, %f)\n", pt.x, pt.y, pt.z);
-
+//  printf ("Cloud: width = %d, height = %d size : %d\n", point_cloud->width, point_cloud->height, point_cloud->width*point_cloud->height);
+//  BOOST_FOREACH (const pcl::PointXYZ& pt, point_cloud->points)
+//  {
+//    //printf ("\t(%f, %f, %f)\n", pt.x, pt.y, pt.z);
+//
 //    if(!std::isnan(z)) {
 //      z += pt.z;
 //      n++;
@@ -47,16 +47,20 @@ void cloudCb(const sensor_msgs::PointCloud2::Ptr& cloud)
 //      }
 //      pub_cmd.publish(cmd);
 //    }
-    geometry_msgs::Twist cmd;
-    if(pt.z < 2.0) {
-      cmd.linear.x = 0.2;
-    } else if (pt.z < 1.25) {
-      pub_cmd.publish(geometry_msgs::Twist());
-    }
-    //pub_cmd.publish(cmd);
-    printf ("\t(z : %f)\n", pt.z);
+//    geometry_msgs::Twist cmd;
+//
+//    if(pt.z < 2.0) {
+//      cmd.linear.x = 0.2;
+//    } else if (pt.z < 1.25) {
+//      pub_cmd.publish(geometry_msgs::Twist());
+//    }
+//    //pub_cmd.publish(cmd);
+//    printf ("\t(z : %f)\n", pt.z);
+//
+//  }
+  BOOST_FOREACH (const pcl::PointXYZ& pt, point_cloud->points)
+    ROS_INFO("%f\n", pt.z);
 
-  //}
 }
 
 int main(int argc, char** argv)

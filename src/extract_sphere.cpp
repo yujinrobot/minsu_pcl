@@ -38,7 +38,7 @@
 ros::Publisher passthrough_pub;
 ros::Publisher sphere_pub;
 
-void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
+void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 {
   ros::Time whole_start = ros::Time::now();
 
