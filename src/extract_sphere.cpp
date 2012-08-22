@@ -201,10 +201,10 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
   ros::Time sphere_end = ros::Time::now();
 
-  std::cout << "cloud size : " << cloud->width * cloud->height << std::endl;
-  std::cout << "pass_th size : " << passthrough_filtered->width * passthrough_filtered->height << std::endl;
-  std::cout << "sphere size2 : " << sphere_output_cloud->width * sphere_output_cloud->height << std::endl;
-  std::cout << "sphere size : " << cloud_normals3->width * cloud_normals3->height << std::endl;
+  std::cout << "cloud size         : " << cloud->width * cloud->height << std::endl;
+  std::cout << "pass_th size       : " << passthrough_filtered->width * passthrough_filtered->height << std::endl;
+  std::cout << "sphere size        : " << sphere_output_cloud->width * sphere_output_cloud->height << std::endl;
+  std::cout << "sphere normal size : " << cloud_normals3->width * cloud_normals3->height << std::endl;
 
   ros::Time whole_end = ros::Time::now();
 
