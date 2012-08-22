@@ -74,7 +74,7 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
     z /= n;
 
-    ROS_INFO("z : %f n : %d", z, n);
+    ROS_INFO("[z : %f n : %d]", z, n);
 
     geometry_msgs::Twist cmd;
 
