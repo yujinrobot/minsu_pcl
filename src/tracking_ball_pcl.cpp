@@ -66,7 +66,7 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
     if(!std::isnan(z)) {
       z += pt.z;
       n++;
-      ROS_INFO("pt.z : %f z : %f n : %d", z, n);
+      ROS_INFO("pt.z : %f z : %f n : %d", z, pt.z, n);
     }
   }
   if(n) {
