@@ -66,25 +66,26 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
     if(!std::isnan(z)) {
       z += pt.z;
       n++;
-    }
-    k++;
-
-    if(n) {
-      //printf("z : %f n : %d k : %d\n", z, n, k);
-
-      ROS_INFO("z : %f dz : %f n : %d k : %d", z, z-pt.z, n, k);
-
-      z /= n;
-      geometry_msgs::Twist cmd;
-
-      if(pt.z < 2.0) {
-        cmd.linear.x = 0.2;
-      } else if (pt.z < 0.8) {
-        pub_cmd.publish(geometry_msgs::Twist());
-      }
-      pub_cmd.publish(cmd);
+      ROS_INFO("pt.z : %f z : %f n : %d", z, n);
     }
   }
+  if(n) {
+    //printf("z : %f n : %d k : %d\n", z, n, k);
+
+    z /= n;
+
+    ROS_INFO("z : %f n : %d", z, n);
+
+    geometry_msgs::Twist cmd;
+
+    if(z < 2.0) {
+      cmd.linear.x = 0.2;
+    } else if (z < 0.8) {
+      pub_cmd.publish(geometry_msgs::Twist());
+    }
+    pub_cmd.publish(cmd);
+  }
+
   printf("\n----------------------------------------------------------------------------\n");
 }
 
