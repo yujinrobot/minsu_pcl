@@ -70,7 +70,9 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
     k++;
 
     if(n) {
-      printf("z : %f n : %d k : %d\n", z, n, k);
+      //printf("z : %f n : %d k : %d\n", z, n, k);
+
+      ROS_INFO("z : %f n : %d k : %d", z, n, k);
 
       z /= n;
       geometry_msgs::Twist cmd;
