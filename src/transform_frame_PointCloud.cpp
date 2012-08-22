@@ -15,7 +15,8 @@ ros::Publisher transform_pub;
 
 void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 {
-  std::cout << "cloud callback..." << std::endl;
+  ROS_INFO("PointCloud callback...");
+
   sensor_msgs::PointCloud2 cloud_out;
 
 

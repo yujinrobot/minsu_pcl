@@ -215,7 +215,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   std::cout << "normal estimate time   : " << normal_end - normal_start << " sec" << std::endl;
   std::cout << "sphere time            : " << sphere_end - sphere_start << " sec" << std::endl;
 
-  printf("---------------------------------------------------------------------------------\n");
+  printf("\n----------------------------------------------------------------------------\n");
   printf("\n");
 }
 

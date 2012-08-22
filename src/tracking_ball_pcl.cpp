@@ -59,8 +59,18 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 //
 //  }
   BOOST_FOREACH (const pcl::PointXYZ& pt, point_cloud->points)
+  {
     ROS_INFO("%f", pt.z);
 
+    geometry_msgs::Twist cmd;
+
+    if(pt.z < 2.0) {
+      cmd.linear.x = 0.2;
+    } else if (pt.z < 1.25) {
+      pub_cmd.publish(geometry_msgs::Twist());
+    }
+    pub_cmd.publish(cmd);
+  }
 }
 
 int main(int argc, char** argv)
