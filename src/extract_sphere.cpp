@@ -156,7 +156,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-  ros::Time sphere_start = ros::Time::now();
+  ros::Time normal_start = ros::Time::now();
 
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
   pcl::fromROSMsg (*passthrough_filtered, *sphere_cloud);
@@ -166,6 +166,10 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   normal_estimation.setInputCloud (sphere_cloud);
   normal_estimation.setKSearch (50);
   normal_estimation.compute (*cloud_normals3);
+
+  ros::Time normal_end = ros::Time::now();
+
+  ros::Time sphere_start = ros::Time::now();
 
   // Create the segmentation object for sphere segmentation and set all the paopennirameters
   segmentation_from_normals.setOptimizeCoefficients (true);
@@ -205,11 +209,13 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
   printf("\n");
 
-  std::cout << "whole time         : " << whole_end - whole_start << " sec" << std::endl;
-  std::cout << "declare types time : " << declare_types_end - declare_types_start << " sec" << std::endl;
-  std::cout << "passthrough time   : " << pass_end - pass_start << " sec" << std::endl;
-  std::cout << "sphere time        : " << sphere_end - sphere_start << " sec" << std::endl;
+  std::cout << "whole time             : " << whole_end - whole_start << " sec" << std::endl;
+  std::cout << "declare types time     : " << declare_types_end - declare_types_start << " sec" << std::endl;
+  std::cout << "passthrough time       : " << pass_end - pass_start << " sec" << std::endl;
+  std::cout << "normal estimate time   : " << normal_end - normal_start << " sec" << std::endl;
+  std::cout << "sphere time            : " << sphere_end - sphere_start << " sec" << std::endl;
 
+  printf("---------------------------------------------------------------------------------\n");
   printf("\n");
 }
 

@@ -59,7 +59,7 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 //
 //  }
   BOOST_FOREACH (const pcl::PointXYZ& pt, point_cloud->points)
-    ROS_INFO("%f\n", pt.z);
+    ROS_INFO("%f", pt.z);
 
 }
 
