@@ -26,8 +26,8 @@ void cloudCb(const sensor_msgs::PointCloud2::Ptr& cloud)
   }
 
   printf ("Cloud: width = %d, height = %d size : %d\n", point_cloud->width, point_cloud->height, point_cloud->width*point_cloud->height);
-  BOOST_FOREACH (const pcl::PointXYZ& pt, point_cloud->points)
-  {
+  //BOOST_FOREACH (const pcl::PointXYZ& pt, point_cloud->points)
+  //{
     //printf ("\t(%f, %f, %f)\n", pt.x, pt.y, pt.z);
 
 //    if(!std::isnan(z)) {
@@ -53,10 +53,10 @@ void cloudCb(const sensor_msgs::PointCloud2::Ptr& cloud)
     } else if (pt.z < 1.25) {
       pub_cmd.publish(geometry_msgs::Twist());
     }
-    pub_cmd.publish(cmd);
+    //pub_cmd.publish(cmd);
     printf ("\t(z : %f)\n", pt.z);
 
-  }
+  //}
 }
 
 int main(int argc, char** argv)
