@@ -17,6 +17,7 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
   //Number of points observed
   unsigned int n = 0;
+  unsigned int k = 0;
 
   pcl::PointCloud<pcl::PointXYZ>::Ptr point_cloud (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::fromROSMsg (*cloud, *point_cloud);
@@ -66,9 +67,10 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
       z += pt.z;
       n++;
     }
+    k++;
 
     if(n) {
-      printf("z : %f n : %d \n", z, n);
+      printf("z : %f n : %d k : %d\n", z, n, k);
 
       z /= n;
       geometry_msgs::Twist cmd;
