@@ -8,6 +8,8 @@
 
 ros::Publisher pub_cmd;
 
+double minDetect = 0.85;
+
 void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 {
   //X,Y,Z of the centroid
@@ -26,39 +28,6 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
     std::cerr << "Can't subscribe the sphere point cloud information." << std::endl;
   }
 
-//  printf ("Cloud: width = %d, height = %d size : %d\n", point_cloud->width, point_cloud->height, point_cloud->width*point_cloud->height);
-//  BOOST_FOREACH (const pcl::PointXYZ& pt, point_cloud->points)
-//  {
-//    //printf ("\t(%f, %f, %f)\n", pt.x, pt.y, pt.z);
-//
-//    if(!std::isnan(z)) {
-//      z += pt.z;
-//      n++;
-//    }
-//
-//    if(n) {
-//      z /= n;
-//
-//      printf ("\t(z : %f) (n : %d)\n", z, n);
-//      geometry_msgs::Twist cmd;
-//      if(z < 2.0) {
-//        cmd.linear.x = 0.2;
-//      } else if (z < 1.25) {
-//        pub_cmd.publish(geometry_msgs::Twist());
-//      }
-//      pub_cmd.publish(cmd);
-//    }
-//    geometry_msgs::Twist cmd;
-//
-//    if(pt.z < 2.0) {
-//      cmd.linear.x = 0.2;
-//    } else if (pt.z < 1.25) {
-//      pub_cmd.publish(geometry_msgs::Twist());
-//    }
-//    //pub_cmd.publish(cmd);
-//    printf ("\t(z : %f)\n", pt.z);
-//
-//  }
   BOOST_FOREACH (const pcl::PointXYZ& pt, point_cloud->points)
   {
     //ROS_INFO("%f", pt.z);
@@ -66,7 +35,7 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
     if(!std::isnan(z)) {
       z += pt.z;
       n++;
-      ROS_INFO("pt.z : %f z : %f n : %d", pt.z, z, n);
+      //ROS_INFO("pt.z : %f z : %f n : %d", pt.z, z, n);
     }
   }
   if(n) {
@@ -78,15 +47,17 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
     geometry_msgs::Twist cmd;
 
-    if(z < 2.0) {
+    if(z < 3.0 && z > minDetect) {
       cmd.linear.x = 0.2;
-    } else if (z < 0.8) {
+      std::cout<<"cmd_vel command" << std::endl;
+    } else if (z < minDetect && z > 0.7) {
       pub_cmd.publish(geometry_msgs::Twist());
+      std::cout<<"stop"<<std::endl;
     }
     pub_cmd.publish(cmd);
   }
 
-  printf("\n----------------------------------------------------------------------------\n");
+  printf("----------------------------------------------------------------------------\n");
 }
 
 int main(int argc, char** argv)
