@@ -164,7 +164,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   // Estimate point normals
   normal_estimation.setSearchMethod (tree3);
   normal_estimation.setInputCloud (sphere_cloud);
-  normal_estimation.setKSearch (50);
+  normal_estimation.setKSearch (100);
   normal_estimation.compute (*cloud_normals3);
 
   ros::Time normal_end = ros::Time::now();
@@ -179,7 +179,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   segmentation_from_normals.setNormalDistanceWeight (0.1);
   segmentation_from_normals.setMaxIterations (10000);
   segmentation_from_normals.setDistanceThreshold (0.05);
-  segmentation_from_normals.setRadiusLimits (0, 0.2);
+  segmentation_from_normals.setRadiusLimits (0, 0.15);
   segmentation_from_normals.setInputCloud (sphere_cloud);
   segmentation_from_normals.setInputNormals (cloud_normals3);
 

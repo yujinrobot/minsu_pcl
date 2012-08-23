@@ -1,7 +1,15 @@
 <launch>
+<!--
+    <arg name="camera" default="camera" />
+    <arg name="depth_frame_id" default="/$(arg camera)_depth_optical_frame" />
+    <arg name="offset_depth_frame_id" default="/$(arg camera)_offset_depth_optical_frame" />
+-->
     <arg name="pi" value="3.141597" />
     <node pkg="tf" type="static_transform_publisher" name="offset_frame"
           args = "0 0 0 0 0 0.052 /camera_depth_optical_frame /offset_frame 100" />
+
+    <!--node pkg="tf" type="static_transform_publisher" name="offset_frame"
+          args = "0 0 0 0 0 0 /$(arg camera)_depth_optical_frame /$(arg camera)_offset_depth_optical_frame 100" /-->
 
     <node pkg="minsu_pcl" type="transform_frame_PointCloud" name="transform_frame_PointCloud" output="screen" />
 
