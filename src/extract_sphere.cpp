@@ -184,11 +184,12 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   pcl::visualization::PCLVisualizer viewer("PCL Viewer");
   viewer.setBackgroundColor (0.0, 0.0, 0.5);
   viewer.addPointCloudNormals<pcl::PointXYZ,pcl::Normal>(sphere_cloud, cloud_normals3);
+  viewer.spin();
 
-  while (!viewer.wasStopped ())
-  {
-      viewer.spinOnce ();
-  }
+//  while (!ros::isShuttingDown())
+//  {
+//      viewer.spinOnce ();
+//  }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
