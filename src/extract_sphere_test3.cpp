@@ -201,12 +201,10 @@ void callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
   seg.setInputCloud (transformed_cloud);
   seg.segment (*inliers_plane, *coefficients_plane);
 
-
   extract_indices.setInputCloud(transformed_cloud);
   extract_indices.setIndices(inliers_plane);
   extract_indices.setNegative(false);
   extract_indices.filter(*cloud_plane);
-
 
   pcl::toROSMsg (*cloud_plane, *plane_output_cloud);
   plane_pub.publish(plane_output_cloud);
