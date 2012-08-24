@@ -8,7 +8,7 @@
 
 ros::Publisher pub;
 
-void 
+void
 cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud)
 {
   // ... do data processing
