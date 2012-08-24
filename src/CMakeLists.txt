@@ -11,5 +11,5 @@ rosbuild_add_executable(extract_sphere extract_sphere.cpp)
 #rosbuild_add_executable(test test.cpp)
 rosbuild_add_executable(tracking_ball_pcl tracking_ball_pcl.cpp)
 
-include_directories("/usr/include/vtk-5.8")
-target_link_libraries(extract_sphere ${PCL_LIBRARIES} libvtkCommon.so libvtkFiltering.so libvtkRendering.so)
+#include_directories("/usr/include/vtk-5.8")
+#target_link_libraries(extract_sphere ${PCL_LIBRARIES} libvtkCommon.so libvtkFiltering.so libvtkRendering.so)

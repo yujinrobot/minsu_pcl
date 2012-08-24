@@ -18,9 +18,9 @@
 #include <pcl/sample_consensus/model_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
 
-#include <pcl/common/common_headers.h>
-#include <pcl/visualization/cloud_viewer.h>
-#include <pcl/visualization/pcl_visualizer.h>
+//#include <pcl/common/common_headers.h>
+//#include <pcl/visualization/cloud_viewer.h>
+//#include <pcl/visualization/pcl_visualizer.h>
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -169,7 +169,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   // Estimate point normals
   normal_estimation.setSearchMethod (tree3);
   normal_estimation.setInputCloud (sphere_cloud);
-  normal_estimation.setKSearch (30);
+  normal_estimation.setKSearch (25);
   normal_estimation.compute (*cloud_normals3);
 
   ros::Time normal_end = ros::Time::now();
@@ -212,10 +212,10 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
    */
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  pcl::visualization::PCLVisualizer viewer("PCL Viewer");
-  viewer.setBackgroundColor (0.0, 0.0, 0.5);
-  viewer.addPointCloudNormals<pcl::PointXYZ,pcl::Normal>(sphere_cloud, cloud_normals3);
-  viewer.spin();
+//  pcl::visualization::PCLVisualizer viewer("PCL Viewer");
+//  viewer.setBackgroundColor (0.0, 0.0, 0.5);
+//  viewer.addPointCloudNormals<pcl::PointXYZ,pcl::Normal>(sphere_cloud, cloud_normals3);
+//  viewer.spin();
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

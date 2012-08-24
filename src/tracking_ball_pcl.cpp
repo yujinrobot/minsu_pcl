@@ -48,7 +48,7 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
     geometry_msgs::Twist cmd;
 
     if(z < 3.0 && z > minDetect) {
-      cmd.linear.x = 0.2;
+      cmd.linear.x = z-0.95;
       cmd.angular.z = -x*0.5;
       std::cout<<"cmd_vel command" << std::endl;
     } else if (z < minDetect && z > 0.7) {
