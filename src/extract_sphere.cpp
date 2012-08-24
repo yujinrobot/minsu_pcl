@@ -164,7 +164,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   // Estimate point normals
   normal_estimation.setSearchMethod (tree3);
   normal_estimation.setInputCloud (sphere_cloud);
-  normal_estimation.setKSearch (100);
+  normal_estimation.setKSearch (30);
   normal_estimation.compute (*cloud_normals3);
 
   ros::Time normal_end = ros::Time::now();
