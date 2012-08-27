@@ -145,17 +145,16 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   //std::cerr << "Sphere coefficients: " << *coefficients_sphere << std::endl;
 
 
-  if (inliers_sphere->points.empty ())
+  if (inliers_sphere->indices.empty())
      std::cerr << "Can't find the sphere component." << std::endl;
   else {
-
-     extract_indices.setInputCloud(sphere_cloud);
-     extract_indices.setIndices(inliers_sphere);
-     extract_indices.setNegative(false);
-     extract_indices.filter(*sphere_output);
-
-     pcl::toROSMsg (*sphere_output, *sphere_output_cloud);
-     sphere_pub.publish(sphere_output_cloud);
+    std::cerr << "Can find the sphere component." << std::endl;
+    extract_indices.setInputCloud(sphere_cloud);
+    extract_indices.setIndices(inliers_sphere);
+    extract_indices.setNegative(false);
+    extract_indices.filter(*sphere_output);
+    pcl::toROSMsg (*sphere_output, *sphere_output_cloud);
+    sphere_pub.publish(sphere_output_cloud);
   }
 
   ros::Time sphere_end = ros::Time::now();
@@ -180,9 +179,6 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   std::cout << "cloud size         : " << cloud->width * cloud->height << std::endl;
   std::cout << "pass_th size       : " << passthrough_filtered->width * passthrough_filtered->height << std::endl;
   std::cout << "sphere size        : " << sphere_output_cloud->width * sphere_output_cloud->height << std::endl;
-
-  std::cout << "whole time             : " << whole_end - whole_start << " sec" << std::endl;
-  std::cout << "declare types time     : " << declare_types_end - declare_types_start << " sec" << std::endl;
 
   printf("\n");
 
