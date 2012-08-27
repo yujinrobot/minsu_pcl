@@ -36,6 +36,8 @@
  *  subscribe topic : /transformed_frame_Pointcloud
  *  This topic is transformed by transform_frame_PointCloud.cpp
  *
+ *  pcl::SampleConsensusModelSphere
+ *
  */
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -57,8 +59,6 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   pcl::SACSegmentation<pcl::PointXYZ> seg;
 
   std::vector<int> inliers;
-
-
 
   // The plane and sphere coefficients
   pcl::ModelCoefficients::Ptr coefficients_sphere (new pcl::ModelCoefficients ());
@@ -199,9 +199,6 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   std::cout << "cloud size         : " << cloud->width * cloud->height << std::endl;
   std::cout << "pass_th size       : " << passthrough_filtered->width * passthrough_filtered->height << std::endl;
   std::cout << "sphere size        : " << sphere_output_cloud->width * sphere_output_cloud->height << std::endl;
-
-  std::cout << "whole time             : " << whole_end - whole_start << " sec" << std::endl;
-  std::cout << "declare types time     : " << declare_types_end - declare_types_start << " sec" << std::endl;
 
   printf("\n");
 

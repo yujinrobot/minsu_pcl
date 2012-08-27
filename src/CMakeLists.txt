@@ -10,6 +10,7 @@ rosbuild_add_executable(transform_frame_PointCloud transform_frame_PointCloud.cp
 rosbuild_add_executable(extract_sphere extract_sphere.cpp)
 rosbuild_add_executable(extract_sphere_test4 extract_sphere_test4.cpp)
 rosbuild_add_executable(extract_sphere_test5 extract_sphere_test5.cpp)
+rosbuild_add_executable(extract_sphere_test6 extract_sphere_test6.cpp)
 #rosbuild_add_executable(test test.cpp)
 rosbuild_add_executable(tracking_ball_pcl tracking_ball_pcl.cpp)
 

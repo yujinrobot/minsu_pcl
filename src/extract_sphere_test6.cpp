@@ -18,6 +18,11 @@
 #include <pcl/sample_consensus/model_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
 
+#include <pcl/sample_consensus/ransac.h>
+#include <pcl/sample_consensus/sac_model_plane.h>
+#include <pcl/sample_consensus/sac_model_sphere.h>
+
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -31,13 +36,16 @@
  *  subscribe topic : /transformed_frame_Pointcloud
  *  This topic is transformed by transform_frame_PointCloud.cpp
  *
- *  pcl::SACSegmentation
+ *  1st - segmentation
+ *  2nd - RANSAC
+ *
  *
  */
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ros::Publisher passthrough_pub;
-ros::Publisher sphere_pub;
+ros::Publisher sphere_seg_pub;
+ros::Publisher sphere_RANSAC_pub;
 
 void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 {
@@ -53,6 +61,8 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   // Create the segmentation object
   pcl::SACSegmentation<pcl::PointXYZ> seg;
 
+  std::vector<int> inliers;
+
   // The plane and sphere coefficients
   pcl::ModelCoefficients::Ptr coefficients_sphere (new pcl::ModelCoefficients ());
 
@@ -62,35 +72,20 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   // The point clouds
   sensor_msgs::PointCloud2::Ptr voxelgrid_filtered (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr passthrough_filtered (new sensor_msgs::PointCloud2);
-  sensor_msgs::PointCloud2::Ptr sphere_output_cloud (new sensor_msgs::PointCloud2);
+  sensor_msgs::PointCloud2::Ptr sphere_seg_output_cloud (new sensor_msgs::PointCloud2);
+  sensor_msgs::PointCloud2::Ptr sphere_RANSAC_output_cloud (new sensor_msgs::PointCloud2);
 
 
   // The PointCloud
-  pcl::PointCloud<pcl::PointXYZ>::Ptr sphere_cloud (new pcl::PointCloud<pcl::PointXYZ>);
-  pcl::PointCloud<pcl::PointXYZ>::Ptr sphere_output (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr sphere_seg_cloud (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr sphere_seg_output (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr sphere_RANSAC_output (new pcl::PointCloud<pcl::PointXYZ>);
 
 
   ros::Time declare_types_end = ros::Time::now();
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  /*
-   * Create Voxel grid Filtering
-   */
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//  voxel_grid.setInputCloud (cloud);
-//  voxel_grid.setLeafSize (0.01, 0.01, 0.01);
-//  voxel_grid.filter (*voxelgrid_filtered);
-//
-//  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-//  pcl::fromROSMsg (*voxelgrid_filtered, *transformed_cloud);
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -123,40 +118,86 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /*
-   * for sphere features
+   * for sphere features pcl::SACSegmentation
    */
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-  pcl::fromROSMsg (*passthrough_filtered, *sphere_cloud);
+  ros::Time sphere_seg_start = ros::Time::now();
 
-  ros::Time sphere_start = ros::Time::now();
+  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
+  pcl::fromROSMsg (*passthrough_filtered, *sphere_seg_cloud);
 
   // Optional
   seg.setOptimizeCoefficients (true);
-  // Mandatory
   seg.setModelType (pcl::SACMODEL_SPHERE);
   seg.setMethodType (pcl::SAC_RANSAC);
   seg.setMaxIterations (10000);
   seg.setDistanceThreshold (0.05);
   seg.setRadiusLimits (0, 0.15);
-  seg.setInputCloud (sphere_cloud);
+  seg.setInputCloud (sphere_seg_cloud);
   seg.segment (*inliers_sphere, *coefficients_sphere);
-  //std::cerr << "Sphere coefficients: " << *coefficients_sphere << std::endl;
 
-
-  extract_indices.setInputCloud(sphere_cloud);
+  extract_indices.setInputCloud(sphere_seg_cloud);
   extract_indices.setIndices(inliers_sphere);
   extract_indices.setNegative(false);
-  extract_indices.filter(*sphere_output);
+  extract_indices.filter(*sphere_seg_output);
 
-  if (sphere_output->points.empty ())
-     std::cerr << "Can't find the sphere component." << std::endl;
+//  if (sphere_output->points.empty ())sphere_output
+//     std::cerr << "Can't find the sphere component." << std::endl;
+//
+  pcl::toROSMsg (*sphere_seg_output, *sphere_seg_output_cloud);
+  sphere_seg_pub.publish(sphere_seg_output_cloud);
 
-  pcl::toROSMsg (*sphere_output, *sphere_output_cloud);
-  sphere_pub.publish(sphere_output_cloud);
+  ros::Time sphere_seg_end = ros::Time::now();
 
-  ros::Time sphere_end = ros::Time::now();
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
+   * for sphere features pcl::SampleConsensusModelSphere
+   */
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+  ros::Time sphere_RANSAC_start = ros::Time::now();
+
+  // created RandomSampleConsensus object and compute the appropriated model
+  pcl::SampleConsensusModelSphere<pcl::PointXYZ>::Ptr model_s(new pcl::SampleConsensusModelSphere<pcl::PointXYZ> (sphere_seg_output));
+
+  pcl::RandomSampleConsensus<pcl::PointXYZ> ransac (model_s);
+  ransac.setDistanceThreshold (.01);
+  ransac.computeModel();
+  ransac.getInliers(inliers);
+
+  // copies all inliers of the model computed to another PointCloud
+  pcl::copyPointCloud<pcl::PointXYZ>(*sphere_seg_output, inliers, *sphere_RANSAC_output);
+
+  pcl::toROSMsg (*sphere_RANSAC_output, *sphere_RANSAC_output_cloud);
+  sphere_RANSAC_pub.publish(sphere_RANSAC_output_cloud);
+
+//  // Optional
+//  seg.setOptimizeCoefficients (true);
+//  // Mandatory
+//  seg.setModelType (pcl::SACMODEL_SPHERE);
+//  seg.setMethodType (pcl::SAC_RANSAC);
+//  seg.setMaxIterations (10000);
+//  seg.setDistanceThreshold (0.05);
+//  seg.setRadiusLimits (0, 0.15);
+//  seg.setInputCloud (sphere_cloud);
+//  seg.segment (*inliers_sphere, *coefficients_sphere);
+//  //std::cerr << "Sphere coefficients: " << *coefficients_sphere << std::endl;
+//
+//
+//  extract_indices.setInputCloud(sphere_cloud);
+//  extract_indices.setIndices(inliers_sphere);
+//  extract_indices.setNegative(false);
+//  extract_indices.filter(*sphere_output);
+//
+//  if (sphere_output->points.empty ())
+//     std::cerr << "Can't find the sphere component." << std::endl;
+//
+//  pcl::toROSMsg (*sphere_output, *sphere_output_cloud);
+//  sphere_pub.publish(sphere_output_cloud);
+
+  ros::Time sphere_RANSAC_end = ros::Time::now();
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /*
@@ -177,17 +218,15 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
   std::cout << "cloud size         : " << cloud->width * cloud->height << std::endl;
   std::cout << "pass_th size       : " << passthrough_filtered->width * passthrough_filtered->height << std::endl;
-  std::cout << "sphere size        : " << sphere_output_cloud->width * sphere_output_cloud->height << std::endl;
-
-  std::cout << "whole time             : " << whole_end - whole_start << " sec" << std::endl;
-  std::cout << "declare types time     : " << declare_types_end - declare_types_start << " sec" << std::endl;
+  std::cout << "sphere size        : " << sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height << std::endl;
 
   printf("\n");
 
-  std::cout << "whole time             : " << whole_end - whole_start << " sec" << std::endl;
-  std::cout << "declare types time     : " << declare_types_end - declare_types_start << " sec" << std::endl;
-  std::cout << "passthrough time       : " << pass_end - pass_start << " sec" << std::endl;
-  std::cout << "sphere time            : " << sphere_end - sphere_start << " sec" << std::endl;
+  std::cout << "whole time                    : " << whole_end - whole_start << " sec" << std::endl;
+  std::cout << "declare types time            : " << declare_types_end - declare_types_start << " sec" << std::endl;
+  std::cout << "passthrough time              : " << pass_end - pass_start << " sec" << std::endl;
+  std::cout << "sphere seg time               : " << sphere_seg_end - sphere_seg_start << " sec" << std::endl;
+  std::cout << "sphere ransac time            : " << sphere_RANSAC_end - sphere_RANSAC_start << " sec" << std::endl;
 
   printf("\n----------------------------------------------------------------------------\n");
   printf("\n");
@@ -203,9 +242,12 @@ main (int argc, char** argv)
   //ros::Subscriber sub = nh.subscribe("camera/depth/points", 1, callback);
   ros::Subscriber sub = nh.subscribe("transformed_frame_Pointcloud", 1, callback);
   passthrough_pub = nh.advertise<sensor_msgs::PointCloud2> ("passthrough_cloud", 1);
-  sphere_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_cloud", 1);
+  sphere_seg_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_seg_cloud", 1);
+  sphere_RANSAC_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_RANSAC_cloud", 1);
 
   ros::spin();
 
   return (0);
 }
+
+
