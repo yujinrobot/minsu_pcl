@@ -216,9 +216,11 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
   ros::Time whole_end = ros::Time::now();
 
-  std::cout << "cloud size         : " << cloud->width * cloud->height << std::endl;
-  std::cout << "pass_th size       : " << passthrough_filtered->width * passthrough_filtered->height << std::endl;
-  std::cout << "sphere size        : " << sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height << std::endl;
+  std::cout << "cloud size                : " << cloud->width * cloud->height << std::endl;
+  std::cout << "pass_th size              : " << passthrough_filtered->width * passthrough_filtered->height << std::endl;
+  std::cout << "sphere seg seg            : " << sphere_seg_output_cloud->width * sphere_seg_output_cloud->height << std::endl;
+  std::cout << "sphere seg seg2           : " << sphere_seg_output->points.size() << std::endl;
+  std::cout << "sphere RANSAC size        : " << sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height << std::endl;
 
   printf("\n");
 
