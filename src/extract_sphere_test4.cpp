@@ -133,28 +133,30 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   ros::Time sphere_start = ros::Time::now();
 
   // Optional
-  seg.setOptimizeCoefficients (true);
+  seg.setOptimizeCoefficients (false);
   // Mandatory
   seg.setModelType (pcl::SACMODEL_SPHERE);
   seg.setMethodType (pcl::SAC_RANSAC);
   seg.setMaxIterations (10000);
-  seg.setDistanceThreshold (0.05);
-  seg.setRadiusLimits (0, 0.15);
+  seg.setDistanceThreshold (0.03);
+  seg.setRadiusLimits (0.12, 0.16);
   seg.setInputCloud (sphere_cloud);
   seg.segment (*inliers_sphere, *coefficients_sphere);
   //std::cerr << "Sphere coefficients: " << *coefficients_sphere << std::endl;
 
 
-  extract_indices.setInputCloud(sphere_cloud);
-  extract_indices.setIndices(inliers_sphere);
-  extract_indices.setNegative(false);
-  extract_indices.filter(*sphere_output);
-
-  if (sphere_output->points.empty ())
+  if (inliers_sphere->points.empty ())
      std::cerr << "Can't find the sphere component." << std::endl;
+  else {
 
-  pcl::toROSMsg (*sphere_output, *sphere_output_cloud);
-  sphere_pub.publish(sphere_output_cloud);
+     extract_indices.setInputCloud(sphere_cloud);
+     extract_indices.setIndices(inliers_sphere);
+     extract_indices.setNegative(false);
+     extract_indices.filter(*sphere_output);
+
+     pcl::toROSMsg (*sphere_output, *sphere_output_cloud);
+     sphere_pub.publish(sphere_output_cloud);
+  }
 
   ros::Time sphere_end = ros::Time::now();
 
