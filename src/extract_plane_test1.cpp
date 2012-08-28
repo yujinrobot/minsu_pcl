@@ -18,6 +18,9 @@
 #include <pcl/sample_consensus/model_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
 
+#include <pcl/sample_consensus/ransac.h>
+#include <pcl/sample_consensus/sac_model_plane.h>
+#include <pcl/sample_consensus/sac_model_sphere.h>
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -40,6 +43,7 @@ ros::Publisher passthrough_pub;
 ros::Publisher rest_pub;
 ros::Publisher plane_pub;
 ros::Publisher sphere_pub;
+ros::Publisher sphere_RANSAC_pub;
 
 void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 {
@@ -76,6 +80,9 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   pcl::PointCloud<pcl::PointXYZ>::Ptr remove_transformed_cloud (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr sphere_cloud (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr sphere_output (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr sphere_RANSAC_output (new pcl::PointCloud<pcl::PointXYZ>);
+
+  std::vector<int> inliers;
 
   ros::Time declare_types_end = ros::Time::now();
 
@@ -214,12 +221,41 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
+   * for sphere features pcl::SampleConsensusModelSphere
+   */
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  ros::Time sphere_RANSAC_start = ros::Time::now();
+
+  // created RandomSampleConsensus object and compute the appropriated model
+  pcl::SampleConsensusModelSphere<pcl::PointXYZ>::Ptr model_s(new pcl::SampleConsensusModelSphere<pcl::PointXYZ> (sphere_output));
+
+  pcl::RandomSampleConsensus<pcl::PointXYZ> ransac (model_s);
+  ransac.setDistanceThreshold (.01);
+  ransac.computeModel();
+  ransac.getInliers(inliers);
+
+  // copies all inliers of the model computed to another PointCloud
+  pcl::copyPointCloud<pcl::PointXYZ>(*sphere_output, inliers, *sphere_RANSAC_output);
+
+  pcl::toROSMsg (*sphere_RANSAC_output, *sphere_RANSAC_output_cloud);
+  sphere_RANSAC_pub.publish(sphere_RANSAC_output_cloud);
+
+  ros::Time sphere_RANSAC_end = ros::Time::now();
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
   ros::Time whole_end = ros::Time::now();
 
   std::cout << "cloud size         : " << cloud->width * cloud->height << std::endl;
   std::cout << "plane size         : " << plane_seg_output_cloud->width * plane_seg_output_cloud->height << std::endl;
   std::cout << "rest size          : " << rest_cloud_filtered->width * rest_cloud_filtered->height << std::endl;
   std::cout << "sphere size        : " << sphere_output_cloud->width * sphere_output_cloud->height << std::endl;
+  std::cout << "sphere RANSAC size : " << sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height << std::endl;
 
   std::cout << "model coefficient  : " << coefficients_plane->values[0] << " " 
 				       << coefficients_plane->values[1] << " " 
@@ -236,6 +272,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   std::cout << "plane time             : " << plane_seg_end - plane_seg_start << " sec" << std::endl;
   std::cout << "rest and pass time     : " << rest_pass_end - rest_pass_start << " sec" << std::endl;
   std::cout << "sphere time            : " << sphere_end - sphere_start << " sec" << std::endl;
+  std::cout << "sphere ransac time     : " << sphere_RANSAC_end - sphere_RANSAC_start << " sec" << std::endl;
   printf("\n----------------------------------------------------------------------------\n");
   printf("\n");
 }
@@ -253,6 +290,8 @@ main (int argc, char** argv)
   plane_pub = nh.advertise<sensor_msgs::PointCloud2> ("plane_cloud", 1);
   rest_pub = nh.advertise<sensor_msgs::PointCloud2> ("rest_cloud", 1);
   sphere_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_cloud", 1);
+  sphere_RANSAC_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_RANSAC_cloud", 1);
+
   ros::spin();
 
   return (0);
