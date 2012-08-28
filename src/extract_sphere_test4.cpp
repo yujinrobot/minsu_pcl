@@ -148,7 +148,6 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   if (inliers_sphere->indices.empty())
      std::cerr << "Can't find the sphere component." << std::endl;
   else {
-    std::cerr << "Can find the sphere component." << std::endl;
     extract_indices.setInputCloud(sphere_cloud);
     extract_indices.setIndices(inliers_sphere);
     extract_indices.setNegative(false);
@@ -178,7 +177,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
   std::cout << "cloud size         : " << cloud->width * cloud->height << std::endl;
   std::cout << "pass_th size       : " << passthrough_filtered->width * passthrough_filtered->height << std::endl;
-  std::cout << "sphere size        : " << sphere_output_cloud->width * sphere_output_cloud->height << std::endl;
+  std::cout << "sphere size        : " << sphere_output_cloud->width * sphere_output_cloud->height << "    " << inliers_sphere->indices.size() << std::endl;
 
   printf("\n");
 
