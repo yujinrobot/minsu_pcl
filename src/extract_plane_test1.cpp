@@ -164,7 +164,7 @@ main (int argc, char** argv)
   ros::NodeHandle nh;
   ros::Subscriber sub = nh.subscribe("camera/depth/points", 1, callback);
   //ros::Subscriber sub = nh.subscribe("transformed_frame_Pointcloud", 1, callback);
-
+  passthrough_pub = nh.advertise<sensor_msgs::PointCloud2> ("passthrough_cloud", 1);
   plane_pub = nh.advertise<sensor_msgs::PointCloud2> ("plane_cloud", 1);
 
   ros::spin();
