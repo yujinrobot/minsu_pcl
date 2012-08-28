@@ -31,10 +31,13 @@ void cloudCb(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
   try {
 
+    ros::Time start = ros::Time::now();
     tf_listener.lookupTransform("/offset_frame", cloud->header.frame_id, cloud->header.stamp, transform);
     pcl_ros::transformPointCloud("/offset_frame", *cloud, cloud_out, tf_listener);
     transform_pub.publish(cloud_out);
+    ros::Time end = ros::Time::now();
 
+    ROS_ERROR("TIME: %.2fms", (end - start).toSec() * 1000);
   } catch (tf::TransformException& ex){
 
     ROS_ERROR("%s", ex.what());
