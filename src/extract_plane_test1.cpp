@@ -60,6 +60,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   pcl::PointIndices::Ptr inliers_plane (new pcl::PointIndices ());
 
   // The point clouds
+  sensor_msgs::PointCloud2::Ptr passthrough_filtered (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr plane_seg_output_cloud (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr sphere_RANSAC_output_cloud (new sensor_msgs::PointCloud2);
 
@@ -78,6 +79,23 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /*
+   * Pass through Filtering
+   */
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  ros::Time pass_start = ros::Time::now();
+
+  pass.setInputCloud (cloud);
+  pass.setFilterFieldName ("z");
+  pass.setFilterLimits (0, 2.5);
+  pass.filter (*passthrough_filtered);
+
+  passthrough_pub.publish(passthrough_filtered);
+
+  ros::Time pass_end = ros::Time::now();
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
    * for plane features pcl::SACSegmentation
    */
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,7 +103,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   ros::Time plane_seg_start = ros::Time::now();
 
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-  pcl::fromROSMsg (*cloud, *plane_seg_cloud);
+  pcl::fromROSMsg (*passthrough_filtered, *plane_seg_cloud);
 
   // Optional
   seg.setOptimizeCoefficients (false);
@@ -130,6 +148,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
   std::cout << "whole time             : " << whole_end - whole_start << " sec" << std::endl;
   std::cout << "declare types time     : " << declare_types_end - declare_types_start << " sec" << std::endl;
+  std::cout << "passthrough time       : " << pass_end - pass_start << " sec" << std::endl;
   std::cout << "plane time             : " << plane_seg_end - plane_seg_start << " sec" << std::endl;
 
   printf("\n----------------------------------------------------------------------------\n");
