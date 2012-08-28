@@ -198,8 +198,8 @@ main (int argc, char** argv)
   // INITIALIZE ROS
   ros::init (argc, argv, "extract_sphere");
   ros::NodeHandle nh;
-  //ros::Subscriber sub = nh.subscribe("camera/depth/points", 1, callback);
-  ros::Subscriber sub = nh.subscribe("transformed_frame_Pointcloud", 1, callback);
+  ros::Subscriber sub = nh.subscribe("camera/depth/points", 1, callback);
+  //ros::Subscriber sub = nh.subscribe("transformed_frame_Pointcloud", 1, callback);
   passthrough_pub = nh.advertise<sensor_msgs::PointCloud2> ("passthrough_cloud", 1);
   sphere_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_cloud", 1);
 
