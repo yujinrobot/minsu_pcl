@@ -106,10 +106,10 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   pcl::fromROSMsg (*passthrough_filtered, *plane_seg_cloud);
 
   // Optional
-  seg.setOptimizeCoefficients (false);
+  seg.setOptimizeCoefficients (true);
   seg.setModelType (pcl::SACMODEL_PERPENDICULAR_PLANE);
   seg.setMethodType (pcl::SAC_RANSAC);
-  seg.setAxis(Eigen::Vector3f (0, 1, 0));       // best plane should be perpendicular to z-axis
+  seg.setAxis(Eigen::Vector3f (0, 0, -1));       // best plane should be perpendicular to z-axis
   seg.setMaxIterations (1000);
   seg.setDistanceThreshold (0.05);
   //seg.setRadiusLimits (0, 0.15);
