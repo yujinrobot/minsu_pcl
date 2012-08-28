@@ -39,6 +39,7 @@
 ros::Publisher passthrough_pub;
 ros::Publisher rest_pub;
 ros::Publisher plane_pub;
+ros::Publisher sphere_pub;
 
 void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 {
@@ -56,22 +57,25 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
   // The plane and sphere coefficients
   pcl::ModelCoefficients::Ptr coefficients_plane (new pcl::ModelCoefficients ());
+  pcl::ModelCoefficients::Ptr coefficients_sphere (new pcl::ModelCoefficients ());
 
   // The plane and sphere inliers
   pcl::PointIndices::Ptr inliers_plane (new pcl::PointIndices ());
-
+  pcl::PointIndices::Ptr inliers_sphere (new pcl::PointIndices ());
   // The point clouds
   sensor_msgs::PointCloud2::Ptr passthrough_filtered (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr plane_seg_output_cloud (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr sphere_RANSAC_output_cloud (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr rest_output_cloud (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr rest_cloud_filtered (new sensor_msgs::PointCloud2);
+  sensor_msgs::PointCloud2::Ptr sphere_output_cloud (new sensor_msgs::PointCloud2);
 
   // The PointCloud
   pcl::PointCloud<pcl::PointXYZ>::Ptr plane_seg_cloud (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr plane_seg_output (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr remove_transformed_cloud (new pcl::PointCloud<pcl::PointXYZ>);
-
+  pcl::PointCloud<pcl::PointXYZ>::Ptr sphere_cloud (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr sphere_output (new pcl::PointCloud<pcl::PointXYZ>);
 
   ros::Time declare_types_end = ros::Time::now();
 
@@ -135,6 +139,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /*
    * Extract rest plane and passthrough filtering
@@ -164,6 +169,49 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
   ros::Time rest_pass_end = ros::Time::now();
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
+   * for sphere features
+   */
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
+  pcl::fromROSMsg (*rest_cloud_filtered, *sphere_cloud);
+
+  ros::Time sphere_start = ros::Time::now();
+
+  // Optional
+  seg.setOptimizeCoefficients (false);
+  // Mandatory
+  seg.setModelType (pcl::SACMODEL_SPHERE);
+  seg.setMethodType (pcl::SAC_RANSAC);
+  seg.setMaxIterations (10000);
+  seg.setDistanceThreshold (0.03);
+  seg.setRadiusLimits (0.12, 0.16);
+  seg.setInputCloud (sphere_cloud);
+  seg.segment (*inliers_sphere, *coefficients_sphere);
+  //std::cerr << "Sphere coefficients: " << *coefficients_sphere << std::endl;
+
+
+  if (inliers_sphere->indices.empty())
+     std::cerr << "Can't find the sphere component." << std::endl;
+  else {
+    extract_indices.setInputCloud(sphere_cloud);
+    extract_indices.setIndices(inliers_sphere);
+    extract_indices.setNegative(false);
+    extract_indices.filter(*sphere_output);
+    pcl::toROSMsg (*sphere_output, *sphere_output_cloud);
+    sphere_pub.publish(sphere_output_cloud);
+  }
+
+  ros::Time sphere_end = ros::Time::now();
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
   ros::Time whole_end = ros::Time::now();
@@ -171,6 +219,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   std::cout << "cloud size         : " << cloud->width * cloud->height << std::endl;
   std::cout << "plane size         : " << plane_seg_output_cloud->width * plane_seg_output_cloud->height << std::endl;
   std::cout << "rest size          : " << rest_cloud_filtered->width * rest_cloud_filtered->height << std::endl;
+  std::cout << "sphere size        : " << sphere_output_cloud->width * sphere_output_cloud->height << std::endl;
 
   std::cout << "model coefficient  : " << coefficients_plane->values[0] << " " 
 				       << coefficients_plane->values[1] << " " 
@@ -186,7 +235,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   std::cout << "passthrough time       : " << pass_end - pass_start << " sec" << std::endl;
   std::cout << "plane time             : " << plane_seg_end - plane_seg_start << " sec" << std::endl;
   std::cout << "rest and pass time     : " << rest_pass_end - rest_pass_start << " sec" << std::endl;
-
+  std::cout << "sphere time            : " << sphere_end - sphere_start << " sec" << std::endl;
   printf("\n----------------------------------------------------------------------------\n");
   printf("\n");
 }
@@ -203,7 +252,7 @@ main (int argc, char** argv)
   passthrough_pub = nh.advertise<sensor_msgs::PointCloud2> ("passthrough_cloud", 1);
   plane_pub = nh.advertise<sensor_msgs::PointCloud2> ("plane_cloud", 1);
   rest_pub = nh.advertise<sensor_msgs::PointCloud2> ("rest_cloud", 1);
-
+  sphere_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_cloud", 1);
   ros::spin();
 
   return (0);
