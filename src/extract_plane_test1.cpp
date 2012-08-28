@@ -88,13 +88,13 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   pcl::fromROSMsg (*cloud, *plane_seg_cloud);
 
   // Optional
-  seg.setOptimizeCoefficients (true);
-  seg.setModelType (pcl::SACMODEL_PLANE);
+  seg.setOptimizeCoefficients (false);
+  seg.setModelType (pcl::SACMODEL_PERPENDICULAR_PLANE);
   seg.setMethodType (pcl::SAC_RANSAC);
-  seg.setAxis(Eigen::Vector3f (0, 0, 1));       // best plane should be perpendicular to z-axis
-  seg.setMaxIterations (10000);
+  seg.setAxis(Eigen::Vector3f (0, 1, 0));       // best plane should be perpendicular to z-axis
+  seg.setMaxIterations (1000);
   seg.setDistanceThreshold (0.05);
-  seg.setRadiusLimits (0, 0.15);
+  //seg.setRadiusLimits (0, 0.15);
   seg.setInputCloud (plane_seg_cloud);
   seg.segment (*inliers_plane, *coefficients_plane);
 
@@ -119,6 +119,11 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
   std::cout << "cloud size         : " << cloud->width * cloud->height << std::endl;
   std::cout << "plane size         : " << plane_seg_output_cloud->width * plane_seg_output_cloud->height << std::endl;
+  std::cout << "model coefficient  : " << coefficients_plane->values[0] << " " 
+				       << coefficients_plane->values[1] << " " 
+				       << coefficients_plane->values[2] << " " 
+                                       << coefficients_plane->values[3] << " " << std::endl; 
+                                        
   //std::cout << "inliers size       : " << inliers_sphere->indices.size() << std::endl;
 
   printf("\n");
