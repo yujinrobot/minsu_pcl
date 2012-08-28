@@ -37,6 +37,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ros::Publisher passthrough_pub;
+ros::Publisher rest_pub;
 ros::Publisher plane_pub;
 
 void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
@@ -63,11 +64,13 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   sensor_msgs::PointCloud2::Ptr passthrough_filtered (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr plane_seg_output_cloud (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr sphere_RANSAC_output_cloud (new sensor_msgs::PointCloud2);
+  sensor_msgs::PointCloud2::Ptr rest_output_cloud (new sensor_msgs::PointCloud2);
+  sensor_msgs::PointCloud2::Ptr rest_cloud_filtered (new sensor_msgs::PointCloud2);
 
   // The PointCloud
   pcl::PointCloud<pcl::PointXYZ>::Ptr plane_seg_cloud (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr plane_seg_output (new pcl::PointCloud<pcl::PointXYZ>);
-  pcl::PointCloud<pcl::PointXYZ>::Ptr sphere_RANSAC_output (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr remove_transformed_cloud (new pcl::PointCloud<pcl::PointXYZ>);
 
 
   ros::Time declare_types_end = ros::Time::now();
@@ -132,11 +135,43 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
+   * Extract rest plane and passthrough filtering
+   */
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  ros::Time rest_pass_start = ros::Time::now();
+
+  // Create the filtering object
+  // Remove the planar inliers, extract the rest
+  extract_indices.setNegative (true);
+  extract_indices.filter (*remove_transformed_cloud);
+  plane_seg_cloud.swap (remove_transformed_cloud);
+
+  // publish result of Removal the planar inliers, extract the rest
+  pcl::toROSMsg (*plane_seg_cloud, *rest_output_cloud);
+  rest_pub.publish(rest_output_cloud);
+
+  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
+//  pcl::fromROSMsg (*rest_output_cloud, *cylinder_cloud);
+
+  // pass through filter
+  pass.setInputCloud (rest_output_cloud);
+  pass.setFilterFieldName ("z");
+  pass.setFilterLimits (0, 2.5);
+  pass.filter (*rest_cloud_filtered);
+
+  ros::Time rest_pass_end = ros::Time::now();
+
+
 
   ros::Time whole_end = ros::Time::now();
 
   std::cout << "cloud size         : " << cloud->width * cloud->height << std::endl;
   std::cout << "plane size         : " << plane_seg_output_cloud->width * plane_seg_output_cloud->height << std::endl;
+  std::cout << "rest size          : " << rest_cloud_filtered->width * rest_cloud_filtered->height << std::endl;
+
   std::cout << "model coefficient  : " << coefficients_plane->values[0] << " " 
 				       << coefficients_plane->values[1] << " " 
 				       << coefficients_plane->values[2] << " " 
@@ -150,6 +185,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   std::cout << "declare types time     : " << declare_types_end - declare_types_start << " sec" << std::endl;
   std::cout << "passthrough time       : " << pass_end - pass_start << " sec" << std::endl;
   std::cout << "plane time             : " << plane_seg_end - plane_seg_start << " sec" << std::endl;
+  std::cout << "rest and pass time     : " << rest_pass_end - rest_pass_start << " sec" << std::endl;
 
   printf("\n----------------------------------------------------------------------------\n");
   printf("\n");
