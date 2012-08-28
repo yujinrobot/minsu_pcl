@@ -33,8 +33,7 @@
  *  handling of pass through filter
  *  we set a boundary value about floor.
  *
- *  subscribe topic : /transformed_frame_Pointcloud
- *  This topic is transformed by transform_frame_PointCloud.cpp
+ *  subscribe topic : /camera/depth/points
  *
  *  1st - segmentation
  *  2nd - RANSAC

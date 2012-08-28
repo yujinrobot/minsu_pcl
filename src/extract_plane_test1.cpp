@@ -28,8 +28,8 @@
  *  handling of pass through filter
  *  we set a boundary value about floor.
  *
- *  subscribe topic : /transformed_frame_Pointcloud
- *  This topic is transformed by transform_frame_PointCloud.cpp
+ *  subscribe topic : /camera/depth/points
+ *
  *
  *  pcl::SACSegmentation
  *
@@ -91,6 +91,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   seg.setOptimizeCoefficients (true);
   seg.setModelType (pcl::SACMODEL_PLANE);
   seg.setMethodType (pcl::SAC_RANSAC);
+  seg.setAxis(Eigen::Vector3f (0, 0, 1));       // best plane should be perpendicular to z-axis
   seg.setMaxIterations (10000);
   seg.setDistanceThreshold (0.05);
   seg.setRadiusLimits (0, 0.15);
