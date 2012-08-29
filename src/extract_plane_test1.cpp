@@ -81,7 +81,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   // The PointCloud
   pcl::PointCloud<pcl::PointXYZ>::Ptr plane_seg_cloud (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr plane_seg_output (new pcl::PointCloud<pcl::PointXYZ>);
-  pcl::PointCloud<pcl::PointXYZ>::Ptr remove_transformed_cloud (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr remove_plane_cloud (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr sphere_cloud (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr sphere_output (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr sphere_RANSAC_output (new pcl::PointCloud<pcl::PointXYZ>);
@@ -161,8 +161,8 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   // Create the filtering object
   // Remove the planar inliers, extract the rest
   extract_indices.setNegative (true);
-  extract_indices.filter (*remove_transformed_cloud);
-  plane_seg_cloud.swap (remove_transformed_cloud);
+  extract_indices.filter (*remove_plane_cloud);
+  plane_seg_cloud.swap (remove_plane_cloud);
 
   // publish result of Removal the planar inliers, extract the rest
   pcl::toROSMsg (*plane_seg_cloud, *rest_output_cloud);
@@ -259,6 +259,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
       BALL = true;
       std::cout << "can find a ball" << std::endl;
       sphere_RANSAC_pub.publish(sphere_RANSAC_output_cloud);
+      break;
     } else {
       BALL = false;
       std::cout << "can not find a ball" << std::endl;
