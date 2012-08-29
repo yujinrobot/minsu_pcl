@@ -274,7 +274,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
   std::cout << "cloud size             : " << cloud->width * cloud->height << std::endl;
   std::cout << "plane size             : " << plane_seg_output_cloud->width * plane_seg_output_cloud->height << std::endl;
-  std::cout << "rest size              : " << rest_cloud_filtered->width * rest_cloud_filtered->height << std::endl;
+  std::cout << "rest size              : " << rest_output_cloud->width * rest_output_cloud->height << std::endl;
   std::cout << "sphere size            : " << sphere_output_cloud->width * sphere_output_cloud->height << std::endl;
   std::cout << "sphere RANSAC size     : " << sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height << "   " << inliers.size() << std::endl;
   std::cout << "sphereness             : " << double(sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height)
