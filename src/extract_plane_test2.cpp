@@ -241,46 +241,26 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /*
-   * To discriminate a ball
+   * Exclude false ball candidate
    */
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//  double w = 0;
-//  w = double(sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height)
-//      /double(sphere_output_cloud->width * sphere_output_cloud->height);
-//
-//  if (w > 0.9) {
-//    BALL = true;
-//    std::cout << "can find a ball" << std::endl;
-//    sphere_RANSAC_pub.publish(sphere_RANSAC_output_cloud);
-//    //break;
-//  } else {
-//    BALL = false;
-//    std::cout << "can not find a ball" << std::endl;
+  //ros::Time rest_pass_start = ros::Time::now();
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /*
-     * Exclude false ball candidate
-     */
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Create the filtering object
+  // Remove the false ball inliers, extract the rest
 
-    //ros::Time rest_pass_start = ros::Time::now();
+  extract_indices2.setInputCloud(plane_seg_cloud);
+  extract_indices2.setIndices(inliers_sphere);
+  extract_indices2.setNegative (true);
+  extract_indices2.filter (*remove_false_ball_candidate);
+  sphere_RANSAC_output.swap (remove_false_ball_candidate);
 
-    // Create the filtering object
-    // Remove the false ball inliers, extract the rest
-    boost::shared_ptr<std::vector<int> > indicesptr (new std::vector<int> (inliers));
+  // publish result of Removal the planar inliers, extract the rest
+  pcl::toROSMsg (*sphere_RANSAC_output, *ball_candidate_output_cloud);
+  rest_BC_pub.publish(ball_candidate_output_cloud);
+  //whole_pc = ball_candidate_output_cloud;
 
-    extract_indices2.setInputCloud(plane_seg_cloud);
-    extract_indices2.setIndices(indicesptr);
-    extract_indices2.setNegative (true);
-    extract_indices2.filter (*remove_false_ball_candidate);
-    sphere_RANSAC_output.swap (remove_false_ball_candidate);
-
-    // publish result of Removal the planar inliers, extract the rest
-    pcl::toROSMsg (*sphere_RANSAC_output, *ball_candidate_output_cloud);
-    rest_BC_pub.publish(ball_candidate_output_cloud);
-    //whole_pc = ball_candidate_output_cloud;
-//  }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
