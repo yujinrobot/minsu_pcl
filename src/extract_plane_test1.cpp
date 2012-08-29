@@ -44,7 +44,9 @@ ros::Publisher rest_whole_pub;
 ros::Publisher rest_ball_candidate_pub;
 ros::Publisher plane_pub;
 ros::Publisher sphere_seg_pub;
-ros::Publisher sphere_RANSAC_pub;
+ros::Publisher true_ball_pub;
+
+bool BALL = false;
 
 void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 {
@@ -174,7 +176,6 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
   ros::Time find_ball_start = ros::Time::now();
   int iter = 0;
-  bool BALL = false;
 
   while(iter < 5)
   {
@@ -239,8 +240,6 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
     pcl::copyPointCloud<pcl::PointXYZ>(*sphere_output, inliers, *sphere_RANSAC_output);
 
     pcl::toROSMsg (*sphere_RANSAC_output, *sphere_RANSAC_output_cloud);
-    //sphere_RANSAC_pub.publish(sphere_RANSAC_output_cloud);
-
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /*
@@ -252,15 +251,13 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
     w = double(sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height)
         /double(sphere_output_cloud->width * sphere_output_cloud->height);
 
-    std::cout << "w : " << w << std::endl;
-
     if (w > 0.9) {
-      //BALL = true;
+      BALL = true;
       std::cout << "can find a ball" << std::endl;
-      sphere_RANSAC_pub.publish(sphere_RANSAC_output_cloud);
+      true_ball_pub.publish(sphere_RANSAC_output_cloud);
       break;
     } else {
-      //BALL = false;
+      BALL = false;
       std::cout << "can not find a ball" << std::endl;
 
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -292,6 +289,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
   }
   ros::Time find_ball_end = ros::Time::now();
+
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -340,7 +338,7 @@ main (int argc, char** argv)
   plane_pub = nh.advertise<sensor_msgs::PointCloud2> ("plane_cloud", 1);
   rest_whole_pub = nh.advertise<sensor_msgs::PointCloud2> ("rest_whole_cloud", 1);
   sphere_seg_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_cloud", 1);
-  sphere_RANSAC_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_RANSAC_cloud", 1);
+  true_ball_pub = nh.advertise<sensor_msgs::PointCloud2> ("true_ball_cloud", 1);
   rest_ball_candidate_pub = nh.advertise<sensor_msgs::PointCloud2> ("rest_ball_candidate_cloud", 1);
 
   ros::spin();

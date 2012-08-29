@@ -67,7 +67,7 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "tracking_ball_pcl");
   ros::NodeHandle nh;
   pub_cmd = nh.advertise<geometry_msgs::Twist>("cmd_vel", 1);
-  ros::Subscriber sub_cloud = nh.subscribe("sphere_cloud", 1, cloudCb);
+  ros::Subscriber sub_cloud = nh.subscribe("true_ball_cloud", 1, cloudCb);
 
   ros::spin();
 
