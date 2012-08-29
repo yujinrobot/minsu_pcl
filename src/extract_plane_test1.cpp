@@ -26,7 +26,7 @@
 /*
  *  This source code used lower sequence
  *
- *  cloud ->  -> plane
+ *  cloud -> passthrough filter -> SACSegmentation -> RANSAC -> plane
  *
  *  handling of pass through filter
  *  we set a boundary value about floor.
@@ -40,10 +40,10 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ros::Publisher passthrough_pub;
-ros::Publisher rest_pub;
-ros::Publisher rest_BC_pub;
+ros::Publisher rest_whole_pub;
+ros::Publisher rest_ball_candidate_pub;
 ros::Publisher plane_pub;
-ros::Publisher sphere_pub;
+ros::Publisher sphere_seg_pub;
 ros::Publisher sphere_RANSAC_pub;
 
 void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
@@ -56,6 +56,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   pcl::VoxelGrid<sensor_msgs::PointCloud2> voxel_grid;
   pcl::PassThrough<sensor_msgs::PointCloud2> pass;
   pcl::ExtractIndices<pcl::PointXYZ> extract_indices;
+  pcl::ExtractIndices<pcl::PointXYZ> extract_indices2;
 
   // Create the segmentation object
   pcl::SACSegmentation<pcl::PointXYZ> seg;
@@ -72,7 +73,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   sensor_msgs::PointCloud2::Ptr passthrough_filtered (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr plane_seg_output_cloud (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr sphere_RANSAC_output_cloud (new sensor_msgs::PointCloud2);
-  sensor_msgs::PointCloud2::Ptr rest_output_cloud (new sensor_msgs::PointCloud2);
+  sensor_msgs::PointCloud2::Ptr rest_whole_cloud (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr rest_cloud_filtered (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr sphere_output_cloud (new sensor_msgs::PointCloud2);
   sensor_msgs::PointCloud2::Ptr whole_pc (new sensor_msgs::PointCloud2);
@@ -163,8 +164,8 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   plane_seg_cloud.swap (remove_plane_cloud);
 
   // publish result of Removal the planar inliers, extract the rest
-  pcl::toROSMsg (*plane_seg_cloud, *rest_output_cloud);
-  rest_pub.publish(rest_output_cloud);          // 'rest_output_cloud' substituted whole_pc
+  pcl::toROSMsg (*plane_seg_cloud, *rest_whole_cloud);
+  rest_whole_pub.publish(rest_whole_cloud);          // 'rest_whole_cloud' substituted whole_pc
 
   ros::Time rest_pass_end = ros::Time::now();
 
@@ -172,10 +173,8 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   ros::Time find_ball_start = ros::Time::now();
-  //int iteration = 0;
-  bool BALL = false;
-  whole_pc = rest_output_cloud;
 
+  bool BALL = false;
 
   while(!BALL)
   {
@@ -186,7 +185,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-    pcl::fromROSMsg (*whole_pc, *sphere_cloud);
+    pcl::fromROSMsg (*rest_whole_cloud, *sphere_cloud);
 
     ros::Time sphere_start = ros::Time::now();
 
@@ -211,7 +210,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
       extract_indices.setNegative(false);
       extract_indices.filter(*sphere_output);
       pcl::toROSMsg (*sphere_output, *sphere_output_cloud);
-      sphere_pub.publish(sphere_output_cloud);          // 'sphere_output_cloud' means ball candidate point cloud
+      sphere_seg_pub.publish(sphere_output_cloud);          // 'sphere_output_cloud' means ball candidate point cloud
     }
 
     ros::Time sphere_end = ros::Time::now();
@@ -272,16 +271,16 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
       // Create the filtering object
       // Remove the planar inliers, extract the rest
-      extract_indices.setInputCloud(sphere_RANSAC_output);
-      //extract_indices.setIndices(inliers);
-      extract_indices.setNegative (true);
-      extract_indices.filter (*remove_false_ball_candidate);
+      extract_indices2.setInputCloud(plane_seg_cloud);
+      extract_indices2.setIndices(inliers_sphere);
+      extract_indices2.setNegative (true);
+      extract_indices2.filter (*remove_false_ball_candidate);
       sphere_RANSAC_output.swap (remove_false_ball_candidate);
 
       // publish result of Removal the planar inliers, extract the rest
       pcl::toROSMsg (*sphere_RANSAC_output, *ball_candidate_output_cloud);
-      rest_BC_pub.publish(ball_candidate_output_cloud);
-      whole_pc = ball_candidate_output_cloud;
+      rest_ball_candidate_pub.publish(ball_candidate_output_cloud);
+      rest_whole_cloud = ball_candidate_output_cloud;
 
     }
 
@@ -299,9 +298,9 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
   std::cout << "cloud size             : " << cloud->width * cloud->height << std::endl;
   std::cout << "plane size             : " << plane_seg_output_cloud->width * plane_seg_output_cloud->height << std::endl;
-  std::cout << "rest size              : " << rest_output_cloud->width * rest_output_cloud->height << std::endl;
+  std::cout << "rest size              : " << rest_whole_cloud->width * rest_whole_cloud->height << std::endl;
   std::cout << "sphere size            : " << sphere_output_cloud->width * sphere_output_cloud->height << std::endl;
-  std::cout << "sphere RANSAC size     : " << sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height << "   " << inliers.size() << std::endl;
+  std::cout << "sphere RANSAC size     : " << sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height << "   " << sphere_RANSAC_output->points.size() << std::endl;
   std::cout << "sphereness             : " << double(sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height)
                                               /double(sphere_output_cloud->width * sphere_output_cloud->height) << std::endl;
 
@@ -337,10 +336,10 @@ main (int argc, char** argv)
   //ros::Subscriber sub = nh.subscribe("transformed_frame_Pointcloud", 1, callback);
   passthrough_pub = nh.advertise<sensor_msgs::PointCloud2> ("passthrough_cloud", 1);
   plane_pub = nh.advertise<sensor_msgs::PointCloud2> ("plane_cloud", 1);
-  rest_pub = nh.advertise<sensor_msgs::PointCloud2> ("rest_cloud", 1);
-  rest_BC_pub = nh.advertise<sensor_msgs::PointCloud2> ("rest_ball_candidate_cloud", 1);
-  sphere_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_cloud", 1);
+  rest_whole_pub = nh.advertise<sensor_msgs::PointCloud2> ("rest_whole_cloud", 1);
+  sphere_seg_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_cloud", 1);
   sphere_RANSAC_pub = nh.advertise<sensor_msgs::PointCloud2> ("sphere_RANSAC_cloud", 1);
+  rest_ball_candidate_pub = nh.advertise<sensor_msgs::PointCloud2> ("rest_ball_candidate_cloud", 1);
 
   ros::spin();
 
