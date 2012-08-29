@@ -126,7 +126,6 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   seg.setAxis(Eigen::Vector3f (0, -1, 0));       // best plane should be perpendicular to z-axis
   seg.setMaxIterations (40);
   seg.setDistanceThreshold (0.05);
-  //seg.setRadiusLimits (0, 0.15);
   seg.setInputCloud (plane_seg_cloud);
   seg.segment (*inliers_plane, *coefficients_plane);
 
@@ -168,11 +167,11 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
 //  pcl::fromROSMsg (*rest_output_cloud, *cylinder_cloud);
 
-  // pass through filter
-  pass.setInputCloud (rest_output_cloud);
-  pass.setFilterFieldName ("z");
-  pass.setFilterLimits (0, 2.5);
-  pass.filter (*rest_cloud_filtered);
+//  // pass through filter
+//  pass.setInputCloud (rest_output_cloud);
+//  pass.setFilterFieldName ("z");
+//  pass.setFilterLimits (0, 2.5);
+//  pass.filter (*rest_cloud_filtered);
 
   ros::Time rest_pass_end = ros::Time::now();
 
@@ -187,7 +186,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-  pcl::fromROSMsg (*rest_cloud_filtered, *sphere_cloud);
+  pcl::fromROSMsg (*rest_output_cloud, *sphere_cloud);
 
   ros::Time sphere_start = ros::Time::now();
 
@@ -241,12 +240,34 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   pcl::copyPointCloud<pcl::PointXYZ>(*sphere_output, inliers, *sphere_RANSAC_output);
 
   pcl::toROSMsg (*sphere_RANSAC_output, *sphere_RANSAC_output_cloud);
-  sphere_RANSAC_pub.publish(sphere_RANSAC_output_cloud);
+  //sphere_RANSAC_pub.publish(sphere_RANSAC_output_cloud);
+
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
+   * To discriminate a ball
+   */
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  double w = 0;
+  w = double(sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height)
+      /double(sphere_output_cloud->width * sphere_output_cloud->height);
+
+  if (w > 0.9) {
+    std::cout << "can find a ball" << std::endl;
+    sphere_RANSAC_pub.publish(sphere_RANSAC_output_cloud);
+  } else {
+    std::cout << "can not find a ball" << std::endl;
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   ros::Time sphere_RANSAC_end = ros::Time::now();
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 
   ros::Time whole_end = ros::Time::now();
@@ -256,14 +277,15 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   std::cout << "rest size              : " << rest_cloud_filtered->width * rest_cloud_filtered->height << std::endl;
   std::cout << "sphere size            : " << sphere_output_cloud->width * sphere_output_cloud->height << std::endl;
   std::cout << "sphere RANSAC size     : " << sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height << "   " << inliers.size() << std::endl;
-  std::cout << "sphereness             : " << double(sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height)/double(sphere_output_cloud->width * sphere_output_cloud->height) << std::endl;
+  std::cout << "sphereness             : " << double(sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height)
+                                              /double(sphere_output_cloud->width * sphere_output_cloud->height) << std::endl;
 
   std::cout << "model coefficient      : " << coefficients_plane->values[0] << " " 
 				           << coefficients_plane->values[1] << " " 
 				           << coefficients_plane->values[2] << " " 
                                            << coefficients_plane->values[3] << " " << std::endl; 
                                         
-  //std::cout << "inliers size       : " << inliers_sphere->indices.size() << std::endl;
+
 
   printf("\n");
 
