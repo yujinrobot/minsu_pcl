@@ -56,6 +56,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   pcl::VoxelGrid<sensor_msgs::PointCloud2> voxel_grid;
   pcl::PassThrough<sensor_msgs::PointCloud2> pass;
   pcl::ExtractIndices<pcl::PointXYZ> extract_indices;
+  pcl::ExtractIndices<pcl::PointXYZ> extract_indices2;
 
   // Create the segmentation object
   pcl::SACSegmentation<pcl::PointXYZ> seg;
@@ -268,10 +269,10 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
     // Remove the false ball inliers, extract the rest
     boost::shared_ptr<std::vector<int> > indicesptr (new std::vector<int> (inliers));
 
-    extract_indices.setInputCloud(sphere_RANSAC_output);
-    extract_indices.setIndices(indicesptr);
-    extract_indices.setNegative (true);
-    extract_indices.filter (*remove_false_ball_candidate);
+    extract_indices2.setInputCloud(sphere_RANSAC_output);
+    extract_indices2.setIndices(indicesptr);
+    extract_indices2.setNegative (true);
+    extract_indices2.filter (*remove_false_ball_candidate);
     sphere_RANSAC_output.swap (remove_false_ball_candidate);
 
     // publish result of Removal the planar inliers, extract the rest
