@@ -139,7 +139,6 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   extract_indices.setNegative(false);
   extract_indices.filter(*plane_seg_output);
 
-
   pcl::toROSMsg (*plane_seg_output, *plane_seg_output_cloud);
   plane_pub.publish(plane_seg_output_cloud);
 
@@ -177,120 +176,112 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   whole_pc = rest_output_cloud;
 
 
-  while(!BALL)
-  {
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /*
-     * for sphere features pcl::SACSegmentation
-     */
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
+   * for sphere features pcl::SACSegmentation
+   */
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-    pcl::fromROSMsg (*whole_pc, *sphere_cloud);
+  // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
+  pcl::fromROSMsg (*whole_pc, *sphere_cloud);
 
-    ros::Time sphere_start = ros::Time::now();
-
-    // Optional
-    seg.setOptimizeCoefficients (false);
-    // Mandatory
-    seg.setModelType (pcl::SACMODEL_SPHERE);
-    seg.setMethodType (pcl::SAC_RANSAC);
-    seg.setMaxIterations (10000);
-    seg.setDistanceThreshold (0.03);
-    seg.setRadiusLimits (0.12, 0.16);
-    seg.setInputCloud (sphere_cloud);
-    seg.segment (*inliers_sphere, *coefficients_sphere);
-    //std::cerr << "Sphere coefficients: " << *coefficients_sphere << std::endl;
+  ros::Time sphere_start = ros::Time::now();
+  // Optional
+  seg.setOptimizeCoefficients (false);
+  // Mandatory
+  seg.setModelType (pcl::SACMODEL_SPHERE);
+  seg.setMethodType (pcl::SAC_RANSAC);
+  seg.setMaxIterations (10000);
+  seg.setDistanceThreshold (0.03);
+  seg.setRadiusLimits (0.12, 0.16);
+  seg.setInputCloud (sphere_cloud);
+  seg.segment (*inliers_sphere, *coefficients_sphere);
+  //std::cerr << "Sphere coefficients: " << *coefficients_sphere << std::endl;
 
 
-    if (inliers_sphere->indices.empty())
-       std::cerr << "[[--Can't find the Sphere Candidate.--]]" << std::endl;
-    else {
-      extract_indices.setInputCloud(sphere_cloud);
-      extract_indices.setIndices(inliers_sphere);
-      extract_indices.setNegative(false);
-      extract_indices.filter(*sphere_output);
-      pcl::toROSMsg (*sphere_output, *sphere_output_cloud);
-      sphere_pub.publish(sphere_output_cloud);          // 'sphere_output_cloud' means ball candidate point cloud
-    }
-
-    ros::Time sphere_end = ros::Time::now();
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /*
-     * for sphere features pcl::SampleConsensusModelSphere
-     */
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    ros::Time sphere_RANSAC_start = ros::Time::now();
-
-    // created RandomSampleConsensus object and compute the appropriated model
-    pcl::SampleConsensusModelSphere<pcl::PointXYZ>::Ptr model_s(new pcl::SampleConsensusModelSphere<pcl::PointXYZ> (sphere_output));
-
-    pcl::RandomSampleConsensus<pcl::PointXYZ> ransac (model_s);
-    ransac.setDistanceThreshold (.01);
-    ransac.computeModel();
-    ransac.getInliers(inliers);
-
-    // copies all inliers of the model computed to another PointCloud
-    pcl::copyPointCloud<pcl::PointXYZ>(*sphere_output, inliers, *sphere_RANSAC_output);
-
-    pcl::toROSMsg (*sphere_RANSAC_output, *sphere_RANSAC_output_cloud);
-    //sphere_RANSAC_pub.publish(sphere_RANSAC_output_cloud);
-
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /*
-     * To discriminate a ball
-     */
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    double w = 0;
-    w = double(sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height)
-        /double(sphere_output_cloud->width * sphere_output_cloud->height);
-
-    if (w > 0.9) {
-      BALL = true;
-      std::cout << "can find a ball" << std::endl;
-      sphere_RANSAC_pub.publish(sphere_RANSAC_output_cloud);
-      break;
-    } else {
-      BALL = false;
-      std::cout << "can not find a ball" << std::endl;
-
-      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      /*
-       * Exclude false ball candidate
-       */
-      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-      //ros::Time rest_pass_start = ros::Time::now();
-
-      // Create the filtering object
-      // Remove the planar inliers, extract the rest
-      extract_indices.setInputCloud(sphere_RANSAC_output);
-      //extract_indices.setIndices(inliers);
-      extract_indices.setNegative (true);
-      extract_indices.filter (*remove_false_ball_candidate);
-      sphere_RANSAC_output.swap (remove_false_ball_candidate);
-
-      // publish result of Removal the planar inliers, extract the rest
-      pcl::toROSMsg (*sphere_RANSAC_output, *ball_candidate_output_cloud);
-      rest_BC_pub.publish(ball_candidate_output_cloud);
-      whole_pc = ball_candidate_output_cloud;
-
-    }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    ros::Time sphere_RANSAC_end = ros::Time::now();
-
+  if (inliers_sphere->indices.empty())
+     std::cerr << "[[--Can't find the Sphere Candidate.--]]" << std::endl;
+  else {
+    extract_indices.setInputCloud(sphere_cloud);
+    extract_indices.setIndices(inliers_sphere);
+    extract_indices.setNegative(false);
+    extract_indices.filter(*sphere_output);
+    pcl::toROSMsg (*sphere_output, *sphere_output_cloud);
+    sphere_pub.publish(sphere_output_cloud);          // 'sphere_output_cloud' means ball candidate point cloud
   }
-  ros::Time find_ball_end = ros::Time::now();
+
+  ros::Time sphere_end = ros::Time::now();
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
+   * for sphere features pcl::SampleConsensusModelSphere
+   */
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ros::Time sphere_RANSAC_start = ros::Time::now();
+  // created RandomSampleConsensus object and compute the appropriated model
+  pcl::SampleConsensusModelSphere<pcl::PointXYZ>::Ptr model_s(new pcl::SampleConsensusModelSphere<pcl::PointXYZ> (sphere_output));
+
+  pcl::RandomSampleConsensus<pcl::PointXYZ> ransac (model_s);
+  ransac.setDistanceThreshold (.01);
+  ransac.computeModel();
+  ransac.getInliers(inliers);
+
+  // copies all inliers of the model computed to another PointCloud
+  pcl::copyPointCloud<pcl::PointXYZ>(*sphere_output, inliers, *sphere_RANSAC_output);
+
+  pcl::toROSMsg (*sphere_RANSAC_output, *sphere_RANSAC_output_cloud);
+  //sphere_RANSAC_pub.publish(sphere_RANSAC_output_cloud);
+
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
+   * To discriminate a ball
+   */
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  double w = 0;
+  w = double(sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height)
+      /double(sphere_output_cloud->width * sphere_output_cloud->height);
+
+  if (w > 0.9) {
+    BALL = true;
+    std::cout << "can find a ball" << std::endl;
+    sphere_RANSAC_pub.publish(sphere_RANSAC_output_cloud);
+    //break;
+  } else {
+    BALL = false;
+    std::cout << "can not find a ball" << std::endl;
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
+     * Exclude false ball candidate
+     */
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //ros::Time rest_pass_start = ros::Time::now();
+
+    // Create the filtering object
+    // Remove the planar inliers, extract the rest
+    extract_indices.setInputCloud(sphere_RANSAC_output);
+    //extract_indices.setIndices(inliers);
+    extract_indices.setNegative (true);
+    extract_indices.filter (*remove_false_ball_candidate);
+    sphere_RANSAC_output.swap (remove_false_ball_candidate);
+
+    // publish result of Removal the planar inliers, extract the rest
+    pcl::toROSMsg (*sphere_RANSAC_output, *ball_candidate_output_cloud);
+    rest_BC_pub.publish(ball_candidate_output_cloud);
+    //whole_pc = ball_candidate_output_cloud;
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  ros::Time sphere_RANSAC_end = ros::Time::now();
+  //ros::Time find_ball_end = ros::Time::now();
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -305,11 +296,11 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   std::cout << "sphereness             : " << double(sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height)
                                               /double(sphere_output_cloud->width * sphere_output_cloud->height) << std::endl;
 
-  std::cout << "model coefficient      : " << coefficients_plane->values[0] << " " 
-				           << coefficients_plane->values[1] << " " 
-				           << coefficients_plane->values[2] << " " 
-                                           << coefficients_plane->values[3] << " " << std::endl; 
-                                        
+  std::cout << "model coefficient      : " << coefficients_plane->values[0] << " "
+                                           << coefficients_plane->values[1] << " "
+                                           << coefficients_plane->values[2] << " "
+                                           << coefficients_plane->values[3] << " " << std::endl;
+
 
 
   printf("\n");
@@ -319,9 +310,9 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   std::cout << "passthrough time       : " << pass_end - pass_start << " sec" << std::endl;
   std::cout << "plane time             : " << plane_seg_end - plane_seg_start << " sec" << std::endl;
   std::cout << "rest and pass time     : " << rest_pass_end - rest_pass_start << " sec" << std::endl;
-  std::cout << "find a ball time       : " << find_ball_end - find_ball_start << " sec" << std::endl;
-  //std::cout << "sphere time            : " << sphere_end - sphere_start << " sec" << std::endl;
-  //std::cout << "sphere ransac time     : " << sphere_RANSAC_end - sphere_RANSAC_start << " sec" << std::endl;
+  //std::cout << "find a ball time       : " << find_ball_end - find_ball_start << " sec" << std::endl;
+  std::cout << "sphere time            : " << sphere_end - sphere_start << " sec" << std::endl;
+  std::cout << "sphere ransac time     : " << sphere_RANSAC_end - sphere_RANSAC_start << " sec" << std::endl;
   printf("\n----------------------------------------------------------------------------\n");
   printf("\n");
 }
