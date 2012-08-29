@@ -173,10 +173,10 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   ros::Time find_ball_start = ros::Time::now();
-
+  int iter = 0;
   bool BALL = false;
 
-  while(!BALL)
+  while(iter < 5)
   {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /*
@@ -255,12 +255,12 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
     std::cout << "w : " << w << std::endl;
 
     if (w > 0.9) {
-      BALL = true;
+      //BALL = true;
       std::cout << "can find a ball" << std::endl;
       sphere_RANSAC_pub.publish(sphere_RANSAC_output_cloud);
       break;
     } else {
-      BALL = false;
+      //BALL = false;
       std::cout << "can not find a ball" << std::endl;
 
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -285,7 +285,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
       rest_whole_cloud = ball_candidate_output_cloud;
 
     }
-
+    iter++;
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ros::Time sphere_RANSAC_end = ros::Time::now();
