@@ -46,12 +46,6 @@ ros::Publisher plane_pub;
 ros::Publisher sphere_pub;
 ros::Publisher sphere_RANSAC_pub;
 
-ros::Time sphere_start;
-ros::Time sphere_end;
-
-ros::Time sphere_RANSAC_start;
-ros::Time sphere_RANSAC_end;
-
 void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 {
   ros::Time whole_start = ros::Time::now();
@@ -179,6 +173,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  ros::Time find_ball_start = ros::Time::now();
   //int iteration = 0;
   bool BALL = false;
   whole_pc = rest_output_cloud;
@@ -294,7 +289,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
     ros::Time sphere_RANSAC_end = ros::Time::now();
 
   }
-
+  ros::Time find_ball_end = ros::Time::now();
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -323,8 +318,9 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   std::cout << "passthrough time       : " << pass_end - pass_start << " sec" << std::endl;
   std::cout << "plane time             : " << plane_seg_end - plane_seg_start << " sec" << std::endl;
   std::cout << "rest and pass time     : " << rest_pass_end - rest_pass_start << " sec" << std::endl;
-  std::cout << "sphere time            : " << sphere_end - sphere_start << " sec" << std::endl;
-  std::cout << "sphere ransac time     : " << sphere_RANSAC_end - sphere_RANSAC_start << " sec" << std::endl;
+  std::cout << "find a ball time       : " << find_ball_end - find_ball_start << " sec" << std::endl;
+  //std::cout << "sphere time            : " << sphere_end - sphere_start << " sec" << std::endl;
+  //std::cout << "sphere ransac time     : " << sphere_RANSAC_end - sphere_RANSAC_start << " sec" << std::endl;
   printf("\n----------------------------------------------------------------------------\n");
   printf("\n");
 }
