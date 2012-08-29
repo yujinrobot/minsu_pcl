@@ -251,17 +251,17 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 
   ros::Time whole_end = ros::Time::now();
 
-  std::cout << "cloud size         : " << cloud->width * cloud->height << std::endl;
-  std::cout << "plane size         : " << plane_seg_output_cloud->width * plane_seg_output_cloud->height << std::endl;
-  std::cout << "rest size          : " << rest_cloud_filtered->width * rest_cloud_filtered->height << std::endl;
-  std::cout << "sphere size        : " << sphere_output_cloud->width * sphere_output_cloud->height << std::endl;
-  std::cout << "sphere RANSAC size : " << sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height << "   " << inliers.size() << std::endl;
-  std::cout << "sphereness         : " << double(sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height)/double(sphere_output_cloud->width * sphere_output_cloud->height) << std::endl;
+  std::cout << "cloud size             : " << cloud->width * cloud->height << std::endl;
+  std::cout << "plane size             : " << plane_seg_output_cloud->width * plane_seg_output_cloud->height << std::endl;
+  std::cout << "rest size              : " << rest_cloud_filtered->width * rest_cloud_filtered->height << std::endl;
+  std::cout << "sphere size            : " << sphere_output_cloud->width * sphere_output_cloud->height << std::endl;
+  std::cout << "sphere RANSAC size     : " << sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height << "   " << inliers.size() << std::endl;
+  std::cout << "sphereness             : " << double(sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height)/double(sphere_output_cloud->width * sphere_output_cloud->height) << std::endl;
 
-  std::cout << "model coefficient  : " << coefficients_plane->values[0] << " " 
-				       << coefficients_plane->values[1] << " " 
-				       << coefficients_plane->values[2] << " " 
-                                       << coefficients_plane->values[3] << " " << std::endl; 
+  std::cout << "model coefficient      : " << coefficients_plane->values[0] << " " 
+				           << coefficients_plane->values[1] << " " 
+				           << coefficients_plane->values[2] << " " 
+                                           << coefficients_plane->values[3] << " " << std::endl; 
                                         
   //std::cout << "inliers size       : " << inliers_sphere->indices.size() << std::endl;
 
