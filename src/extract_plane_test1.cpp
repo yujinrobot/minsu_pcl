@@ -252,6 +252,8 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
     w = double(sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height)
         /double(sphere_output_cloud->width * sphere_output_cloud->height);
 
+    std::cout << "w : " << w << std::endl;
+
     if (w > 0.9) {
       BALL = true;
       std::cout << "can find a ball" << std::endl;
