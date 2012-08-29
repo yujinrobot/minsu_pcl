@@ -46,6 +46,12 @@ ros::Publisher plane_pub;
 ros::Publisher sphere_pub;
 ros::Publisher sphere_RANSAC_pub;
 
+ros::Time sphere_start;
+ros::Time sphere_end;
+
+ros::Time sphere_RANSAC_start;
+ros::Time sphere_RANSAC_end;
+
 void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
 {
   ros::Time whole_start = ros::Time::now();
@@ -176,11 +182,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   //int iteration = 0;
   bool BALL = false;
   whole_pc = rest_output_cloud;
-  ros::Time sphere_start;
-  ros::Time sphere_end;
 
-  ros::Time sphere_RANSAC_start;
-  ros::Time sphere_RANSAC_end;
 
   while(!BALL)
   {
