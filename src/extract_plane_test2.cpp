@@ -210,6 +210,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
     pcl::toROSMsg (*sphere_output, *sphere_output_cloud);
     sphere_pub.publish(sphere_output_cloud);          // 'sphere_output_cloud' means ball candidate point cloud
   }
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   ros::Time sphere_end = ros::Time::now();
 
@@ -269,7 +270,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
     // Remove the false ball inliers, extract the rest
     boost::shared_ptr<std::vector<int> > indicesptr (new std::vector<int> (inliers));
 
-    extract_indices2.setInputCloud(sphere_RANSAC_output);
+    extract_indices2.setInputCloud(plane_seg_cloud);
     extract_indices2.setIndices(indicesptr);
     extract_indices2.setNegative (true);
     extract_indices2.filter (*remove_false_ball_candidate);
