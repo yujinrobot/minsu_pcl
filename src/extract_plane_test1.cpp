@@ -123,8 +123,8 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   seg.setOptimizeCoefficients (true);
   seg.setModelType (pcl::SACMODEL_PERPENDICULAR_PLANE);
   seg.setMethodType (pcl::SAC_RANSAC);
-  seg.setAxis(Eigen::Vector3f (0, 0, -1));       // best plane should be perpendicular to z-axis
-  seg.setMaxIterations (1000);
+  seg.setAxis(Eigen::Vector3f (0, -1, 0));       // best plane should be perpendicular to z-axis
+  seg.setMaxIterations (40);
   seg.setDistanceThreshold (0.05);
   //seg.setRadiusLimits (0, 0.15);
   seg.setInputCloud (plane_seg_cloud);
@@ -255,7 +255,8 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   std::cout << "plane size         : " << plane_seg_output_cloud->width * plane_seg_output_cloud->height << std::endl;
   std::cout << "rest size          : " << rest_cloud_filtered->width * rest_cloud_filtered->height << std::endl;
   std::cout << "sphere size        : " << sphere_output_cloud->width * sphere_output_cloud->height << std::endl;
-  std::cout << "sphere RANSAC size : " << sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height << std::endl;
+  std::cout << "sphere RANSAC size : " << sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height << "   " << inliers.size() << std::endl;
+  std::cout << "sphereness         : " << double(sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height)/double(sphere_output_cloud->width * sphere_output_cloud->height) << std::endl;
 
   std::cout << "model coefficient  : " << coefficients_plane->values[0] << " " 
 				       << coefficients_plane->values[1] << " " 
