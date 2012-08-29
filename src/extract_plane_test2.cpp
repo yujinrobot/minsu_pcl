@@ -172,8 +172,9 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   ros::Time find_ball_start = ros::Time::now();
+
   //int iteration = 0;
-  bool BALL = false;
+  //bool BALL = false;
   whole_pc = rest_output_cloud;
 
 
@@ -276,7 +277,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& cloud)
   std::cout << "plane size             : " << plane_seg_output_cloud->width * plane_seg_output_cloud->height << std::endl;
   std::cout << "rest size              : " << rest_output_cloud->width * rest_output_cloud->height << std::endl;
   std::cout << "sphere size            : " << sphere_output_cloud->width * sphere_output_cloud->height << std::endl;
-  std::cout << "sphere RANSAC size     : " << sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height << "   " << inliers.size() << std::endl;
+  std::cout << "sphere RANSAC size     : " << sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height << "   " << sphere_RANSAC_output->points.size() << std::endl;
   std::cout << "sphereness             : " << double(sphere_RANSAC_output_cloud->width * sphere_RANSAC_output_cloud->height)
                                               /double(sphere_output_cloud->width * sphere_output_cloud->height) << std::endl;
 
