@@ -5,16 +5,18 @@
 #rosbuild_add_executable(exam_statistical_removal exam_statistical_removal.cpp)
 #rosbuild_add_executable(exam_planar_seg exam_planar_seg.cpp)
 #rosbuild_add_executable(exam_extract_indices exam_extract_indices.cpp)
-rosbuild_add_executable(exam_transformPointCloud exam_transformPointCloud.cpp)
-rosbuild_add_executable(transform_frame_PointCloud transform_frame_PointCloud.cpp)
+#rosbuild_add_executable(exam_voxel_grid exam_voxel_grid.cpp)
+#rosbuild_add_executable(exam_transformPointCloud exam_transformPointCloud.cpp)
+#rosbuild_add_executable(transform_frame_PointCloud transform_frame_PointCloud.cpp)
 rosbuild_add_executable(extract_sphere extract_sphere.cpp)
 rosbuild_add_executable(extract_sphere_test4 extract_sphere_test4.cpp)
 rosbuild_add_executable(extract_sphere_test5 extract_sphere_test5.cpp)
 rosbuild_add_executable(extract_sphere_test6 extract_sphere_test6.cpp)
 rosbuild_add_executable(extract_plane_test1 extract_plane_test1.cpp)
-rosbuild_add_executable(extract_plane_test2 extract_plane_test2.cpp)
-#rosbuild_add_executable(test test.cpp)
-rosbuild_add_executable(tracking_ball_pcl tracking_ball_pcl.cpp)
+#=======================================================================================
+rosbuild_add_executable(extract_ball_pcl extract_ball_pcl.cpp)
+rosbuild_add_executable(follow_pcl follow_pcl.cpp)
+#=======================================================================================
 
 #include_directories("/usr/include/vtk-5.8")
 #target_link_libraries(extract_sphere ${PCL_LIBRARIES} libvtkCommon.so libvtkFiltering.so libvtkRendering.so)
